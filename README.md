@@ -30,10 +30,10 @@ Have you ever tried to plan a group trip with your friends, but it never "made i
 
 ## Images
 
-{You should use this area to add a screenshot of your app or website }
-
 <!-- insert sketches here later -->
-<img src ="images/test.png" width="100px">
+<img src="images/455 Project - Mockup for UI 1.png" width="1200px">
+<img src="images/455 Project - Mockup for UI 2.png" width="1200px">
+<img src="images/455 Project - Mockup for UI 3.png" width="1200px">
 
 ## References
 
