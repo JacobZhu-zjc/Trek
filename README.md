@@ -23,7 +23,7 @@ Have you ever tried to plan a group trip with your friends, but it never "made i
 
 ## Team Members
 
-- Justin Lieu: one sentence about you!
+- Justin Lieu: I love drinking coffee
 - William Xiao: one sentence about you!
 - Kevin Xu: one sentence about you!
 - Jacob Zhu: one sentence about you!
