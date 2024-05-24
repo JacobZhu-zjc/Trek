@@ -32,7 +32,7 @@ Have you ever tried to plan a group trip with your friends, but it never "made i
 - Justin Lieu: I love drinking coffee
 - William Xiao: operating systems nerd
 - Kevin Xu: one sentence about you!
-- Jacob Zhu: one sentence about you!
+- Jacob Zhu: Too sleepy for my own good...
 
 ## Images
 
