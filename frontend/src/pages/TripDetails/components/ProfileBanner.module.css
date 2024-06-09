@@ -1,0 +1,40 @@
+.profileBanner {
+    margin-top: 2em;
+    padding: 1em 3em;
+    width: 100%;
+    border: 1px solid lightgrey;
+    border-radius: 10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    font-size: small;
+}
+
+.profileBanner img {
+    display: inline-block;
+    width: 3.5em;
+    height: 3.5em;
+    margin-right: 1em;
+    border-radius: 3.5em;
+    background-clip: border-box;
+    -webkit-border-radius: 3.5em;
+    -webkit-background-clip: padding-box;
+    -moz-border-radius: 3.5em;
+    -moz-background-clip: padding;
+}
+
+.profileBanner div {
+    margin: 0em 1.5em;
+    text-wrap: wrap;
+}
+
+.funfact {
+    max-width: calc(38%);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: rgb(123, 131, 139);
+}
