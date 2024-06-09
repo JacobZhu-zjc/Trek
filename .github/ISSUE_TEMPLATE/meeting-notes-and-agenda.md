@@ -60,3 +60,7 @@ assignees: ''
 ### By next meeting, we will have...
 - Item One done
 - Item Two done
+
+### By next SPRINT, we will have...
+- Item One done
+- Item Two done
