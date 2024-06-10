@@ -4,11 +4,11 @@ name: CI
 
 # Controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events but only for the "main" branch
+  # Triggers the workflow on push or pull request events
   push:
-    branches: [ "project_2" ] # TODO: this will need to be updated to main
+    branches: [ "main", "project_[0-9]" ]
   pull_request:
-    branches: [ "project_2" ] # TODO: this will need to be updated to main
+    branches: [ "main", "project_[0-9]" ]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
