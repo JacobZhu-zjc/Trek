@@ -2,32 +2,26 @@ import { IconShare3 } from '@tabler/icons-react';
 import { Card, Image, Text, Group, Button, ActionIcon, Avatar } from '@mantine/core';
 import classes from './BadgeCard.module.css';
 import { Link } from 'react-router-dom';
-
-const mockdata = {
-    image:
-        'https://media.tacdn.com/media/attractions-splice-spp-674x446/07/71/39/f1.jpg',
-    title: 'Graduation Trip',
-    description:
-        'Graduation trip to LA and Vegas with friends and colleagues.',
-};
+import {useSelector} from "react-redux";
+import {State} from "../../Interfaces.ts";
 
 function AltTripCard() {
-    const { image, title, description } = mockdata;
+    const trip = useSelector((state: State) => state.trip);
 
     return (
         <Card withBorder radius="md" p="md" className={classes.card}>
             <Card.Section>
-                <Image src={image} alt={title} height={180} />
+                <Image src={trip.tripImageStore[0]} alt={trip.tripName} height={180} />
             </Card.Section>
 
             <Card.Section className={classes.section} mt="md">
                 <Group justify="apart">
                     <Text fz="lg" fw={500}>
-                        {title}
+                        {trip.tripName}
                     </Text>
                 </Group>
                 <Text fz="sm" mt="xs">
-                    {description}
+                    {trip.tripDescription}
                 </Text>
             </Card.Section>
 

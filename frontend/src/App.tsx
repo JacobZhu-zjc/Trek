@@ -6,6 +6,7 @@ import TripTimelineApp from "./pages/TripTimeline/TripTimelineApp";
 import UserProfileApp from "./pages/UserProfile/UserProfileApp";
 import './App.css';
 import '@mantine/core/styles.css';
+import '@mantine/tiptap/styles.css';
 import { createTheme, MantineProvider } from '@mantine/core';
 import { ModalsProvider } from "@mantine/modals";
 import SettingsAppShell from "./components/appshells/SettingsAppShell";
@@ -16,6 +17,7 @@ import TripMapApp from "./pages/TripMap/TripMapApp.tsx";
 import TripOverviewApp from "./pages/TripOverview/TripOverviewApp.tsx";
 import Error404App from "./pages/Error404Page/Error404App.tsx";
 import TripAppShell from "./components/appshells/TripAppShell.tsx";
+import ExperienceSettingsApp from "./pages/ExperienceSettings/ExperienceSettingsApp.tsx";
 
 const theme = createTheme({
 
@@ -43,11 +45,13 @@ function App() {
                 <Route path="map" element={<TripMapApp />} />
                 <Route path="overview" element={<TripOverviewApp />} />
               </Route>
+
             /** Settings */
               <Route path="/settings" element={<SettingsAppShell />}>
                 <Route index element={<ProfileSettingsApp />} />
                 <Route path="profile" element={<ProfileSettingsApp />} />
                 <Route path="account" element={<AccountSettingsApp />} />
+                <Route path="experience" element={<ExperienceSettingsApp />} />
               </Route>
 
               <Route path="*" element={<Error404App />} />

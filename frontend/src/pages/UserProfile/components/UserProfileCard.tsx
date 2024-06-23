@@ -1,8 +1,12 @@
 import { Avatar, Text, Paper, ActionIcon, rem, Group, Chip, Flex } from '@mantine/core';
 import { IconBrandTwitter, IconBrandYoutube, IconBrandInstagram, IconPencil, IconShare3 } from '@tabler/icons-react';
 import { Link } from 'react-router-dom';
+import {useSelector} from "react-redux";
+import {State} from "../../../../Interfaces.ts";
 
 function UserProfileCard() {
+    const profile = useSelector((state: State) => state.profile);
+
     return (
         <Paper radius="md" withBorder p="lg" bg="var(--mantine-color-body)">
             <Flex justify="flex-end" w="100%" gap={2}>
@@ -16,20 +20,20 @@ function UserProfileCard() {
                 </ActionIcon>
             </Flex>
             <Avatar
-                src="https://www.cs.ubc.ca/sites/default/files/styles/profile_page/public/people/gregor-kiczales-2023-profile.jpg?h=8c577723&itok=HQl4iF8Z"
+                src={profile.profilePicture}
                 size={120}
                 radius={120}
                 mx="auto"
             />
             <Text ta="center" fz="lg" fw={500} mt="md">
-                Gregor Kiczales
+                {profile.profileName}
             </Text>
             <Text ta="center" fz="sm">
-                @gregork
+                @{profile.profileUsername}
             </Text>
 
             <Text ta="center" c="dimmed" mt={10} fz="sm">
-                Father of all CS students, king of the natural rcursion, and the master of the AOP.
+                {profile.profileBio}
             </Text>
 
             <Group>
@@ -41,21 +45,7 @@ function UserProfileCard() {
                     direction="row"
                     wrap="wrap"
                     gap='5'>
-                    <Chip checked={false} variant="outline">
-                        Island
-                    </Chip>
-                    <Chip checked={false} variant="outline">
-                        Ocean
-                    </Chip>
-                    <Chip checked={false} variant="outline">
-                        Hiking
-                    </Chip>
-                    <Chip checked={false} variant="outline">
-                        Nature
-                    </Chip>
-                    <Chip checked={false} variant="outline">
-                        Recursion
-                    </Chip>
+                    {profile.profileInterests.map((interest) => <Chip checked={false} variant="outline">{interest}</Chip>)}
                 </Flex>
             </Group>
 

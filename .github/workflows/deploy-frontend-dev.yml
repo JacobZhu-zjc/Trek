@@ -1,0 +1,21 @@
+name: Deploy Frontend Dev
+on:
+  push:
+    branches:
+      - "project_[0-9]_dev"
+jobs:
+  deploy:
+    name: Deploy FE Dev
+    runs-on: ubuntu-latest
+    concurrency: deploy-group    # optional: ensure only one action runs at a time
+    steps:
+      - uses: actions/checkout@v4
+      - uses: superfly/flyctl-actions/setup-flyctl@master
+      - run: |
+          cd frontend
+          echo "VITE_DEPLOY_TIME=$(date -u)" >> .env
+          echo "VITE_APP_ENV=development" >> .env
+          cat .env
+          flyctl deploy --config ./fly-dev.toml --remote-only
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN_FE_DEV }}

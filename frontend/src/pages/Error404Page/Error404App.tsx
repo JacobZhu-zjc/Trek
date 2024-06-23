@@ -1,5 +1,11 @@
+import { useEffect } from "react";
 
 const Error404App = () => {
+    /** Set Page Title To "404 Not Found" */
+    useEffect(() => {
+        document.title = "404 Not Found";
+    }, []);
+
     return (
         <div className="relative h-screen w-screen">
             <img className="absolute inset-0 w-screen h-screen object-top opacity-10"

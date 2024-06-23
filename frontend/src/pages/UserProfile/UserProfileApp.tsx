@@ -1,4 +1,5 @@
 
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import TripCard from "../../components/TripCard";
 import UserProfileCard from "./components/UserProfileCard";
@@ -9,6 +10,11 @@ import PaginatedTrips from "./components/PaginatedTrips";
 
 const UserProfileApp = () => {
   // const windowSize = useSize();
+
+  /** Set Page Title To "User Profile" */
+  useEffect(() => {
+    document.title = "User Profile";
+  }, []);
 
   return (
     <>

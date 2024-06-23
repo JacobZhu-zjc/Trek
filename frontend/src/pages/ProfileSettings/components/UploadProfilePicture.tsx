@@ -1,6 +1,10 @@
 import { Paper, Avatar, Button, Title, Stack } from '@mantine/core';
+import {useSelector} from "react-redux";
+import {State} from "../../../../Interfaces.ts";
 
 function UploadProfilePicture() {
+    const profile = useSelector((state: State) => state.profile);
+
     return (
         <>
             <Stack>
@@ -9,7 +13,7 @@ function UploadProfilePicture() {
                 <Paper radius="md" withBorder p="lg" bg="var(--mantine-color-body)">
 
                     <Avatar
-                        src="https://www.cs.ubc.ca/sites/default/files/styles/profile_page/public/people/gregor-kiczales-2023-profile.jpg?h=8c577723&itok=HQl4iF8Z"
+                        src={profile.profilePicture}
                         size={120}
                         radius={120}
                         mx="auto"

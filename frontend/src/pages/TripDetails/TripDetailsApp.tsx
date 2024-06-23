@@ -12,7 +12,7 @@ interface contextProps {
 
 // React component for Trip Details page
 const TripDetailsApp = (props: contextProps): JSX.Element => {
-  // Setting the title of the page
+  /** Set Page Title To "Trip Details" */
   useEffect(() => {
     document.title = "Trip Details";
   }, []);
@@ -22,7 +22,7 @@ const TripDetailsApp = (props: contextProps): JSX.Element => {
       <PageHero>
         Trip Details
       </PageHero>
-      <GeneralForm isNewtrip={props.isNewtrip} />
+      <GeneralForm isNewTrip={props.isNewtrip} />
       <PeopleForm />
       <TodoForm />
     </>

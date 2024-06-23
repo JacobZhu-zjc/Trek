@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { Flex, Stack, Title } from '@mantine/core';
 import ProfileCompletionCard from './components/ProfileCompletionCard';
 import ProfileSettingsForm from './components/ProfileSettingsForm';
@@ -5,7 +6,10 @@ import UploadProfilePicture from './components/UploadProfilePicture';
 
 
 const ProfileSettingsApp = () => {
-
+    /** Set Page Title To "Profile Settings" */
+    useEffect(() => {
+        document.title = "Profile Settings";
+      }, []);
 
     return (
         <>

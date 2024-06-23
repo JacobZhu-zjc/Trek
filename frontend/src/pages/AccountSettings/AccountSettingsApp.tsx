@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { Text, Divider, Flex, Stack, Title } from '@mantine/core';
 import EmailNotificationToggles from './components/EmailNotificationToggles';
 import { AccountProfileCard } from './components/AccountProfileCard';
@@ -5,7 +6,10 @@ import DeleteAccountCard from './components/DeleteAccountCard';
 
 
 const AccountSettings = () => {
-
+  /** Set Page Title To "Account Settings" */
+  useEffect(() => {
+    document.title = "Account Settings";
+  }, []);
 
   return (
     <>

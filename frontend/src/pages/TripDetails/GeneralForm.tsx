@@ -6,24 +6,36 @@ import { IconCurrencyDollar, IconUpload, IconPhoto, IconX } from '@tabler/icons-
 import classes from "./Forms.module.css";
 import '@mantine/dates/styles.css';
 import '@mantine/dropzone/styles.css';
+import {useSelector} from "react-redux";
 
 // Props for the GeneralForm component
 interface contextProps {
-    isNewtrip?: boolean,
+    isNewTrip?: boolean,
+}
+
+interface trip {
+    tripName: string,
+    tripDestination: string
 }
 
 // React component for the form accepting general information about a trip
 const GeneralForm = (props: contextProps): JSX.Element => {
+    const trip = useSelector((state: {trip: trip}) => state.trip);
+
     return (
         <Box className={classes.spacer}>
-            <h2 className={classes.title}>General</h2>
-            <Button variant="outline" color="teal" size="lg" className={classes.submitButton}>
-                {props.isNewtrip ? <>Create Trip</> : <>Update Info</>}
-            </Button><br />
+            <Box className={classes.leftBox}>
+                <h2 className={classes.title}>General</h2>
+            </Box>
+            <Box className={classes.rightBox}>
+                <Button variant="outline" color="teal" size="lg" className={classes.submitButton}>
+                    {props.isNewTrip ? <>Create Trip</> : <>Update Info</>}
+                </Button><br/>
+            </Box>
 
             <Box className={classes.leftBox}>
-                <TextInput label="Trip Name" placeholder="Our Awesome Trip!" className={classes.input} />
-                <TextInput label="Destination" placeholder="Where to?" className={classes.input} />
+                <TextInput label="Trip Name" placeholder={trip.tripName === "" ? "Our awesome trip!" : trip.tripName} className={classes.input} />
+                <TextInput label="Destination" placeholder={trip.tripDestination === "" ? "Where to?" : trip.tripDestination} className={classes.input} />
                 <DateRangePicker />
                 <BudgetPicker />
             </Box>
@@ -45,14 +57,14 @@ const DateRangePicker = (): JSX.Element => {
 const BudgetPicker = (): JSX.Element => {
     const dollarIcon = <IconCurrencyDollar className={classes.dollarSignIcon} />;
     return (
-        <>
+        <Box className={classes.imageSubmissionSpacer}>
+            Total Budget <br/>
             <NumberInput
                 leftSectionPointerEvents="none"
                 leftSection={dollarIcon}
-                label="Total Budget"
                 placeholder="Low estimate"
                 className={classes.input}
-                style={{ display: "inline-block", width: "49%" }}
+                style={{ display: "inline-block", width: "calc(50% - 5px)", padding: "0em 1em 1em 0em" }}
                 hideControls
             />
             -
@@ -61,10 +73,10 @@ const BudgetPicker = (): JSX.Element => {
                 leftSection={dollarIcon}
                 placeholder="High estimate"
                 className={classes.input}
-                style={{ display: "inline-block", width: "49%" }}
+                style={{ display: "inline-block", width: "calc(50% - 5px)", padding: "0em 0em 1em 1em" }}
                 hideControls
             />
-        </>
+        </Box>
     );
 }
 

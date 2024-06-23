@@ -1,0 +1,118 @@
+/* Formatting for the scrollarea */
+.scrollarea {
+    height: 84vh;
+    overflow: hidden;
+}
+
+/* Spacer around entire information section to center content */
+.spacer {
+    padding: 3em 7em;
+    display: inline-flex;
+    flex-wrap: wrap;
+}
+
+/* Classes used to divide the information section into two columns */
+.leftBox {
+    display: inline-flex;
+    flex-direction: column;
+    float: left;
+    width: 70%;
+    min-width: 300px;
+    padding-right: 3%;
+    text-align: justify;
+}
+
+.rightBox {
+    display: inline-flex;
+    flex-direction: column;
+    float: right;
+    width: 30%;
+    min-width: 200px;
+    padding-left: 3%;
+}
+
+/* Image bar at the bottom of the screen */
+.imageBarBackground {
+    position: fixed;
+    bottom: 0;
+    width: calc(100%);
+    height: calc(10%);
+    z-index: 10;
+    background-color: white;
+}
+
+.imageBar {
+    position: fixed;
+    bottom: 0;
+    opacity: 0.5;
+    width: calc(100%);
+    height: calc(10%);
+    object-fit: cover;
+    overflow: hidden;
+    z-index: 20;
+}
+
+/* Text formatting */
+.title {
+    display: inline-block;
+    align-self: flex-start;
+    padding: 1em 0.5em 0.1em 0.5em;
+    border-bottom: 2px solid black;
+    font-size: 32px;
+}
+
+.subtitle {
+    display: inline-block;
+    align-self: flex-end;
+    padding: 0.3em 0.5em;
+    color: lightslategray;
+    font-size: 16px;
+}
+
+/* Spacers for certain sections in the InformationPanel */
+.timeline {
+    padding-top: 2em;
+    padding-left: 2em;
+}
+
+.profileContainer {
+    padding: 0.5em 0em 2em 1em;
+}
+
+.profileBanner {
+    height: 10%;
+    width: 100%;
+    padding-top: 1.5em;
+    margin-top: auto;
+    display: inline-flex;
+    align-items: center;
+    flex-wrap: wrap;
+    font-size: small;
+}
+
+.profileBanner img {
+    display: inline-block;
+    width: 2.5em;
+    height: 2.5em;
+    margin-right: 1em;
+    border-radius: 2.5em;
+    background-clip: border-box;
+    -webkit-border-radius: 2.5em;
+    -webkit-background-clip: padding-box;
+    -moz-border-radius: 2.5em;
+    -moz-background-clip: padding;
+    background-size: cover;
+    background-position: center center;
+    align-self: flex-start;
+}
+
+.budgetAligner {
+    display: inline-block;
+    margin-right: 5%;
+}
+
+.budget {
+    display: inline-block;
+    padding-left: 1em;
+    padding-top: 1em;
+}
