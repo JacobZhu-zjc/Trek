@@ -2,26 +2,34 @@ import { IconShare3 } from '@tabler/icons-react';
 import { Card, Image, Text, Group, Button, ActionIcon, Avatar } from '@mantine/core';
 import classes from './BadgeCard.module.css';
 import { Link } from 'react-router-dom';
-import {useSelector} from "react-redux";
-import {State} from "../../Interfaces.ts";
+import {useDispatch, useSelector} from "react-redux";
+import {useEffect} from "react";
+import {getTripAsync} from "../redux/trips/thunks.ts";
+import {Trip} from "../interfaces.ts";
+import {AppDispatch} from '../redux/store.ts';
 
 function AltTripCard() {
-    const trip = useSelector((state: State) => state.trip);
+    const dispatch = useDispatch<AppDispatch>();
 
+    useEffect(() => {
+        dispatch(getTripAsync("960e5cd5-c783-4c02-a4b4-3579a674a2d0"));
+    }, []);
+
+    const trip = useSelector((state: {trip: {current: Trip}}) => state.trip.current);
     return (
         <Card withBorder radius="md" p="md" className={classes.card}>
             <Card.Section>
-                <Image src={trip.tripImageStore[0]} alt={trip.tripName} height={180} />
+                <Image src={trip.image} alt={trip.name} height={180} />
             </Card.Section>
 
             <Card.Section className={classes.section} mt="md">
                 <Group justify="apart">
                     <Text fz="lg" fw={500}>
-                        {trip.tripName}
+                        {trip.name}
                     </Text>
                 </Group>
                 <Text fz="sm" mt="xs">
-                    {trip.tripDescription}
+                    {trip.desc}
                 </Text>
             </Card.Section>
 

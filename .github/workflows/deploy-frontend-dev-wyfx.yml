@@ -1,0 +1,33 @@
+name: Deploy Frontend Dev
+on:
+  push:
+    branches:
+      - "project_[0-9]-dev"
+jobs:
+  deploy:
+    name: Deploy FE Dev
+    runs-on: ubuntu-latest
+    concurrency: deploy-group    # optional: ensure only one action runs at a time
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build FE
+        run: |
+         cd frontend
+         echo "VITE_GOOGLE_MAPS_API_KEY=${{ secrets.GOOGLE_MAPS_API_KEY }}" >> .env
+         npm install
+         npm run build
+  
+      - name: Upload to server
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.WYFX_HOST }}
+          username: ${{ secrets.WYFX_USERNAME }}
+          password: ${{ secrets.WYFX_PASSWORD }}
+          port: ${{ secrets.WYFX_PORT }}
+          source: "frontend/dist/*"
+          target: "app"
+          overwrite: true
+          strip_components: 2

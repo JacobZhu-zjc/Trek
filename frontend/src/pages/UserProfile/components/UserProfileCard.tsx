@@ -1,11 +1,19 @@
 import { Avatar, Text, Paper, ActionIcon, rem, Group, Chip, Flex } from '@mantine/core';
 import { IconBrandTwitter, IconBrandYoutube, IconBrandInstagram, IconPencil, IconShare3 } from '@tabler/icons-react';
 import { Link } from 'react-router-dom';
-import {useSelector} from "react-redux";
-import {State} from "../../../../Interfaces.ts";
+import {useDispatch, useSelector} from "react-redux";
+import {useEffect} from "react";
+import {getAuthdUserAsync} from "../../../redux/users/thunks.ts";
+import {User} from "../../../interfaces.ts";
+import {AppDispatch} from '../../../redux/store.ts';
 
 function UserProfileCard() {
-    const profile = useSelector((state: State) => state.profile);
+    const dispatch = useDispatch<AppDispatch>();
+    useEffect(() => {
+        dispatch(getAuthdUserAsync());
+    }, []);
+
+    const profile = useSelector((state: {user: {self: User}}) => state.user.self);
 
     return (
         <Paper radius="md" withBorder p="lg" bg="var(--mantine-color-body)">
@@ -20,20 +28,20 @@ function UserProfileCard() {
                 </ActionIcon>
             </Flex>
             <Avatar
-                src={profile.profilePicture}
+                src={profile.image && profile.image.source}
                 size={120}
                 radius={120}
                 mx="auto"
             />
             <Text ta="center" fz="lg" fw={500} mt="md">
-                {profile.profileName}
+                {profile.name}
             </Text>
             <Text ta="center" fz="sm">
-                @{profile.profileUsername}
+                @{profile.username}
             </Text>
 
             <Text ta="center" c="dimmed" mt={10} fz="sm">
-                {profile.profileBio}
+                {profile.description}
             </Text>
 
             <Group>
@@ -45,7 +53,7 @@ function UserProfileCard() {
                     direction="row"
                     wrap="wrap"
                     gap='5'>
-                    {profile.profileInterests.map((interest) => <Chip checked={false} variant="outline">{interest}</Chip>)}
+                    {profile.interests && profile.interests.map((interest) => <Chip checked={false} variant="outline">{interest}</Chip>)}
                 </Flex>
             </Group>
 

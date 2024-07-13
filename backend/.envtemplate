@@ -1,0 +1,1 @@
+ATLAS_URI="mongodb+srv://<DATABASE_USER_USERNAME>:<DATABASE_USER_PASSWORD>@sandbox.epbfbyc.mongodb.net/?retryWrites=true&w=majority&appName=<CLUSTER_NAME>"

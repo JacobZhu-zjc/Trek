@@ -1,48 +1,65 @@
 import {Button, Container, Group, TagsInput, Textarea, TextInput, Title} from '@mantine/core';
 import {useForm} from '@mantine/form';
 import {useDispatch, useSelector} from "react-redux";
-import {State} from "../../../../Interfaces.ts";
-import {
-    addProfileBio,
-    addProfileCurrentLocation,
-    addProfileHome, addProfileInterest,
-    addProfileName,
-    addProfileSocialAccount,
-    SocialMediaAccounts
-} from "../../../redux/actions/actions.ts";
-import {useState} from "react";
-
+import {useEffect, useState} from "react";
+import {getAuthdUserAsync, putUserAsync} from "../../../redux/users/thunks.ts";
+import {User} from "../../../interfaces.ts";
+import {AppDispatch} from '../../../redux/store.ts';
 
 const ProfileSettingsForm = () => {
-    const profile = useSelector((state: State) => state.profile);
-    const [interests, setInterests] = useState(profile.profileInterests);
+    const dispatch = useDispatch<AppDispatch>();
+
+    useEffect(() => {
+        dispatch(getAuthdUserAsync());
+    }, []);
+
+    const profile = useSelector((state: {user: {self: User}}) => state.user.self);
+    const [interests, setInterests] = useState(profile.interests);
 
     const form = useForm({
         mode: 'uncontrolled',
         initialValues: {
-            name: profile.profileName,
-            bio: profile.profileBio,
-            home: profile.profileHome,
-            currentlyAt: profile.profileCurrentLocation,
-            facebook: profile.socialAccounts.Facebook,
-            instagram: profile.socialAccounts.Instagram,
-            twitter: profile.socialAccounts.Twitter,
-            youtube: profile.socialAccounts.Youtube,
+            name: profile.name,
+            bio: profile.description,
+            home: profile.home,
+            currentlyAt: profile.currentlyAt,
+            facebook: "",
+            instagram: "",
+            twitter: "",
+            youtube: "",
         },
     });
 
-    const dispatch = useDispatch();
+    useEffect(() => {
+        if (profile) {
+            form.setValues({
+                name: profile.name || '',
+                bio: profile.description || '',
+                home: profile.home || '',
+                currentlyAt: profile.currentlyAt || '',
+                facebook: getSocialLink(profile, 'facebewk') || '',
+                instagram: getSocialLink(profile, 'insta') || '',
+                twitter: getSocialLink(profile, 'twitter') || '',
+                youtube: getSocialLink(profile, 'youtube') || '',
+            });
+            setInterests(profile.interests || []);
+        }
+    }, [profile]); // Run this effect whenever profile changes
+
+    function getSocialLink(profile: User | undefined, type: string): string | undefined {
+        if (!profile) return undefined;
+        if (!profile.links) return undefined;
+        const link = profile.links.find(link => link.type === type);
+        return link ? link.url : undefined;
+    }
 
     function handleSubmit(values: {name: string, home: string, currentlyAt: string, bio: string, facebook: string, twitter: string, youtube: string, instagram: string}) {
-        dispatch(addProfileName(values.name));
-        dispatch(addProfileHome(values.home));
-        dispatch(addProfileCurrentLocation(values.currentlyAt));
-        dispatch(addProfileBio(values.bio));
-        dispatch(addProfileSocialAccount(SocialMediaAccounts.Facebook, values.facebook));
-        dispatch(addProfileSocialAccount(SocialMediaAccounts.Twitter, values.twitter));
-        dispatch(addProfileSocialAccount(SocialMediaAccounts.Youtube, values.youtube));
-        dispatch(addProfileSocialAccount(SocialMediaAccounts.Instagram, values.instagram));
-        dispatch(addProfileInterest(interests));
+        const links = [];
+        if (values.facebook.trim() !== '') links.push({ type: 'facebewk', url: values.facebook});
+        if (values.instagram.trim() !== '') links.push({ type: 'insta', url: values.instagram});
+        if (values.twitter.trim() !== '') links.push({ type: 'twitter', url: values.twitter});
+        if (values.youtube.trim() !== '') links.push({ type: 'youtube', url: values.youtube});
+        dispatch(putUserAsync({...profile, name:values.name, home:values.home, currentlyAt:values.currentlyAt, description:values.bio, links:links, interests:interests}));
     }
 
     return (

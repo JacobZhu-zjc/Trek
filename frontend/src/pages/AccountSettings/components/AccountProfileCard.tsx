@@ -1,18 +1,27 @@
 import { Avatar, Text, Group, Card } from '@mantine/core';
 import { IconAt, IconUser } from '@tabler/icons-react';
 import classes from './UserInfoIcons.module.css';
-import {useSelector} from "react-redux";
-import {State} from "../../../../Interfaces.ts";
+import {useDispatch, useSelector} from "react-redux";
+import {useEffect} from "react";
+import {getAuthdUserAsync} from "../../../redux/users/thunks.ts";
+import {User} from "../../../interfaces.ts";
+import {AppDispatch} from '../../../redux/store.ts';
 
 export function AccountProfileCard() {
-    const profile = useSelector((state: State) => state.profile);
+    const dispatch = useDispatch<AppDispatch>();
 
+    useEffect(() => {
+        dispatch(getAuthdUserAsync());
+    }, []);
+
+    const profile = useSelector((state: {user: {self: User}}) => state.user.self);
+    // console.log(profile);
     return (
         <div>
             <Card withBorder radius="md" p="xl" className={classes.card}>
                 <Group wrap="nowrap">
                     <Avatar
-                        src={profile.profilePicture}
+                        src={profile.image && profile.image.source}
                         size={120}
                         radius={120}
                         mx="auto"
@@ -23,20 +32,20 @@ export function AccountProfileCard() {
                         </Text>
 
                         <Text fz="lg" fw={500} className={classes.name}>
-                            {profile.profileName}
+                            {profile.name}
                         </Text>
 
                         <Group wrap="nowrap" gap={10} mt={5}>
                             <IconUser stroke={1.5} size="1rem" className={classes.icon} />
                             <Text fz="xs" c="dimmed">
-                                {profile.profileUsername}
+                                {profile.username}
                             </Text>
                         </Group>
 
                         <Group wrap="nowrap" gap={10} mt={3}>
                             <IconAt stroke={1.5} size="1rem" className={classes.icon} />
                             <Text fz="xs" c="dimmed">
-                                {profile.profileEmail}
+                                {profile.email}
                             </Text>
                         </Group>
 

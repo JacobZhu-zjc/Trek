@@ -1,38 +1,48 @@
-import { Box, Button, Grid } from "@mantine/core";
-import { IconPlus } from '@tabler/icons-react';
+import {Box, Button, Grid, Popover, TagsInput} from "@mantine/core";
 import classes from "./Forms.module.css";
 import ProfileBanner from "./components/ProfileBanner";
+import {useDispatch, useSelector} from "react-redux";
+import {Trip,User} from "../../interfaces.ts";
+import {useEffect, useState} from "react";
+import {getUserByUsernameAsync} from "../../redux/users/thunks.ts";
+import {AppDispatch} from "../../redux/store.ts";
+import {putTripAsync} from "../../redux/trips/thunks.ts";
+import {clearRequested} from "../../redux/users/reducers.ts";
 
 // React component for listing all the people already in the trip, and for adding more if necessary
 const PeopleForm = (): JSX.Element => {
+    const dispatch = useDispatch<AppDispatch>();
+    // trip should already be GET'ed through the general form
+    const trip = useSelector((state: {trip: {current: Trip}}) => state.trip.current);
+    useEffect(() => {
+        dispatch(clearRequested());
+        if (trip.members === undefined) return;
+        for (const member of trip.members) {
+            if (member === 'hello') continue; // skip "authenticated" user
+            dispatch(getUserByUsernameAsync(member));
+        }
+    }, [trip.members]);
+    const companions = useSelector((state: {user: {requestedUsers: User[]}}) => state.user.requestedUsers);
+    const [cards, setCards] = useState(new Array<JSX.Element>());
+    useEffect(() => {
+        setCards(
+            companions && companions.map((user, index) => (
+                <Grid.Col span={4} key={index}>
+                    <ProfileBanner
+                        imgSrc={user.image.source}
+                        username={user.username}
+                        contact={user.email}
+                        funfact={user.description}
+                    />
+                </Grid.Col>
+            ))
+        )
+    }, [companions]);
     return (
         <Box className={classes.spacer}>
             <h2 className={classes.title}>People</h2>
             <Grid>
-                <Grid.Col span={4}>
-                    <ProfileBanner
-                        imgSrc="https://www.cs.ubc.ca/sites/default/files/styles/profile_page/public/people/gregor-kiczales-2023-profile.jpg?h=8c577723&itok=HQl4iF8Z"
-                        username="Gregor Kiczales"
-                        contact="gregor@cs.ubc.ca"
-                        funfact="I enjoy teaching CPSC 110!"
-                    />
-                </Grid.Col>
-                <Grid.Col span={4}>
-                    <ProfileBanner
-                        imgSrc="https://images.unsplash.com/photo-1608848461950-0fe51dfc41cb?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxleHBsb3JlLWZlZWR8MXx8fGVufDB8fHx8fA%3D%3D"
-                        username="Cat 1"
-                        contact="cat@cs.ubc.ca"
-                        funfact="I enjoy TAing CPSC 110!"
-                    />
-                </Grid.Col>
-                <Grid.Col span={4}>
-                    <ProfileBanner
-                        imgSrc="https://media.wired.com/photos/593230eaa312645844993603/master/w_1920,c_limit/Wombat_1.jpg"
-                        username="Wombat 2"
-                        contact="wombat@cs.ubc.ca"
-                        funfact="I ran out of ideas... Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-                    />
-                </Grid.Col>
+                {cards}
                 <Grid.Col span={4}>
                     <AddIcon />
                 </Grid.Col>
@@ -43,10 +53,30 @@ const PeopleForm = (): JSX.Element => {
 
 // React component for a button with an "add" symbol
 const AddIcon = (): JSX.Element => {
+    const dispatch = useDispatch<AppDispatch>();
+
+    const trip = useSelector((state: {trip: {current: Trip}}) => state.trip.current);
+    const [members, setMembers] = useState(trip.members);
+
+    // useEffect(() => {
+    //    dispatch(putTripAsync({uuid: trip._id, trip: {...trip, members:members}}))
+    // }, [members]);
+    useEffect(() => {
+        setMembers(trip.members);
+    }, [trip.members]);
+
     return (
-        <Button variant="light" color="lime" fullWidth>
-            <IconPlus />
-        </Button>
+            <Popover>
+                <Popover.Target>
+                    <Button variant="light" color="lime" fullWidth>Edit</Button>
+                </Popover.Target>
+                <Popover.Dropdown>
+                    <TagsInput
+                        value={members && members.filter((member) => member !== 'hello')}
+                        onChange={(newMembers) => {dispatch(putTripAsync({uuid: trip._id, trip: {...trip, members:newMembers}}))}}
+                    />
+                </Popover.Dropdown>
+            </Popover>
     );
 }
 

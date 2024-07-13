@@ -58,27 +58,53 @@ Refer to the ***Trek Installation and Deployment Guide*** (to be written) on the
 `tests/` is where the tests for back-end are in.
 
 ## Task Requirements
+Last Updated July 7, 2024
+
 ### Minimal
-- [ ] User account creation
-  - Create user page
-  - Hook it up to MongoDB
-  - User prompt to create an account when trying to save a trip for the first time
-- [ ] User profile information (CRUD operations?)
-- [ ] List of trips associated with user (shared, created by me)
-- [ ] Save/Load/Edit trip data
-  - Have a storage solution for user trips (Mongo)
-  - Page to view all the trips for a user
-  - Interactive create-a-trip page (does not require login until the user wants to save)
+- User profiles & accounts
+  - [X] Users can create, view, edit, and delete profiles
+    - User profile pages
+    - Authentication page (and/or other third-party integrations)
+    - User settings page
+    - Persistent user data storage in MongoDB
+- Trips
+  - [X] Users can create, manage, and modify trips
+    - Trip creation / editing page
+    - Page to view all the trips for a user
+    - Store user trip information in Mongo when done
+  - [ ] Users can delete trips
+  - [ ] Users can share trip iternaries with others, with different access levels
+  - [ ] Users can use APIs to fetch destination information
+  - [X] Users can display trip details and routes on a map
+ 
 ### Standard
-- [ ] Collaboration (link sharing, invite codes)
-- [ ] Aggregating Trip information with APIs
-- [ ] Search for locations within cities, add location pins on map? (https://developers.google.com/maps/documentation/places/web-service/search)
-- [ ] Map (Google maps API?) 
+- Users
+  - [ ] Users can set and update travel preferences in their profiles
+  - [ ] Users can set and update privacy settings
+- Trips
+  - [ ] Users can interact with a map to modify trip routes and details
+  - [ ] Users can view the start and end date of a trip based on the start and finish time of an iternary
+- Trip Budgets
+  - [ ] Users can manage trip budgets (e.g. transportation, housing. etc.) 
+- Trip Recommendations
+  - [X] Collects and stores user data for personalized trip recommendations
+  - [ ] Analyzes user data using AI to identify patterns and preferences
+  - [ ] Generates personalized trip recommendations based on analyzed user data
 ### Stretch
-- [ ] AI/ML recommendations? (could also do pre-stored entries)
-- [ ] Show city/town specific transportation options/cost
-- [ ] Weather information
-- [ ] Generate itinerary for trips using LLM wrapper
+- Trips
+  - [ ] Users can duplicate existing trip iternaries for new trips
+  - [ ] Users can set transportation of getting to an item of an itinerary
+  - [ ] Users can see weather information of a destination
+- Trip Budgets
+  - [ ] Users get personalized budget alerts and recommendations to stay within a budget
+- Trip Recommendations
+  - [ ] Users can give feedback on generated recommendations
+  - [ ] User feedback can affect future recommendations
+  - [ ] Comprehensive documentation is provided to the users about how trip recommendations work
+- Chatbot
+  - [ ] Integrated chatbot gives users help with trip planning tasks and gives suggestions based on user input
+  - [ ] Chatbot can adapt to user preferences and give personalized responses
+  - [ ] Chatbot collects user feedback for continuous improvement
 
 ## Images
 

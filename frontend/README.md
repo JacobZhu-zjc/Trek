@@ -1,11 +1,5 @@
 # Setup Steps:
-First, get a Google Maps API key (ask William or create your own free one at
-https://developers.google.com/maps/documentation/embed/get-api-key?hl=en).
-Then, create a `.env` file and add the following:
-
-```
-VITE_GOOGLE_MAPS_API_KEY = your_api_key
-```
+Copy the .envtemplate and fill in with the credentials (see the Keepass)
 
 ```zsh
 nvm use stable

@@ -18,6 +18,7 @@ import TripOverviewApp from "./pages/TripOverview/TripOverviewApp.tsx";
 import Error404App from "./pages/Error404Page/Error404App.tsx";
 import TripAppShell from "./components/appshells/TripAppShell.tsx";
 import ExperienceSettingsApp from "./pages/ExperienceSettings/ExperienceSettingsApp.tsx";
+import TempPageApp from "./pages/TempPage/TempPageApp.tsx";
 
 const theme = createTheme({
 
@@ -53,7 +54,8 @@ function App() {
                 <Route path="account" element={<AccountSettingsApp />} />
                 <Route path="experience" element={<ExperienceSettingsApp />} />
               </Route>
-
+            /** Experimental */
+              <Route path="developmental" element={<TempPageApp />} />
               <Route path="*" element={<Error404App />} />
             </Routes>
           </BrowserRouter>

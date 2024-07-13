@@ -1,7 +1,7 @@
 
 import { useEffect } from "react";
-import { Link } from "react-router-dom";
-import TripCard from "../../components/TripCard";
+// import { Link } from "react-router-dom";
+// import TripCard from "../../components/TripCard";
 import UserProfileCard from "./components/UserProfileCard";
 // import {ScrollArea} from "@mantine/core";
 // import useSize from "./Helpers/UseSize.tsx";
@@ -38,39 +38,39 @@ const UserProfileApp = () => {
 
 
 
-      <div className="h-screen max-h-screen font-mono px-16 overflow-auto">
-        <div className="flex flex-col">
-          <div className="flex flex-col my-4 gap-2 max-h-[540px] overflow-scroll">
-            <Link to="/trip/UUID/overview">
-              <TripCard />
-            </Link>
-            <Link to="/trip/UUID/overview">
-              <TripCard />
-            </Link>
-            <Link to="/trip/UUID/overview">
-              <TripCard />
-            </Link>
-            <Link to="/trip/UUID/overview">
-              <TripCard />
-            </Link>
-            <Link to="/trip/UUID/overview">
-              <TripCard />
-            </Link>
-            <Link to="/trip/UUID/overview">
-              <TripCard />
-            </Link>
-            <Link to="/trip/UUID/overview">
-              <TripCard />
-            </Link>
-            <Link to="/trip/UUID/overview">
-              <TripCard />
-            </Link>
-          </div>
-          <button className="flex justify-center rounded-full bg-trek-green-light text-trek-green-dark text-4xl">
-            +
-          </button>
-        </div>
-      </div>
+      {/*<div className="h-screen max-h-screen font-mono px-16 overflow-auto">*/}
+      {/*  <div className="flex flex-col">*/}
+      {/*    <div className="flex flex-col my-4 gap-2 max-h-[540px] overflow-scroll">*/}
+      {/*      <Link to="/trip/UUID/overview">*/}
+      {/*        <TripCard />*/}
+      {/*      </Link>*/}
+      {/*      <Link to="/trip/UUID/overview">*/}
+      {/*        <TripCard />*/}
+      {/*      </Link>*/}
+      {/*      <Link to="/trip/UUID/overview">*/}
+      {/*        <TripCard />*/}
+      {/*      </Link>*/}
+      {/*      <Link to="/trip/UUID/overview">*/}
+      {/*        <TripCard />*/}
+      {/*      </Link>*/}
+      {/*      <Link to="/trip/UUID/overview">*/}
+      {/*        <TripCard />*/}
+      {/*      </Link>*/}
+      {/*      <Link to="/trip/UUID/overview">*/}
+      {/*        <TripCard />*/}
+      {/*      </Link>*/}
+      {/*      <Link to="/trip/UUID/overview">*/}
+      {/*        <TripCard />*/}
+      {/*      </Link>*/}
+      {/*      <Link to="/trip/UUID/overview">*/}
+      {/*        <TripCard />*/}
+      {/*      </Link>*/}
+      {/*    </div>*/}
+      {/*    <button className="flex justify-center rounded-full bg-trek-green-light text-trek-green-dark text-4xl">*/}
+      {/*      +*/}
+      {/*    </button>*/}
+      {/*  </div>*/}
+      {/*</div>*/}
     </>
 
 

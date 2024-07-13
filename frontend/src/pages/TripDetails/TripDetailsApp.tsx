@@ -4,25 +4,50 @@ import PeopleForm from "./PeopleForm";
 import TodoForm from "./TodoForm";
 import PageHero from "../../components/PageHero";
 
-// Props for the TripDetailsApp component
-interface contextProps {
-  // True if the user is creating an entirely new trip, instead of updating a pre-existing one
-  isNewtrip?: boolean,
-}
-
 // React component for Trip Details page
-const TripDetailsApp = (props: contextProps): JSX.Element => {
+const TripDetailsApp = (): JSX.Element => {
+
+
   /** Set Page Title To "Trip Details" */
   useEffect(() => {
     document.title = "Trip Details";
   }, []);
+
+  // useEffect(() => {
+  //   function onConnect() {
+  //     setIsConnected(true);
+  //     socket.emit("nameConnect", testName);
+  //   }
+
+  //   function onDisconnect() {
+  //     setIsConnected(false);
+  //   }
+
+  //   function onNumUsersUpdate(numUsers: number) {
+  //     setNumUsers(numUsers);
+  //   }
+
+  //   socket.on('connect', onConnect);
+  //   socket.on('disconnect', onDisconnect);
+
+  //   socket.on('numUsersUpdate', onNumUsersUpdate);
+
+  //   socket.connect();
+
+  //   return () => {
+  //     socket.off('connect', onConnect);
+  //     socket.off('disconnect', onDisconnect);
+  //     socket.off("numUsersUpdate", onNumUsersUpdate);
+  //     socket.disconnect();
+  //   }
+  // }, []);
 
   return (
     <>
       <PageHero>
         Trip Details
       </PageHero>
-      <GeneralForm isNewTrip={props.isNewtrip} />
+      <GeneralForm />
       <PeopleForm />
       <TodoForm />
     </>

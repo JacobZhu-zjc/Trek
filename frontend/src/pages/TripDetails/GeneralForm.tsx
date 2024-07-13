@@ -1,26 +1,32 @@
-import { useState } from 'react';
-import { Box, Button, Group, NumberInput, Text, TextInput } from "@mantine/core";
+import {useEffect, useState} from 'react';
+import {Box, Button, Group, NumberInput, TagsInput, Text, TextInput} from "@mantine/core";
 import { DatePickerInput } from '@mantine/dates';
 import { Dropzone } from '@mantine/dropzone';
 import { IconCurrencyDollar, IconUpload, IconPhoto, IconX } from '@tabler/icons-react';
 import classes from "./Forms.module.css";
 import '@mantine/dates/styles.css';
 import '@mantine/dropzone/styles.css';
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import {getTripAsync} from "../../redux/trips/thunks.ts";
+import {Trip} from "../../interfaces.ts";
+import {AppDispatch} from '../../redux/store.ts';
 
-// Props for the GeneralForm component
-interface contextProps {
-    isNewTrip?: boolean,
-}
-
-interface trip {
-    tripName: string,
-    tripDestination: string
-}
+const megaList = ["Vancouver, BC", "Toronto, ON", "Shanghai, China", "São Pãulo, Brazil", "Seoul, South Korean", "Paris, France", "Barcelona, Spain", "Milan, Italy", "Luxembourg"];
 
 // React component for the form accepting general information about a trip
-const GeneralForm = (props: contextProps): JSX.Element => {
-    const trip = useSelector((state: {trip: trip}) => state.trip);
+const GeneralForm = (): JSX.Element => {
+    const dispatch = useDispatch<AppDispatch>();
+
+    useEffect(() => {
+        dispatch(getTripAsync("960e5cd5-c783-4c02-a4b4-3579a674a2d0"));
+    }, []);
+
+    const trip = useSelector((state: {trip: {current: Trip}}) => state.trip.current);
+    const [dests, setDests] = useState(trip.dest);
+
+    useEffect(() => {
+        setDests(trip.dest);
+    }, [trip]);
 
     return (
         <Box className={classes.spacer}>
@@ -29,13 +35,20 @@ const GeneralForm = (props: contextProps): JSX.Element => {
             </Box>
             <Box className={classes.rightBox}>
                 <Button variant="outline" color="teal" size="lg" className={classes.submitButton}>
-                    {props.isNewTrip ? <>Create Trip</> : <>Update Info</>}
+                    Update Info
                 </Button><br/>
             </Box>
 
             <Box className={classes.leftBox}>
-                <TextInput label="Trip Name" placeholder={trip.tripName === "" ? "Our awesome trip!" : trip.tripName} className={classes.input} />
-                <TextInput label="Destination" placeholder={trip.tripDestination === "" ? "Where to?" : trip.tripDestination} className={classes.input} />
+                <TextInput label="Trip Name" placeholder={trip.name === "" ? "Our awesome trip!" : ""} value={trip.name} className={classes.input} />
+                {/*<TextInput label="Destination" placeholder={trip.destination === "" ? "Where to?" : trip.destination} className={classes.input} />*/}
+                <TagsInput
+                    label="Destinations"
+                    placeholder={dests && dests.length > 0 ? "" : "Where would you like to go?"}
+                    data={megaList}
+                    value={dests}
+                    onChange={(newDests) => {setDests(newDests)}}
+                    />
                 <DateRangePicker />
                 <BudgetPicker />
             </Box>
