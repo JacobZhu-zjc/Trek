@@ -2,10 +2,10 @@
 declare global {
     namespace NodeJS {
         interface ProcessEnv {
-            ATLAS_URI: string;
+            ATLAS_URI: string | false;
         }
     }
 }
 
-// Coverting the file into a module using an empty export statement
-export { }
+// Converting the file into a module using an empty export statement
+export { };

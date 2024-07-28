@@ -1,0 +1,13 @@
+.button {
+    display: flex;
+    width: 100%;
+    border: rem(3px) solid black;
+    border-radius: var(--mantine-radius-sm);
+    padding: var(--mantine-spacing-lg);
+    /* light-dark(var(--mantine-color-white), var(--mantine-color-dark-8)); */
+    background-color: white;
+  
+    @mixin hover {
+      background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-9));
+    }
+  }

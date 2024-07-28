@@ -1,3 +1,6 @@
+![Production Deployment](https://github.com/ubc-cpsc455-2024S/project-04_trekkers/actions/workflows/deploy-production.yml/badge.svg)
+![Tests](https://github.com/ubc-cpsc455-2024S/project-04_trekkers/actions/workflows/run-tests.yml/badge.svg)
+
 <a href="#">
     <img src="images/Trek-logo-and-tagline.png" alt="Backbenchers Logo" title="Backbencers" align="right" height="60" />
 </a>
@@ -6,15 +9,18 @@
 
 ## About This Project
 
-Have you ever tried to plan a group trip with your friends, but it never "made it out of the group chat"? Then this web app is perfect for you! Trek provides a centralized place do to all of your trip planning - say goodbye to Google Docs! Once you log in, Trek allows you to design your ideal trip, with trip destinations, timeframes, accomodations, and more. Then save the trip and let Trek easily let you share your trips with a single click. Trek can intelligently recommend the best things to do by using API calls to sites like Tripadvisor to get up-to-date ratings on good places to visit, as well as through other Trek users' most popular destinations. Trek can also display everything on an interactive map to help you visualize your transportation planning! Trek might also be able to give your groups weather information, a full iternary written up by an LLM, and even specific transportation options with their costs.
+Have you ever tried to plan a group trip with your friends, but it never left
+the group chat? Trek is designed for you, making it easy with
+real-time collaboration, interactive maps, and personalized recommendations!
+With Trek, you'll easily be able to create and share the perfect trip.
 
 ## Development Team (Group 4)
 
-- **Jacob Zhu** [:octocat:](https://github.com/JacobZhu-zjc) [📧](mailto:placeholder@gmail.com) - "Too sleepy for my own good..."
-- **Justin Lieu**  [:octocat: ](https://github.com/jlieu88) [📧](mailto:placeholder@gmail.com) - "I love drinking coffee"
-- **Kevin Xu**  [:octocat: ](https://github.com/lebeanshoe) [📧](mailto:placeholder@gmail.com) - "I love cats and dogs"
-- **Matthew Kang**  [:octocat:](https://github.com/kang-matthew) [📧](mailto:matt0410@student.ubc.ca) - "I joined in late, idk what to put here yet"
-- **William Xiao** [:octocat:](https://github.com/Mooncey) [📧](mailto:placeholder@gmail.com) - "operating systems nerd"
+- **Jacob Zhu** [:octocat:](https://github.com/JacobZhu-zjc) [📧](mailto:jzhu46@student.ubc.ca) - "Too sleepy for my own good..."
+- **Justin Lieu**  [:octocat: ](https://github.com/jlieu88) [📧](mailto:jlieu@student.ubc.ca) - "I love drinking coffee"
+- **Kevin Xu**  [:octocat: ](https://github.com/lebeanshoe) [📧](mailto:kxu20@student.ubc.ca) - "I love cats and dogs"
+- **Matthew Kang**  [:octocat:](https://github.com/kang-matthew) [📧](mailto:matt0410@students.cs.ubc.ca) - "I like software"
+- **William Xiao** [:octocat:](https://github.com/Mooncey) [📧](mailto:munce@students.cs.ubc.ca) - "operating systems nerd"
 
 
 ## Course Team
@@ -55,10 +61,10 @@ Refer to the ***Trek Installation and Deployment Guide*** (to be written) on the
 
 `database/` is where database scripts are in.
 
-`tests/` is where the tests for back-end are in.
+`backend/test/` and `frontend/test/` are where the tests are in.
 
 ## Task Requirements
-Last Updated July 7, 2024
+Last Updated July 26, 2024
 
 ### Minimal
 - User profiles & accounts
@@ -72,27 +78,34 @@ Last Updated July 7, 2024
     - Trip creation / editing page
     - Page to view all the trips for a user
     - Store user trip information in Mongo when done
-  - [ ] Users can delete trips
-  - [ ] Users can share trip iternaries with others, with different access levels
-  - [ ] Users can use APIs to fetch destination information
+  - [X] Users can delete trips
+  - [X] Users can share trip iternaries with others, with different access levels
+  - [X] Users can use APIs to fetch destination information
   - [X] Users can display trip details and routes on a map
  
 ### Standard
 - Users
-  - [ ] Users can set and update travel preferences in their profiles
-  - [ ] Users can set and update privacy settings
+  - [X] Users can set and update travel preferences in their profiles
+  - [X] Users can set and update privacy settings
 - Trips
   - [ ] Users can interact with a map to modify trip routes and details
-  - [ ] Users can view the start and end date of a trip based on the start and finish time of an iternary
+    - (Jul 26) We are planning to complete this standard goal during our group
+      work session on July 28. The design is already prepared, which gives us
+      confidence we have the technical ability to accomplish it by the deadline.
 - Trip Budgets
   - [ ] Users can manage trip budgets (e.g. transportation, housing. etc.) 
+    - (Jul 26)
 - Trip Recommendations
   - [X] Collects and stores user data for personalized trip recommendations
   - [ ] Analyzes user data using AI to identify patterns and preferences
+    - (Jul 26) We already have a proof-of-concept for this, however the
+      development work is not done yet. Since we have the design we are aiming
+      to complete this on our work session Jul 28.
   - [ ] Generates personalized trip recommendations based on analyzed user data
+    - (Jul 26) See the point above this one
 ### Stretch
 - Trips
-  - [ ] Users can duplicate existing trip iternaries for new trips
+  - [ ] Users can duplicate existing trip itineraries for new trips
   - [ ] Users can set transportation of getting to an item of an itinerary
   - [ ] Users can see weather information of a destination
 - Trip Budgets

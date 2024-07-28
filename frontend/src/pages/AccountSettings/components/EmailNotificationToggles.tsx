@@ -3,7 +3,7 @@ import classes from './SwitchesCard.module.css';
 import {useDispatch, useSelector} from "react-redux";
 import {useEffect} from "react";
 import {getUserSettingsAsync, putUserSettingsAsync} from "../../../redux/users/thunks.ts";
-import {Settings, User} from '../../../interfaces.ts';
+import {Settings, User} from '@trek-types/user.ts';
 import {AppDispatch} from '../../../redux/store.ts';
 
 const EmailNotificationToggles = () => {

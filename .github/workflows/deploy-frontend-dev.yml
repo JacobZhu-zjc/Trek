@@ -1,4 +1,4 @@
-name: Deploy Frontend Dev
+name: Deploy Frontend Dev Fly
 on:
   push:
     branches:

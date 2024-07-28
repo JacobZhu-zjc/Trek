@@ -1,0 +1,109 @@
+name: Deploy to AWS Production
+permissions:
+  id-token: write
+  contents: read
+on:
+  push:
+    branches:
+      - "project_[0-9]"
+      - "main"
+  workflow_dispatch: {}
+jobs:
+  deploy:
+    name: Deploy to production
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install and build frontend
+        working-directory: ./frontend
+        env:
+          MAPBOX_ACCESS_TOKEN: ${{ secrets.MAPBOX_ACCESS_TOKEN }}
+          AUTH0_DOMAIN: ${{ secrets.AUTH0_DOMAIN }}
+          AUTH0_CLIENT_ID: ${{ secrets.AUTH0_CLIENT_ID }}
+          AUTH0_AUDIENCE: ${{ secrets.AUTH0_AUDIENCE }}
+        run: |
+          echo "VITE_MAPBOX_ACCESS_TOKEN=$MAPBOX_ACCESS_TOKEN" >> .env
+          echo "VITE_AUTH0_DOMAIN=$AUTH0_DOMAIN" >> .env
+          echo "VITE_AUTH0_CLIENT_ID=$AUTH0_CLIENT_ID" >> .env
+          echo "VITE_AUTH0_AUDIENCE=$AUTH0_AUDIENCE" >> .env
+          echo "VITE_GOOGLE_MAPS_API_KEY=${{ secrets.GOOGLE_MAPS_API_KEY }}" >> .env
+          npm install
+          NODE_ENV=production npm run build
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::471112703907:role/trek-github-action-deployment
+          aws-region: us-east-1
+
+      - name: Log into Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+ 
+      - name: Build, tag, push docker image to Amazon ECR
+        env:
+          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          REPOSITORY: trek
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG -t $REGISTRY/$REPOSITORY:latest .
+          docker push $REGISTRY/$REPOSITORY --all-tags
+
+      - name: Create .env for backend
+        working-directory: ./backend
+        env:
+          ATLAS_URI: ${{ secrets.ATLAS_URI }}
+          PAYLOAD_SECRET: ${{ secrets.PAYLOAD_SECRET }}
+          ADMIN_S3_REGION: ${{ vars.ADMIN_S3_REGION }}
+          ADMIN_S3_ACCESS_KEY_ID: ${{ secrets.ADMIN_S3_ACCESS_KEY_ID }}
+          ADMIN_S3_SECRET_ACCESS_KEY: ${{ secrets.ADMIN_S3_SECRET_ACCESS_KEY }}
+          ADMIN_S3_BUCKET: ${{ secrets.ADMIN_S3_BUCKET }}
+          USER_S3_REGION: ${{ vars.USER_S3_REGION }}
+          USER_S3_ACCESS_KEY_ID: ${{ secrets.USER_S3_ACCESS_KEY_ID }}
+          USER_S3_SECRET_ACCESS_KEY: ${{ secrets.USER_S3_SECRET_ACCESS_KEY }}
+          USER_S3_BUCKET: ${{ secrets.USER_S3_BUCKET }}
+          API_AUDIENCE: "http://localhost:3000/"
+          ISSUER_BASE_URL: ${{ vars.ISSUER_BASE_URL }}
+          NODE_VERSION: ${{ vars.NODE_VERSION }}
+          NVM_DIR: /root/.nvm
+        run: |
+          echo "HOSTNAME=trek-dev.wyfx.ca" >> .env
+          echo "ATLAS_URI=$ATLAS_URI" >> .env
+          echo "PAYLOAD_SECRET=$PAYLOAD_SECRET" >> .env
+          echo "ADMIN_S3_REGION=$ADMIN_S3_REGION" >> .env
+          echo "ADMIN_S3_ACCESS_KEY_ID=$ADMIN_S3_ACCESS_KEY_ID" >> .env
+          echo "ADMIN_S3_SECRET_ACCESS_KEY=$ADMIN_S3_SECRET_ACCESS_KEY" >> .env
+          echo "ADMIN_S3_BUCKET=$ADMIN_S3_BUCKET" >> .env
+          echo "USER_S3_REGION=$USER_S3_REGION" >> .env
+          echo "USER_S3_ACCESS_KEY_ID=$USER_S3_ACCESS_KEY_ID" >> .env
+          echo "USER_S3_SECRET_ACCESS_KEY=$USER_S3_SECRET_ACCESS_KEY" >> .env
+          echo "USER_S3_BUCKET=$USER_S3_BUCKET" >> .env
+          echo "API_AUDIENCE=$API_AUDIENCE" >> .env
+          echo "ISSUER_BASE_URL=$ISSUER_BASE_URL" >> .env
+
+      - name: Upload backend .env
+        uses: burnett01/rsync-deployments@7.0.1
+        with:
+          remote_host: ${{ vars.EC2_HOSTNAME }}
+          remote_key: ${{ secrets.AWS_EC2_SSH_KEY }}
+          remote_user: ec2-user
+          path: "backend/.env"
+          remote_path: ".env"
+          switches: -avz
+
+      - name: Restart server with new .env
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ vars.EC2_HOSTNAME }}
+          username: ec2-user
+          key: ${{ secrets.AWS_EC2_SSH_KEY }}
+          script: |
+            aws ecr get-login-password --region us-east-1 | sudo docker login --username AWS --password-stdin ${{ steps.login-ecr.outputs.registry }}
+            sudo docker pull ${{ steps.login-ecr.outputs.registry }}/trek
+            sudo docker stop trek && sudo docker rm trek
+            sudo docker run --restart unless-stopped --env-file .env --detach --name trek --env "VIRTUAL_HOST=trek.wyfx.ca" --env LETSENCRYPT_HOST=trek.wyfx.ca ${{ steps.login-ecr.outputs.registry }}/trek
+
+
+

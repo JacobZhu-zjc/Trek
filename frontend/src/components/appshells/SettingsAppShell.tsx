@@ -6,12 +6,15 @@ import { IconUser, IconSparkles, IconSettings, IconLogout } from '@tabler/icons-
 import classes from './NavbarSimple.module.css';
 import UserButton from './components/UserButton';
 import { Outlet, Link } from 'react-router-dom';
-import { HeaderUserDropdown } from './components/HeaderUserDropdown';
+import { UserDropdown } from './components/UserDropdown';
+import LoginButton from "@components/LoginButton.tsx";
+import {useAuth0} from "@auth0/auth0-react";
 
 
 const SettingsAppShell = () => {
     const [opened, { toggle }] = useDisclosure();
     const [active, setActive] = useState('Billing');
+    const { isAuthenticated, isLoading, error} = useAuth0();
 
 
     const data = [
@@ -26,7 +29,7 @@ const SettingsAppShell = () => {
             data-active={item.label === active || undefined}
             to={item.link}
             key={item.label}
-            onClick={(_event) => {
+            onClick={() => {
                 setActive(item.label);
             }}
         >
@@ -49,7 +52,13 @@ const SettingsAppShell = () => {
                         </Link>
                     </Group>
                     <Group>
-                        <HeaderUserDropdown />
+                        {!error && isLoading && <p>Loading...</p>}
+                        {!error && !isLoading && isAuthenticated && <UserDropdown />}
+                        { !error && !isLoading && !isAuthenticated &&
+                            <div className="pr-4">
+                                <LoginButton />
+                            </div>
+                        }
                     </Group>
                 </Group>
             </AppShell.Header>

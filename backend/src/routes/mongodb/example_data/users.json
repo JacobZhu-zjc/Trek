@@ -1,0 +1,89 @@
+[
+  {
+    "_id": "123e4567-e89b-12d3-a456-426614174000",
+    "name": "Gregor Kiczales",
+    "username": "gregork",
+    "email": "gregork@example.com",
+    "description": "Professor of Computer Science at UBC",
+    "links": [
+      {
+        "type": "LinkedIn",
+        "url": "https://www.linkedin.com/in/gregork"
+      },
+      {
+        "type": "Twitter",
+        "url": "https://twitter.com/gregork"
+      }
+    ],
+    "interests": [
+      "Computer Science",
+      "Programming Languages",
+      "Teaching"
+    ],
+    "home": "Vancouver, BC",
+    "currentlyAt": "University of British Columbia",
+    "settings": {
+      "accountLimitedDeals": true,
+      "accountNewsletterNotifications": true,
+      "privateAccount": false
+    }
+  },
+  {
+    "_id": "123e4567-e89b-12d3-a456-426614174001",
+    "name": "Matthew Kang",
+    "username": "kang-matthew",
+    "email": "matthew.kang@example.com",
+    "description": "Student at UBC",
+    "links": [
+      {
+        "type": "LinkedIn",
+        "url": "https://www.linkedin.com/in/matthewkang"
+      },
+      {
+        "type": "GitHub",
+        "url": "https://github.com/matthewkang"
+      }
+    ],
+    "interests": [
+      "Software Engineering",
+      "Traveling",
+      "Music"
+    ],
+    "home": "Vancouver, BC",
+    "currentlyAt": "University of British Columbia",
+    "settings": {
+      "accountLimitedDeals": true,
+      "accountNewsletterNotifications": true,
+      "privateAccount": false
+    }
+  },
+  {
+    "_id": "123e4567-e89b-12d3-a456-426614174002",
+    "name": "William Xiao",
+    "username": "xiao-william",
+    "email": "william.xiao@example.com",
+    "description": "Aspiring Software Developer",
+    "links": [
+      {
+        "type": "LinkedIn",
+        "url": "https://www.linkedin.com/in/williamxiao"
+      },
+      {
+        "type": "GitHub",
+        "url": "https://github.com/williamxiao"
+      }
+    ],
+    "interests": [
+      "Web Development",
+      "Gaming",
+      "Photography"
+    ],
+    "home": "Vancouver, BC",
+    "currentlyAt": "University of British Columbia",
+    "settings": {
+      "accountLimitedDeals": true,
+      "accountNewsletterNotifications": true,
+      "privateAccount": false
+    }
+  }
+]

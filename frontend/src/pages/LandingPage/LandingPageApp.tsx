@@ -11,17 +11,17 @@ const LandingPageApp = () => {
   }, []);
   
   return (
-    <>
-      <section className="min-h-screen w-full flex justify-center items-center">
-        <LandingPage />
-      </section>
-      <section className="min-h-screen w-full flex justify-center items-center">
-        <AboutPage />
-      </section>
-      <section className="min-h-screen w-full flex justify-center items-center">
-        <SignUpContactPage />
-      </section>
-    </>
+      <>
+          <section className="h-full w-full flex justify-center items-center">
+              <LandingPage/>
+          </section>
+          <section className="h-full w-full flex justify-center items-center sm: full-size">
+              <AboutPage/>
+          </section>
+          <section className="min-h-screen w-screen flex justify-center items-center">
+              <SignUpContactPage/>
+          </section>
+      </>
   );
 }
 

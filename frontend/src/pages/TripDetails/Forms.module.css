@@ -29,6 +29,7 @@
 
 /* Spacing around the entire input form */
 .spacer {
+    width: 100%;
     padding: 2em 5em;
     display: inline-flex;
     flex-wrap: wrap;
@@ -80,6 +81,22 @@
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
+}
+
+.memberSpacer {
+    width: 100%;
+    padding: 1em;
+}
+
+.modalInput {
+    width: 100%;
+    margin: 0.5em 0em;
+}
+
+.importantModalInput {
+    width: 100%;
+    margin: 0.5em 0em;
+    color: var(--mantine-color-red-5);
 }
 
 ul li {

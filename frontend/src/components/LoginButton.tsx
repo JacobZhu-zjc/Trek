@@ -12,7 +12,11 @@ const LoginButton = (className: { props?: string }) => {
                 rightSection={<IconArrowRight size={16}/>}
                 variant="gradient"
                 gradient={{ from: 'teal', to: 'lime', deg: 90 }}
-                onClick={() => loginWithRedirect()}
+                onClick={() => loginWithRedirect({
+                    appState: {
+                        returnTo: window.location.pathname
+                    }
+                })}
                 className={className.props}
             >
                 Login

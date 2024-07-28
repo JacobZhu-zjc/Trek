@@ -6,7 +6,7 @@ const DeploymentEnv = () => {
 
     const appEnv = import.meta.env.VITE_APP_ENV;
 
-    console.log(appEnv);
+    // console.log(appEnv);
 
     if (appEnv === "undefined") {
         return null;

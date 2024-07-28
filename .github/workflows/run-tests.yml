@@ -1,0 +1,42 @@
+name: Run tests
+on:
+  push:
+    branches:
+      - "project_[0-9]*"
+  pull_request:
+    branches:
+      - "project_[0-9]*"
+jobs:
+  frontend:
+    name: Test frontend
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          cd frontend
+          npm install
+
+      - name: Run tests
+        run: |
+          echo "Starting tests"
+          cd frontend
+          npm run test
+  backend:
+    name: Test backend
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          cd backend
+          npm install
+
+      - name: Run tests
+        run: |
+          cd backend
+          npm run test

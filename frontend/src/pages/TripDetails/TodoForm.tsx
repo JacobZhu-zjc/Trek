@@ -1,20 +1,30 @@
 import { Box, Button, List, TextInput } from "@mantine/core";
 import classes from "./Forms.module.css";
 import {useDispatch, useSelector} from "react-redux";
-import {useEffect, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import {getTripAsync, putTripAsync} from "../../redux/trips/thunks.ts";
-import {Trip} from "../../interfaces.ts";
+import {Trip} from "@trek-types/trip.ts";
 import {AppDispatch} from "../../redux/store.ts";
+import { UserContext } from "../../App.tsx";
+import { useAuth0 } from "@auth0/auth0-react";
+import { useParams } from "react-router-dom";
 
 // React component for listing all the people already in the trip, and for adding more if necessary
 const TodoForm = (): JSX.Element => {
+    const tripUUID = useParams().uuid as string;
     const dispatch = useDispatch<AppDispatch>();
+    const userContext = useContext(UserContext);
+    const { isAuthenticated } = useAuth0();
+    const token = userContext.token;
 
     useEffect(() => {
-        dispatch(getTripAsync("960e5cd5-c783-4c02-a4b4-3579a674a2d0"));
+      if (isAuthenticated) {
+        dispatch(getTripAsync({ uuid: tripUUID, token: userContext.token }));
+      }
     }, []);
 
     const trip = useSelector((state: {trip: {current: Trip}}) => state.trip.current);
+    void trip; // TODO delete
     const tripTodo = useSelector((state: {trip: {current: Trip}}) => state.trip.current.todo);
     const [todo, setTodo] = useState(tripTodo);
     const [toAdd, setToAdd] = useState('');
@@ -27,14 +37,14 @@ const TodoForm = (): JSX.Element => {
         const newTodo = [...todo, toAdd];
         setTodo(newTodo);
         setToAdd('');
-        dispatch(putTripAsync({uuid:trip._id, trip:{...trip, todo:newTodo}}));
+        dispatch(putTripAsync({uuid:trip._id, token: token, trip:{...trip, todo:newTodo}}));
     }
     function handleDelete(i: number) {
         const newTodo = todo.filter((_, index) => {
             return index !== i
         });
         setTodo(newTodo);
-        dispatch(putTripAsync({uuid:trip._id, trip:{...trip, todo:newTodo}}));
+        dispatch(putTripAsync({uuid:trip._id, token: token, trip:{...trip, todo:newTodo}}));
     }
 
     return (

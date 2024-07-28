@@ -1,18 +1,15 @@
 import { Avatar, Text, Group, Card } from '@mantine/core';
 import { IconAt, IconUser } from '@tabler/icons-react';
 import classes from './UserInfoIcons.module.css';
-import {useDispatch, useSelector} from "react-redux";
-import {useEffect} from "react";
-import {getAuthdUserAsync} from "../../../redux/users/thunks.ts";
-import {User} from "../../../interfaces.ts";
-import {AppDispatch} from '../../../redux/store.ts';
+import {useSelector} from "react-redux";
+import {User} from "@trek-types/user.ts";
 
 export function AccountProfileCard() {
-    const dispatch = useDispatch<AppDispatch>();
+    // const dispatch = useDispatch<AppDispatch>();
 
-    useEffect(() => {
-        dispatch(getAuthdUserAsync());
-    }, []);
+    // useEffect(() => {
+    //     dispatch(getAuthdUserAsync());
+    // }, []);
 
     const profile = useSelector((state: {user: {self: User}}) => state.user.self);
     // console.log(profile);
@@ -21,7 +18,7 @@ export function AccountProfileCard() {
             <Card withBorder radius="md" p="xl" className={classes.card}>
                 <Group wrap="nowrap">
                     <Avatar
-                        src={profile.image && profile.image.source}
+                        src={profile.image}
                         size={120}
                         radius={120}
                         mx="auto"

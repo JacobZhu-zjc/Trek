@@ -12,35 +12,123 @@ import {
     Checkbox,
     Box,
 } from '@mantine/core';
+import {useDispatch, useSelector} from "react-redux";
+import {AppDispatch} from "../../../redux/store.ts";
+import {useAuth0} from "@auth0/auth0-react";
+import {useEffect, useState} from "react";
+import {getAuthdUserAsync, putUserExperienceAsync} from "../../../redux/users/thunks.ts";
+import {User, UserExperience} from "@trek-types/user.ts";
 
 const ExperienceSettingsForm = () => {
+    const dispatch = useDispatch<AppDispatch>();
+    const {user, getAccessTokenSilently, isAuthenticated} = useAuth0()
+    const [subtoken, setSubToken] = useState("");
+    if (user && user.sub && subtoken !== user.sub) {
+        setSubToken(user?.sub);
+    }
+
+    useEffect(() => {
+        try {
+            (async () => {
+                try {
+                    if (isAuthenticated) {
+                        const token = await getAccessTokenSilently();
+                        const name = user?.name ?? "";
+                        const email = user?.email?? "";
+                        const picture = user?.picture ?? "";
+                        dispatch(getAuthdUserAsync({token, subtoken, name, email, picture}));
+                    }
+
+                } catch (err) {
+                    console.error("access token error occurred: " + err);
+                }
+            })();
+        } catch (err) {
+            console.error("Error occurred: " + err);
+        }
+    }, [dispatch, getAccessTokenSilently, subtoken]);
+
+    const profile = useSelector((state: {user: {self: User}}) => state.user.self);
+    const [exp, setExp] = useState<UserExperience>({
+        accommodationBudget: {lo: 0, hi: 1000},
+        activities: [],
+        activitiesBudget: {lo:0, hi: 1000},
+        ageRange: 18,
+        climateAndWeather: [],
+        connectivityNeeds: "",
+        culture: [],
+        dining: [],
+        diningBudget: {lo: 0, hi: 1000},
+        healthAndAccessibility: "",
+        language: "",
+        occupation: "",
+        passports: [],
+        safety: "",
+        tosAgreement: false,
+        transportPreferences: [],
+        travelFrequency: "",
+        travelStyle: [],
+        tripDuration: "",
+        visas: [],
+    });
+    useEffect(() => {
+        if(profile && profile.experience) {
+            setExp(profile.experience); // remove this in a future commit? for some reason this doesn't actually do anything
+            form.setValues(profile.experience)
+        }
+    }, [profile]);
     const form = useForm({
         initialValues: {
-            travelFrequency: '',
-            ageRange: '',
-            occupation: '',
-            passports: [],
-            visas: [],
-            connectivityNeeds: '',
-            activities: [],
-            dining: [],
-            climate: '',
-            culture: [],
-            languageComfort: '',
-            healthAccessibility: '',
-            safety: '',
-            travelStyle: [],
-            tripDuration: '',
-            transportPreferences: [],
-            budgetAccommodation: [0, 1000] as [number, number], // [0, 1000]
-            budgetDining: [0, 1000] as [number, number], // [0, 1000]
-            budgetActivities: [0, 1000] as [number, number], // [0, 1000]
-            termsOfService: false,
+            travelFrequency: exp.travelFrequency,
+            ageRange: exp.ageRange,
+            occupation: exp.occupation,
+            passports: exp.passports,
+            visas: exp.visas,
+            connectivityNeeds: exp.connectivityNeeds,
+            activities: exp.activities,
+            dining: exp.dining,
+            climate: exp.climateAndWeather,
+            culture: exp.culture,
+            languageComfort: exp.language,
+            healthAccessibility: exp.healthAndAccessibility,
+            safety: exp.safety,
+            travelStyle: exp.travelStyle,
+            tripDuration: exp.tripDuration,
+            transportPreferences: exp.transportPreferences,
+            budgetAccommodation: [exp.accommodationBudget.lo, exp.accommodationBudget.hi] as [number, number], // [0, 1000]
+            budgetDining: [exp.diningBudget.lo, exp.diningBudget.hi] as [number, number], // [0, 1000]
+            budgetActivities: [exp.activitiesBudget.lo, exp.activitiesBudget.hi] as [number, number], // [0, 1000]
+            termsOfService: exp.tosAgreement,
         },
     });
-
+    async function handleSubmit(values : typeof form.values) {
+        const token = await getAccessTokenSilently();
+        const experience: UserExperience = {
+            travelFrequency: values.travelFrequency,
+            ageRange: values.ageRange,
+            occupation: values.occupation,
+            passports: values.passports,
+            visas: values.visas,
+            connectivityNeeds: values.connectivityNeeds,
+            activities: values.activities,
+            dining: values.dining,
+            climateAndWeather: values.climate,
+            culture: values.culture,
+            language: values.languageComfort,
+            healthAndAccessibility: values.healthAccessibility,
+            safety: values.safety,
+            travelStyle: values.travelStyle,
+            tripDuration: values.tripDuration,
+            transportPreferences: values.transportPreferences,
+            accommodationBudget: { lo: values.budgetAccommodation[0], hi: values.budgetAccommodation[1] },
+            diningBudget: { lo: values.budgetDining[0], hi: values.budgetDining[1]},
+            activitiesBudget: { lo: values.budgetDining[0], hi: values.budgetActivities[1] },
+            tosAgreement: values.termsOfService,
+        };
+        dispatch(putUserExperienceAsync({token: token, exp: experience}));
+    }
     return (
-        <form onSubmit={form.onSubmit(values => console.log(values))}>
+        <form onSubmit={form.onSubmit(handleSubmit)}>
             <Stack
                 bg="var(--mantine-color-body)"
                 align="flex-start"
@@ -223,8 +311,8 @@ const ExperienceSettingsForm = () => {
             <Checkbox
                 mt="md"
                 label="I agree to the use of my preferences for personalized experiences and recommendations"
-                key={form.key('termsOfService')}
-                {...form.getInputProps('termsOfService', { type: 'checkbox' })}
+                key={form.key('tosAgreement')}
+                {...form.getInputProps('tosAgreement', { type: 'checkbox' })}
             />
             </Box>
 

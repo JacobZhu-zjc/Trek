@@ -1,13 +1,13 @@
 import {createSlice} from "@reduxjs/toolkit";
 import {
     getAuthdUserAsync,
-    getUserAsync,
+    getUserAsync, getUserByIDAsync,
     getUserByUsernameAsync,
     getUserSettingsAsync,
-    putUserAsync,
+    putUserAsync, putUserExperienceAsync,
     putUserSettingsAsync
 } from "./thunks.ts";
-import {User} from "../../interfaces.ts";
+import {User} from "@trek-types/user.ts";
 
 const INITIAL_STATE = {
     self: {},
@@ -27,15 +27,15 @@ const usersSlice = createSlice({
     extraReducers: (builder) => {
         builder
             .addCase(getAuthdUserAsync.fulfilled, (state, action) => {
-                // console.log("wahoo")
+
                 state.self = action.payload;
             })
+            .addCase(getAuthdUserAsync.rejected, () => {
+            })
             .addCase(getUserSettingsAsync.fulfilled, (state, action) => {
-                // console.log(action.payload);
                 state.settings = action.payload;
             })
             .addCase(putUserSettingsAsync.fulfilled, (state, action) => {
-                // console.log(action.payload);
                 if (action.payload.accountLimitedDeals !== undefined && action.payload.accountNewsletterNotifications !== undefined)
                     state.settings = action.payload;
             })
@@ -43,10 +43,10 @@ const usersSlice = createSlice({
                 state.self = action.payload;
             })
             .addCase(getUserAsync.fulfilled, (state, action) => {
-                state.requestedUsers.push(action.payload);
+                const user = action.payload as unknown as User; // FIXME: do this with proper type checking instead
+                state.requestedUsers.push(user);
             })
             .addCase(getUserByUsernameAsync.fulfilled, (state, action) => {
-                // console.log(action.payload);
                 const existingUserIndex = state.requestedUsers.findIndex(user => user._id === action.payload._id);
 
                 if (existingUserIndex !== -1) {
@@ -54,6 +54,22 @@ const usersSlice = createSlice({
                 } else {
                     state.requestedUsers.push(action.payload);
                 }
+            })
+            .addCase(getUserByIDAsync.fulfilled, (state, action) => {
+                const existingUserIndex = state.requestedUsers.findIndex(user => user._id === action.payload._id);
+
+                if (existingUserIndex !== -1) {
+                    state.requestedUsers[existingUserIndex] = action.payload;
+                } else {
+                    state.requestedUsers.push(action.payload);
+                }
+            })
+            .addCase(putUserExperienceAsync.fulfilled, (state, action) => {
+                // state.self.experience = action.payload;
+                // self.experience causes build error, temp do below
+                console.log(action.payload);
+                void state;
+                // (state.self as User).experience = action.payload;
             })
     }
 });

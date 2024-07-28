@@ -2,8 +2,8 @@ import {AppShell, Group, Image, Space} from '@mantine/core';
 import { useHeadroom } from '@mantine/hooks';
 import TrekLogo from '../../assets/Trek.svg';
 import { Outlet } from 'react-router';
-import { HeaderUserDropdown } from './components/HeaderUserDropdown';
-import { Link } from 'react-router-dom';
+import { UserDropdown } from './components/UserDropdown.tsx';
+import {Link} from 'react-router-dom';
 import Footer from './components/Footer';
 import { useAuth0 } from "@auth0/auth0-react";
 import LoginButton from "../LoginButton.tsx";
@@ -14,7 +14,7 @@ function MainAppShell() {
 
 
     return (
-        <AppShell header={{ height: 60, collapsed: !pinned, offset: false }}>
+        <AppShell header={{ height: 60, collapsed: !pinned, offset: true }}>
             <AppShell.Header>
                 <Group justify="space-between" h="100%">
                     <Group h="100%" px="md">
@@ -24,7 +24,7 @@ function MainAppShell() {
                     </Group>
                     <Group>
                         {!error && isLoading && <p>Loading...</p>}
-                        {!error && !isLoading && isAuthenticated && <HeaderUserDropdown />}
+                        {!error && !isLoading && isAuthenticated && <UserDropdown />}
                         { !error && !isLoading && !isAuthenticated &&
                             <div className="pr-4">
                                 <LoginButton />

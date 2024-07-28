@@ -1,12 +1,28 @@
-import {User, Settings} from "../../interfaces.ts";
+import {User, Settings, UserExperience} from "@trek-types/user.ts";
+import {jwtDecode} from 'jwt-decode'
 
-const API_URL = 'http://localhost:3000/api/v1/';
+const hostname = import.meta.env.PROD ? window.location.origin : "http://localhost:3000"
+const API_URL = `${hostname}/api/v1/`;
 
-const getAuthdUser = async() => {
-    const response = await fetch(`${API_URL}users/hello`, {
-        method: 'GET'
+
+const getAuthdUser = async(token: string, subtoken: string, name: string, email: string, picture: string) => {
+    const response = await fetch(`${API_URL}users/fetch-user`, {
+        method: "POST",
+        headers: {
+            "Content-Type": 'application/json',
+            "Authorization": `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+            sub: subtoken,
+            name: name,
+            email: email,
+            image: picture,
+        })
     });
-    return response.json();
+    if (response.ok) {
+        return await response.json();
+    }
+    return Promise.reject("not authenitcated");
 }
 
 const getUser = async(username: string) => {
@@ -24,7 +40,7 @@ const getUserSettings = async() => {
 }
 
 const putUser = async(user: User) => {
-    const response = await fetch(`${API_URL}users/${user.username}`, {
+    const response = await fetch(`${API_URL}users/${user.sub}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json'
@@ -45,10 +61,33 @@ const putUserSettings = async(username: string, settings: Settings) => {
     return await response.json();
 }
 
+const getUserByID = async(uuid: string) => {
+    const response = await fetch(`${API_URL}users/id/${uuid}`, {
+        method: 'GET',
+    });
+    return await response.json();
+}
+
+const putUserExperience = async(token: string, exp: UserExperience) => {
+    const decoded = jwtDecode(token);
+    const sub = decoded["sub"];
+    const response = await fetch(`${API_URL}users/${sub}/experience`, {
+        method: 'PUT',
+        headers: {
+            "Authorization": `Bearer ${token}`,
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(exp)
+    });
+    return await response.json();
+}
+
 export default {
     getAuthdUser,
     getUser,
     getUserSettings,
     putUser,
-    putUserSettings
+    putUserSettings,
+    getUserByID,
+    putUserExperience
 }

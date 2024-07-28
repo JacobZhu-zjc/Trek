@@ -16,7 +16,10 @@ jobs:
       - name: Build FE
         run: |
          cd frontend
-         echo "VITE_GOOGLE_MAPS_API_KEY=${{ secrets.GOOGLE_MAPS_API_KEY }}" >> .env
+         echo "VITE_MAPBOX_ACCESS_TOKEN=${{ secrets.MAPBOX_ACCESS_TOKEN }}" >> .env
+         echo "VITE_AUTH0_DOMAIN=${{ secrets.AUTH0_DOMAIN }}" >> .env
+         echo "VITE_AUTH0_CLIENT_ID=${{ secrets.AUTH0_CLIENT_ID }}" >> .env
+         echo "VITE_AUTH0_AUDIENCE=${{ secrets.AUTH0_AUDIENCE }}" >> .env
          npm install
          npm run build
   

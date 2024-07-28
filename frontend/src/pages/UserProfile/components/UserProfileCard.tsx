@@ -2,16 +2,32 @@ import { Avatar, Text, Paper, ActionIcon, rem, Group, Chip, Flex } from '@mantin
 import { IconBrandTwitter, IconBrandYoutube, IconBrandInstagram, IconPencil, IconShare3 } from '@tabler/icons-react';
 import { Link } from 'react-router-dom';
 import {useDispatch, useSelector} from "react-redux";
-import {useEffect} from "react";
+import {useEffect, useContext} from "react";
 import {getAuthdUserAsync} from "../../../redux/users/thunks.ts";
-import {User} from "../../../interfaces.ts";
+import {User} from "@trek-types/user.ts";
 import {AppDispatch} from '../../../redux/store.ts';
+import {useAuth0} from "@auth0/auth0-react";
+import {UserContext} from '../../../App.tsx';
 
 function UserProfileCard() {
     const dispatch = useDispatch<AppDispatch>();
+    const {user, isAuthenticated} = useAuth0();
+    const userContext = useContext(UserContext);
     useEffect(() => {
-        dispatch(getAuthdUserAsync());
-    }, []);
+        console.log("authenticated: " + isAuthenticated);
+        (async () => {
+            const token = userContext.token;
+            const subtoken = userContext.subtoken;
+            const name = user?.name ?? "";
+            const email = user?.email ?? "";
+            const picture = user?.picture ?? "";
+
+            if (isAuthenticated) {
+                dispatch(getAuthdUserAsync({token, subtoken, name, email, picture}));
+            }
+
+        })();
+    }, [userContext, dispatch, isAuthenticated]);
 
     const profile = useSelector((state: {user: {self: User}}) => state.user.self);
 
@@ -28,7 +44,7 @@ function UserProfileCard() {
                 </ActionIcon>
             </Flex>
             <Avatar
-                src={profile.image && profile.image.source}
+                src={profile.image}
                 size={120}
                 radius={120}
                 mx="auto"

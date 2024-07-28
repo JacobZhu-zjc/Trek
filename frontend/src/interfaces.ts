@@ -5,12 +5,12 @@ interface Settings {
     privateAccount: boolean
 }
 interface User {
-    _id: string,
+    sub: string,
     name: string,
     username: string,
     interests: string[],
     image: {
-        source: string,
+        photo: string,
         _id: string
     },
     links: {
@@ -20,7 +20,8 @@ interface User {
     description: string,
     currentlyAt: string,
     home: string,
-    email: string
+    email: string,
+    trips: string[]
 }
 
 interface Date {
@@ -47,6 +48,11 @@ interface Map {
     locations: Location[]
 }
 
+interface Budget {
+    low: number,
+    high: number
+}
+
 interface Trip {
     _id: string,
     name: string,
@@ -54,7 +60,7 @@ interface Trip {
     destination: string,
     dest: string[],
     notes: string,
-    budget: {low: number, high: number},
+    budget: Budget,
     date: {start: number, end: number},
     todo: string[],
     url: string,
@@ -77,4 +83,4 @@ interface Trip {
     map: Map
 }
 
-export type {Settings, User, Trip}
+export type {Settings, User, Trip, Budget}

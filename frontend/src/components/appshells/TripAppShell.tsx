@@ -1,46 +1,88 @@
 import { useState } from 'react';
-import { AppShell, Burger, Group, ScrollArea, Image } from '@mantine/core';
-import { useDisclosure } from '@mantine/hooks';
-import TrekLogo from '../../assets/Trek.svg';
-import { IconChecklist, IconLogout, IconPencil, IconMap, IconClock } from '@tabler/icons-react';
-import classes from './NavbarSimple.module.css';
+import { AppShell, Text, ScrollArea, rem, Tooltip, UnstyledButton, Stack, Center, Box, Burger, Group, Image, useMantineTheme } from '@mantine/core';
+import { useDisclosure, useMediaQuery, /*useMediaQuery*/ } from '@mantine/hooks';
+import { IconChecklist, IconPencil, IconMap, IconClock, IconHome2 } from '@tabler/icons-react';
+import mobileClasses from './NavbarSimple.module.css';
 import { Outlet, Link } from 'react-router-dom';
-import { HeaderUserDropdown } from './components/HeaderUserDropdown';
+import { UserDropdown } from './components/UserDropdown';
+import TrekLogo from '@assets/Trek.svg';
+import { useParams } from 'react-router-dom';
+import {useAuth0} from "@auth0/auth0-react";
+import LoginButton from "../LoginButton";
 
 
 const TripAppShell = () => {
     const [opened, { toggle }] = useDisclosure();
-    const [active, setActive] = useState('Billing');
+    const [active, setActive] = useState(0);
+    const theme = useMantineTheme();
+    const isSm = useMediaQuery(`(max-width: ${theme.breakpoints.sm})`);
+    const {uuid} = useParams();
+    const {isAuthenticated, isLoading, error} = useAuth0();
 
+
+    interface NavbarLinkProps {
+        icon: typeof IconHome2;
+        link: string;
+        label: string;
+        active?: boolean;
+        onClick?(): void;
+    }
+
+    function NavbarLink({ icon: Icon, link, label, active, onClick }: NavbarLinkProps) {
+        return (
+            <Center>
+                <Link to={link}>
+                    <Tooltip label={label} position="right" transitionProps={{ duration: 0 }}>
+                        <UnstyledButton onClick={onClick} data-active={active || undefined}>
+                            <Icon
+                                stroke={!active ? 1 : 2} />
+                        </UnstyledButton>
+                    </Tooltip>
+                </Link>
+            </Center>
+        );
+    }
 
     const data = [
-        { link: '/trip/UUID/overview', label: 'Overview', icon: IconChecklist },
-        { link: '/trip/UUID/details', label: 'Details', icon: IconPencil },
-        { link: '/trip/UUID/map', label: 'Map', icon: IconMap },
-        { link: '/trip/UUID/timeline', label: 'Timeline', icon: IconClock }
+        { link: `/trip/${uuid}/overview`, label: 'Overview', icon: IconChecklist },
+        { link: `/trip/${uuid}/details`, label: 'Details', icon: IconPencil },
+        { link: `/trip/${uuid}/map`, label: 'Map', icon: IconMap },
+        { link: `/trip/${uuid}/timeline`, label: 'Timeline', icon: IconClock }
     ];
 
-    const links = data.map((item) => (
+
+    const links = data.map((navbarLink, index) => (
+        <NavbarLink
+            {...navbarLink}
+            key={navbarLink.label}
+            active={index === active}
+            onClick={() => setActive(index)}
+        />
+    ));
+
+    const mobileLinks = data.map((item, index) => (
         <Link
-            className={classes.link}
-            data-active={item.label === active || undefined}
+            className={mobileClasses.link}
+            data-active={index === active || undefined}
             to={item.link}
             key={item.label}
-            onClick={(_event) => {
-                setActive(item.label);
+            onClick={() => {
+                setActive(index);
             }}
         >
-            <item.icon className={classes.linkIcon} stroke={1.5} />
-            <span>{item.label}</span>
+            <item.icon className={mobileClasses.linkIcon} stroke={1.5} />
+            <Text size='xl'>{item.label}</Text>
         </Link>
     ));
 
+
     return (
         <AppShell
-            header={{ height: 60 }}
-            navbar={{ width: 300, breakpoint: 'sm', collapsed: { mobile: !opened } }}
+            header={{ height: rem(60), offset: isSm }}
+            navbar={{ width: rem(80), breakpoint: 'sm', collapsed: { mobile: !opened } }}
         >
-            <AppShell.Header>
+
+            <AppShell.Header hiddenFrom='sm'>
                 <Group justify="space-between" h="100%">
                     <Group h="100%" px="md">
                         <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
@@ -49,33 +91,41 @@ const TripAppShell = () => {
                         </Link>
                     </Group>
                     <Group>
-                        <HeaderUserDropdown />
+                        {!error && isLoading && <p>Loading...</p>}
+                        {!error && !isLoading && isAuthenticated && <UserDropdown />}
+                        { !error && !isLoading && !isAuthenticated &&
+                            <div className="pr-4">
+                                <LoginButton />
+                            </div>
+                        }
+
                     </Group>
                 </Group>
             </AppShell.Header>
-            <AppShell.Navbar p="md">
-                {/* <AppShell.Section>
-                    <Group>
-                        <Avatar.Group>
-                            <Avatar src="https://www.cs.ubc.ca/sites/default/files/styles/profile_page/public/people/gregor-kiczales-2023-profile.jpg?h=8c577723&itok=HQl4iF8Z" />
-                            <Avatar src="https://www.cs.ubc.ca/~rtholmes/img/photo_2017_vsaranphotodotcom-WEB-21_square.jpg" />
-                            <Avatar src="https://pwlconf.org/images/2017/ron_garcia_300.jpg" />
-                            <Avatar>+5</Avatar>
-                        </Avatar.Group>
-                    </Group>
-                </AppShell.Section> */}
-                <AppShell.Section grow my="md" component={ScrollArea}>
-                    {links}
+
+            <AppShell.Navbar>
+                <AppShell.Section grow my="md" p={0} component={ScrollArea}>
+                    <Stack justify="center" gap={0} visibleFrom='sm'>
+                        {links}
+                    </Stack>
+                    <Box hiddenFrom='sm'>
+                        {mobileLinks}
+                    </Box>
                 </AppShell.Section>
-                <AppShell.Section>
-                    <div className={classes.footer}>
-                        <a href="#" className={classes.link} onClick={(event) => event.preventDefault()}>
-                            <IconLogout className={classes.linkIcon} stroke={1.5} />
-                            <span>Logout</span>
-                        </a>
-                    </div>
+
+                <AppShell.Section visibleFrom='sm' p={0}>
+
+                    <Center>
+                        <UserDropdown isNavbar />
+                    </Center>
+
                 </AppShell.Section>
             </AppShell.Navbar>
+
+
+
+
+
             <AppShell.Main>
                 <Outlet />
             </AppShell.Main>

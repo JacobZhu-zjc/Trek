@@ -1,0 +1,39 @@
+{
+    "s3Files": [
+        {
+            "key": "picture 1",
+            "bucket": "cpsc-455-trek-users",
+            "url": "https://cpsc-455-trek.s3.us-east-2.amazonaws.com/Screenshot+2024-07-13+at+6.21.06+PM.png",
+            "uploaded_at": "2024-07-13T18:21:06Z",
+            "uploaded_by": "123e4567-e89b-12d3-a456-426614174000"
+        },
+        {
+            "key": "picture 2",
+            "bucket": "cpsc-455-trek-users",
+            "url": "https://cpsc-455-trek.s3.us-east-2.amazonaws.com/Screenshot+2024-07-13+at+6.21.28+PM.png",
+            "uploaded_at": "2024-07-13T18:21:06Z",
+            "uploaded_by": "123e4567-e89b-12d3-a456-426614174000"
+        },
+        {
+            "key": "picture 3",
+            "bucket": "cpsc-455-trek-users",
+            "url": "https://cpsc-455-trek.s3.us-east-2.amazonaws.com/Screenshot+2024-07-13+at+6.21.53+PM.png",
+            "uploaded_at": "2024-07-13T18:21:06Z",
+            "uploaded_by": "123e4567-e89b-12d3-a456-426614174000"
+        },
+        {
+            "key": "picture 4",
+            "bucket": "cpsc-455-trek-users",
+            "url": "https://cpsc-455-trek.s3.us-east-2.amazonaws.com/Screenshot+2024-07-13+at+6.22.02+PM.png",
+            "uploaded_at": "2024-07-13T18:21:06Z",
+            "uploaded_by": "123e4567-e89b-12d3-a456-426614174001"
+        },
+        {
+            "key": "picture 5",
+            "bucket": "cpsc-455-trek-users",
+            "url": "https://cpsc-455-trek.s3.us-east-2.amazonaws.com/Screenshot+2024-07-13+at+6.22.14+PM.png",
+            "uploaded_at": "2024-07-13T18:21:06Z",
+            "uploaded_by": "123e4567-e89b-12d3-a456-426614174001"
+        }
+    ]
+}

@@ -3,24 +3,19 @@
  */
 import { UnstyledButton, Group, Avatar, Text } from '@mantine/core';
 import classes from './UserButton.module.css';
-import {useDispatch, useSelector} from "react-redux";
-import {useEffect} from "react";
-import {getAuthdUserAsync} from "../../../redux/users/thunks.ts";
-import {AppDispatch} from '../../../redux/store.ts';
+import {useSelector} from "react-redux";
 
 interface user {
     name: string,
     email: string,
-    image: {
-        picture: string,
-    }
+    image: string,
 }
 
 export function UserButton() {
-    const dispatch = useDispatch<AppDispatch>();
-    useEffect(() => {
-        dispatch(getAuthdUserAsync());
-    }, []);
+    // const dispatch = useDispatch<AppDispatch>();
+    // useEffect(() => {
+    //     dispatch(getAuthdUserAsync());
+    // }, []);
 
     const profile = useSelector((state: {user: {self: user}}) => state.user.self);
     // console.log(profile);
@@ -28,7 +23,7 @@ export function UserButton() {
         <UnstyledButton className={classes.user}>
             <Group>
                 <Avatar
-                    src={profile.image && profile.image.picture}
+                    src={profile.image}
                     radius="xl"
                 />
 

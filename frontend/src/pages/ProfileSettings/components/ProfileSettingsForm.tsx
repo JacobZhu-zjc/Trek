@@ -3,15 +3,38 @@ import {useForm} from '@mantine/form';
 import {useDispatch, useSelector} from "react-redux";
 import {useEffect, useState} from "react";
 import {getAuthdUserAsync, putUserAsync} from "../../../redux/users/thunks.ts";
-import {User} from "../../../interfaces.ts";
+import {User} from "@trek-types/user.ts";
 import {AppDispatch} from '../../../redux/store.ts';
+import {useAuth0} from "@auth0/auth0-react";
 
 const ProfileSettingsForm = () => {
     const dispatch = useDispatch<AppDispatch>();
+    const {user, getAccessTokenSilently, isAuthenticated} = useAuth0()
+    const [subtoken, setSubToken] = useState("");
+    if (user && user.sub && subtoken !== user.sub) {
+        setSubToken(user?.sub);
+    }
 
     useEffect(() => {
-        dispatch(getAuthdUserAsync());
-    }, []);
+        try {
+            (async () => {
+                try {
+                    if (isAuthenticated) {
+                        const token = await getAccessTokenSilently();
+                        const name = user?.name ?? "";
+                        const email= user?.email ?? "";
+                        const picture = user?.picture ?? "";
+                        dispatch(getAuthdUserAsync({token, subtoken, name: name, email: email, picture: picture}));
+                    }
+
+                } catch (err) {
+                    console.error("access token error occurred: " + err);
+                }
+            })();
+        } catch (err) {
+            console.error("Error occurred: " + err);
+        }
+    }, [dispatch, getAccessTokenSilently, subtoken]);
 
     const profile = useSelector((state: {user: {self: User}}) => state.user.self);
     const [interests, setInterests] = useState(profile.interests);
@@ -29,15 +52,14 @@ const ProfileSettingsForm = () => {
             youtube: "",
         },
     });
-
     useEffect(() => {
         if (profile) {
             form.setValues({
-                name: profile.name || '',
-                bio: profile.description || '',
-                home: profile.home || '',
-                currentlyAt: profile.currentlyAt || '',
-                facebook: getSocialLink(profile, 'facebewk') || '',
+                name: profile.name ?? '',
+                bio: profile.description ?? '',
+                home: profile.home ?? '',
+                currentlyAt: profile.currentlyAt ?? '',
+                facebook: getSocialLink(profile, 'facebook') || '',
                 instagram: getSocialLink(profile, 'insta') || '',
                 twitter: getSocialLink(profile, 'twitter') || '',
                 youtube: getSocialLink(profile, 'youtube') || '',
@@ -53,18 +75,19 @@ const ProfileSettingsForm = () => {
         return link ? link.url : undefined;
     }
 
-    function handleSubmit(values: {name: string, home: string, currentlyAt: string, bio: string, facebook: string, twitter: string, youtube: string, instagram: string}) {
+    async function handleSubmit(values: {name: string, home: string, currentlyAt: string, bio: string, facebook: string, twitter: string, youtube: string, instagram: string}) {
+        const sub = user?.sub ?? "";
         const links = [];
         if (values.facebook.trim() !== '') links.push({ type: 'facebewk', url: values.facebook});
         if (values.instagram.trim() !== '') links.push({ type: 'insta', url: values.instagram});
         if (values.twitter.trim() !== '') links.push({ type: 'twitter', url: values.twitter});
         if (values.youtube.trim() !== '') links.push({ type: 'youtube', url: values.youtube});
-        dispatch(putUserAsync({...profile, name:values.name, home:values.home, currentlyAt:values.currentlyAt, description:values.bio, links:links, interests:interests}));
+        dispatch(putUserAsync({...profile, sub: sub, name:values.name, home:values.home, currentlyAt:values.currentlyAt, description:values.bio, links:links, interests:interests}));
     }
 
     return (
         <>
-            <form onSubmit={form.onSubmit((values) => handleSubmit(values))}>
+            <form onSubmit={form.onSubmit(handleSubmit)} >
 
                 <Container px={0} mb={'50px'} mr={'50px'}>
                     <Title order={4} mb={'15px'}>Basic Information</Title>
