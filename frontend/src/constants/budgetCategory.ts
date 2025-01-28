@@ -1,4 +1,4 @@
-import { IconBuildingCarousel, IconHome, IconToolsKitchen3, IconTrain, IconGift, IconCash } from "@tabler/icons-react";
+import {IconBuildingCarousel, IconHome, IconToolsKitchen3, IconTrain, IconGift, IconCash} from "@tabler/icons-react";
 
 export const categoryIconMap = {
     "Activities": IconBuildingCarousel,

@@ -1,5 +1,5 @@
-import { Box, Flex } from "@mantine/core";
-import { useEffect } from "react";
+import {Box, Flex} from "@mantine/core";
+import {useEffect} from "react";
 import CreateTripForm from "./components/CreateTripForm";
 
 function CreateTripApp() {
@@ -14,7 +14,7 @@ function CreateTripApp() {
         <>
             <Flex h={"100vh"} justify={"center"} align={"flex-start"}>
                 <Box miw={300} w={"60%"} mt={50}>
-                    <CreateTripForm />
+                    <CreateTripForm/>
                 </Box>
             </Flex>
         </>

@@ -2,7 +2,7 @@
  * Destinations Examples
  */
 
-import { Address, Area, Place } from "../destination";
+import {Address, Area, Place, Destination} from "../destination";
 
 
 export const p0: Place = {
@@ -327,3 +327,51 @@ export const p13: Place = {
         poi_category: "Landmark"
     }
 };
+
+export const d1: Destination = {
+    _id: "66b1fa25c14e5658ba7f3e6f",
+    geometry: {
+        type: "Point",
+        coordinates: [-123.15692, 49.26404]
+    },
+    properties: {
+        mapbox_id: "",
+        destination_type: "poi",
+        name: "Glitch Retro Arcade Bar",
+        address: "",
+        display_name: "Glitch Retro Arcade Bar, 2287, West Broadway, Kitsilano, Vancouver, Metro Vancouver Regional District, British Columbia, V6K, Canada"
+    },
+    type: "Feature"
+}
+
+export const d2: Destination = {
+    _id: "66b211d9370fa472faa50407",
+    geometry: {
+        type: "Point",
+        coordinates: [-123.114728, 49.2832641]
+    },
+    properties: {
+        mapbox_id: "",
+        destination_type: "poi",
+        name: "Levels Nightclub",
+        address: "",
+        display_name: "Levels Nightclub, 560, Seymour Street, Gastown, Downtown, Vancouver, Metro Vancouver Regional District, British Columbia, V6B 0A8, Canada"
+    },
+    type: "Feature"
+}
+
+export const d3: Destination = {
+    _id: "66b211ec370fa472faa5040e",
+    geometry: {
+        type: "Point",
+        coordinates: [-123.1266436, 49.2770494]
+    },
+    properties: {
+        mapbox_id: "",
+        destination_type: "poi",
+        name: "Twelve West",
+        address: "",
+        display_name: "Twelve West, 1219, Granville Street, Yaletown, Downtown, Vancouver, Metro Vancouver Regional District, British Columbia, V6Z, Canada"
+    },
+    type: "Feature"
+}

@@ -1,117 +1,147 @@
 {
-    "_id": "0e971cb5-af41-4e39-a531-cb30309203e5",
-    "name": "Vancouver Adventure",
-    "desc": "An exciting trip exploring the best spots in Vancouver.",
-    "dest": [
-      "66962dd15b1695115c94c2ef",
-      "66962e005b1695115c94c349",
-      "66962f1c5b1695115c94c523",
-      "66962e465b1695115c94c3fd"
-    ],
-    "budget": {
-      "baseCurrency": "CAD",
-      "tripBudgetCategoriesGroupCost": [
-        { "category": "Activities", "value": 500 },
-        { "category": "Accommodation", "value": 1000 },
-        { "category": "Food and Restaurants", "value": 300 },
-        { "category": "Transportation", "value": 200 },
-        { "category": "Gifts and Souvenirs", "value": 100 },
-        { "category": "Other", "value": 50 }
-      ],
-      "tripTotalGroupCost": 2150,
-      "tripTotalPayments": 2150,
-      "tripMemberPayments": [
-        { "memberId": "123e4567-e89b-12d3-a456-426614174000", "memberName": "Gregor Kiczales", "value": 1000 },
-        { "memberId": "123e4567-e89b-12d3-a456-426614174001", "memberName": "Matthew Kang", "value": 750 },
-        { "memberId": "123e4567-e89b-12d3-a456-426614174002", "memberName": "William Xiao", "value": 400 }
-      ]
-    },
-    "expenditures": [],
-    "date": {
-      "start": "2024-07-01T00:00:00Z",
-      "end": "2024-07-05T00:00:00Z"
-    },
-    "todo": [],
-    "url": "http://example.com/vancouver-adventure",
-    "owner": "123e4567-e89b-12d3-a456-426614174000",
-    "members": [
-      "123e4567-e89b-12d3-a456-426614174000",
-      "123e4567-e89b-12d3-a456-426614174001",
-      "123e4567-e89b-12d3-a456-426614174002"
-    ],
-    "private": true,
-    "trip_items": [
+  "_id": "0e971cb5-af41-4e39-a531-cb30309203e5",
+  "name": "Vancouver Adventure",
+  "desc": "An exciting trip exploring the best spots in Vancouver.",
+  "dest": [
+    "66962dd15b1695115c94c2ef",
+    "66962e005b1695115c94c349",
+    "66962f1c5b1695115c94c523",
+    "66962e465b1695115c94c3fd"
+  ],
+  "budget": {
+    "baseCurrency": "CAD",
+    "tripBudgetCategoriesGroupCost": [
       {
-        "item_type": "destinations",
-        "item_id": "669377eea275aec7c24a6209",
-        "index": 0,
-        "date": {
-          "start": "2024-07-01T10:00:00Z",
-          "end": "2024-07-01T12:00:00Z"
-        },
-        "duration": 7200,
-        "budget": {
-          "currency": "CAD",
-          "category": "Activities",
-          "totalEstimatedCost": 100,
-          "totalCost": 100,
-          "totalPaidCost": 100,
-          "membersBudget": [
-            {
-              "member_id": "123e4567-e89b-12d3-a456-426614174000",
-              "estimated_cost": 50,
-              "cost": 50,
-              "paid_cost": 50,
-              "payment_date": "2024-06-30T00:00:00Z",
-              "payment_base_currency_amount": 50
-            },
-            {
-              "member_id": "123e4567-e89b-12d3-a456-426614174001",
-              "estimated_cost": 50,
-              "cost": 50,
-              "paid_cost": 50,
-              "payment_date": "2024-06-30T00:00:00Z",
-              "payment_base_currency_amount": 50
-            }
-          ]
-        },
-        "notes": "Hello"
+        "category": "Activities",
+        "value": 500
       },
       {
-        "item_type": "destinations",
-        "item_id": "66962f1c5b1695115c94c523",
-        "index": 1,
-        "date": {
-          "start": "2024-07-01T14:00:00Z",
-          "end": "2024-07-01T16:00:00Z"
-        },
-        "duration": 7200,
-        "budget": {
-          "currency": "CAD",
-          "category": "Activities",
-          "totalEstimatedCost": 100,
-          "totalCost": 100,
-          "totalPaidCost": 100,
-          "membersBudget": [
-            {
-              "member_id": "123e4567-e89b-12d3-a456-426614174001",
-              "estimated_cost": 50,
-              "cost": 50,
-              "paid_cost": 50,
-              "payment_date": "2024-06-30T00:00:00Z",
-              "payment_base_currency_amount": 50
-            },
-            {
-              "member_id": "123e4567-e89b-12d3-a456-426614174002",
-              "estimated_cost": 50,
-              "cost": 50,
-              "paid_cost": 50,
-              "payment_date": "2024-06-30T00:00:00Z",
-              "payment_base_currency_amount": 50
-            }
-          ]
-        },
-        "notes": ""
+        "category": "Accommodation",
+        "value": 1000
+      },
+      {
+        "category": "Food and Restaurants",
+        "value": 300
+      },
+      {
+        "category": "Transportation",
+        "value": 200
+      },
+      {
+        "category": "Gifts and Souvenirs",
+        "value": 100
+      },
+      {
+        "category": "Other",
+        "value": 50
+      }
+    ],
+    "tripTotalGroupCost": 2150,
+    "tripTotalPayments": 2150,
+    "tripMemberPayments": [
+      {
+        "memberId": "123e4567-e89b-12d3-a456-426614174000",
+        "memberName": "Gregor Kiczales",
+        "value": 1000
+      },
+      {
+        "memberId": "123e4567-e89b-12d3-a456-426614174001",
+        "memberName": "Matthew Kang",
+        "value": 750
+      },
+      {
+        "memberId": "123e4567-e89b-12d3-a456-426614174002",
+        "memberName": "William Xiao",
+        "value": 400
       }
     ]
-  }
+  },
+  "expenditures": [],
+  "date": {
+    "start": "2024-07-01T00:00:00Z",
+    "end": "2024-07-05T00:00:00Z"
+  },
+  "todo": [],
+  "url": "http://example.com/vancouver-adventure",
+  "owner": "123e4567-e89b-12d3-a456-426614174000",
+  "members": [
+    "123e4567-e89b-12d3-a456-426614174000",
+    "123e4567-e89b-12d3-a456-426614174001",
+    "123e4567-e89b-12d3-a456-426614174002"
+  ],
+  "private": true,
+  "trip_items": [
+    {
+      "item_type": "destinations",
+      "item_id": "669377eea275aec7c24a6209",
+      "index": 0,
+      "date": {
+        "start": "2024-07-01T10:00:00Z",
+        "end": "2024-07-01T12:00:00Z"
+      },
+      "duration": 7200,
+      "budget": {
+        "currency": "CAD",
+        "category": "Activities",
+        "totalEstimatedCost": 100,
+        "totalCost": 100,
+        "totalPaidCost": 100,
+        "membersBudget": [
+          {
+            "member_id": "123e4567-e89b-12d3-a456-426614174000",
+            "estimated_cost": 50,
+            "cost": 50,
+            "paid_cost": 50,
+            "payment_date": "2024-06-30T00:00:00Z",
+            "payment_base_currency_amount": 50
+          },
+          {
+            "member_id": "123e4567-e89b-12d3-a456-426614174001",
+            "estimated_cost": 50,
+            "cost": 50,
+            "paid_cost": 50,
+            "payment_date": "2024-06-30T00:00:00Z",
+            "payment_base_currency_amount": 50
+          }
+        ]
+      },
+      "notes": "Hello"
+    },
+    {
+      "item_type": "destinations",
+      "item_id": "66962f1c5b1695115c94c523",
+      "index": 1,
+      "date": {
+        "start": "2024-07-01T14:00:00Z",
+        "end": "2024-07-01T16:00:00Z"
+      },
+      "duration": 7200,
+      "budget": {
+        "currency": "CAD",
+        "category": "Activities",
+        "totalEstimatedCost": 100,
+        "totalCost": 100,
+        "totalPaidCost": 100,
+        "membersBudget": [
+          {
+            "member_id": "123e4567-e89b-12d3-a456-426614174001",
+            "estimated_cost": 50,
+            "cost": 50,
+            "paid_cost": 50,
+            "payment_date": "2024-06-30T00:00:00Z",
+            "payment_base_currency_amount": 50
+          },
+          {
+            "member_id": "123e4567-e89b-12d3-a456-426614174002",
+            "estimated_cost": 50,
+            "cost": 50,
+            "paid_cost": 50,
+            "payment_date": "2024-06-30T00:00:00Z",
+            "payment_base_currency_amount": 50
+          }
+        ]
+      },
+      "notes": ""
+    }
+  ]
+}

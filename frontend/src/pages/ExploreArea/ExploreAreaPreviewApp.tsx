@@ -1,63 +1,58 @@
 /**
  * @file ExploreAreaPreviewApp.tsx
- * @note This is a work-in-progress
  * @author Matthew Kang
  */
 
-import { useEffect } from "react";
-import { Hero } from "./components/hero";
-import { Text, Grid, Skeleton, Title, Button, Stack, Box } from "@mantine/core";
-import { Carousel } from "@mantine/carousel";
+import {Hero} from "./components/hero";
+import {Box, Button, Grid, Skeleton, Stack, Text, Title} from "@mantine/core";
+import {Carousel} from "@mantine/carousel";
 import TripCard from "@components/trip-card/index";
-import { ArticleCardCarousel } from "./components/article-card-carousel";
-import { useLivePreview } from '@payloadcms/live-preview-react';
-import { ExploreWithDestination } from "./ExploreAreaApp";
-
+import {ArticleCardCarousel} from "./components/article-card-carousel";
+import {useLivePreview} from '@payloadcms/live-preview-react';
+import {ExploreWithDestination} from "./ExploreAreaApp";
 
 
 const AreaGuidePreviewApp: React.FC = () => {
 
-    const tempExploreData: ExploreWithDestination =
-    {
-        "id": "temp-for-explore",
-        "destination": {
-            "id": "",
-            "type": "Feature",
-            "properties": {
-                "wikipedia_url": "",
-                "destination_type": "area",
-                "name": "",
-            },
-            "createdAt": "",
-            "updatedAt": ""
-        },
-        "description": "",
-        "createdAt": "",
-        "updatedAt": "",
-        "slug": ""
-    }
+    const uri = import.meta.env.PROD ? window.location.origin : "http://localhost:3000";
 
-    const { data } = useLivePreview<ExploreWithDestination>({
+    const tempExploreData: ExploreWithDestination =
+        {
+            "id": "temp-for-explore",
+            "destination": {
+                "id": "",
+                "type": "Feature",
+                "properties": {
+                    "wikipedia_url": "",
+                    "destination_type": "area",
+                    "name": "",
+                },
+                "createdAt": "",
+                "updatedAt": ""
+            },
+            "description": "",
+            "createdAt": "",
+            "updatedAt": "",
+            "slug": ""
+        }
+
+    const {data} = useLivePreview<ExploreWithDestination>({
         initialData: tempExploreData,
-        serverURL: import.meta.env.PROD ? window.location.origin : "http://localhost:3000/",
+        serverURL: uri,
         depth: 4,
     });
-
-    useEffect(() => {
-        console.log(data);
-    }, [data]);
 
 
     return (
         <>
             <Stack align="center">
 
-                <Hero name={data.destination.properties.name} main_photo={data.destination.properties.main_photo} />
+                <Hero name={data.destination.properties.name} main_photo={data.destination.properties.main_photo}/>
 
                 <Box maw={1000}>
                     <Box my={100}>
                         <Grid gutter={80}>
-                            <Grid.Col span={{ base: 12, md: 5 }}>
+                            <Grid.Col span={{base: 12, md: 5}}>
                                 <Title order={2} mb={5}>
                                     {data.destination.properties.description}
                                     {/* A Hidden Gem on Vancouver Island */}
@@ -69,7 +64,7 @@ const AreaGuidePreviewApp: React.FC = () => {
 
                                 <Button
                                     variant="gradient"
-                                    gradient={{ deg: 133, from: 'green', to: 'lime' }}
+                                    gradient={{deg: 133, from: 'green', to: 'lime'}}
                                     size="lg"
                                     radius="md"
                                     mt="xl"
@@ -77,8 +72,8 @@ const AreaGuidePreviewApp: React.FC = () => {
                                     Start Planning Trip
                                 </Button>
                             </Grid.Col>
-                            <Grid.Col span={{ base: 12, md: 7 }}>
-                                <Skeleton height={"100%"} />
+                            <Grid.Col span={{base: 12, md: 7}}>
+                                <Skeleton height={"100%"}/>
                             </Grid.Col>
                         </Grid>
                     </Box>
@@ -86,7 +81,7 @@ const AreaGuidePreviewApp: React.FC = () => {
 
                     <Box my={100}>
                         <Title order={2} mb={20}>{data.destination.properties.name} Travel Guides</Title>
-                        <ArticleCardCarousel />
+                        <ArticleCardCarousel/>
                     </Box>
 
 
@@ -99,18 +94,18 @@ const AreaGuidePreviewApp: React.FC = () => {
                         <Title order={2} mb={20}>Explore Trips From The Trek Community</Title>
                         <Carousel
                             withIndicators
-                            slideSize={{ base: '100%', sm: '50%', md: `${100 / 4}%` }}
-                            slideGap={{ base: 0, sm: 'md' }}
+                            slideSize={{base: '100%', sm: '50%', md: `${100 / 4}%`}}
+                            slideGap={{base: 0, sm: 'md'}}
                             loop
                             align="start"
                         >
-                            <Carousel.Slide> <TripCard /> </Carousel.Slide>
-                            <Carousel.Slide> <TripCard /> </Carousel.Slide>
-                            <Carousel.Slide> <TripCard /> </Carousel.Slide>
-                            <Carousel.Slide> <TripCard /> </Carousel.Slide>
-                            <Carousel.Slide> <TripCard /> </Carousel.Slide>
-                            <Carousel.Slide> <TripCard /> </Carousel.Slide>
-                            <Carousel.Slide> <TripCard /> </Carousel.Slide>
+                            <Carousel.Slide> <TripCard/> </Carousel.Slide>
+                            <Carousel.Slide> <TripCard/> </Carousel.Slide>
+                            <Carousel.Slide> <TripCard/> </Carousel.Slide>
+                            <Carousel.Slide> <TripCard/> </Carousel.Slide>
+                            <Carousel.Slide> <TripCard/> </Carousel.Slide>
+                            <Carousel.Slide> <TripCard/> </Carousel.Slide>
+                            <Carousel.Slide> <TripCard/> </Carousel.Slide>
                             {/* ...other slides */}
                         </Carousel>
 

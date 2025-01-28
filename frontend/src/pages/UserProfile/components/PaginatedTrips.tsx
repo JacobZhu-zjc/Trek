@@ -1,67 +1,68 @@
-import { Button, Center, Container, Flex, Pagination } from "@mantine/core";
+import {Button, Center, Container, Flex, Pagination} from "@mantine/core";
 import AltTripCard from "../../../components/AltTripCard";
-import { Link, useLocation } from "react-router-dom";
-import {useEffect, useState, useContext} from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { getTripsAsync } from "../../../redux/trips/thunks";
-import { useAuth0 } from "@auth0/auth0-react";
-import { AppDispatch } from "../../../redux/store";
+import {Link, useLocation} from "react-router-dom";
+import {useContext, useEffect, useState} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {getTripsPaginatedAsync} from "../../../redux/trips/thunks";
+import {useAuth0} from "@auth0/auth0-react";
+import {AppDispatch} from "../../../redux/store";
 import {getAuthdUserAsync} from "../../../redux/users/thunks.ts";
 import {UserContext} from "../../../App.tsx";
 import {State} from "@trek-types/redux.ts";
 import {resetStatus} from "../../../redux/trips/reducers.ts";
+import {Notifications} from "@mantine/notifications";
+import {useMediaQuery} from "@mantine/hooks";
 
 let attempts = 0;
 
 const PaginatedTrips = () => {
     const [tripCards, setTripCards] = useState<JSX.Element[]>([]);
-    const {user, isAuthenticated} = useAuth0();
-    const basicUUIDS = useSelector((state: State) => state.trip.basicUUIDS);
-    console.log("trips is " + JSON.stringify(basicUUIDS));
-    const dispatch = useDispatch<AppDispatch>();
     let altTrips: JSX.Element[] = [];
+    const dispatch = useDispatch<AppDispatch>();
+    const basicUUIDS = useSelector((state: State) => state.trip.basicUUIDS);
+    const totalPages = useSelector((state: State) => state.trip.totalPages);
+    const [activePage, setPage] = useState(0);
+    const {user, isAuthenticated} = useAuth0();
     const userContext = useContext(UserContext);
-    const status = useSelector((state: {trip: {status: string}}) => state.trip.status);
+    const status = useSelector((state: { trip: { status: string } }) => state.trip.status);
     const location = useLocation();
+    const isPhoneScreen = useMediaQuery('(max-width: 600px)');
 
     useEffect(() => {
         attempts = 0;
         dispatch(resetStatus());
-    }, [location, dispatch]);
+    }, [location, dispatch, activePage]);
 
     useEffect(() => {
-        console.log("authenticated: " + isAuthenticated);
-            (async () => {
-                // const token = await getAccessTokenSilently();
-                const token = userContext.token;
-                // const subtoken = user?.sub ?? "";
-                const subtoken = userContext.subtoken;
-                const name = user?.name ?? "";
-                const email = user?.email?? "";
-                const picture = user?.picture ?? "";
+        (async () => {
+            const token = userContext.token;
+            const subtoken = userContext.subtoken;
+            const name = user?.name ?? "";
+            const email = user?.email ?? "";
+            const picture = user?.picture ?? "";
 
-                if (isAuthenticated && attempts < 10) {
-                  attempts++;
-                  dispatch(getAuthdUserAsync({ token, subtoken, name, email, picture }));
-
-              if (user?.sub && status != "fulfilled" && attempts < 10) {
+            if (isAuthenticated && attempts < 10) {
                 attempts++;
-                console.log("PaginatedTrips - Subtoken: " + subtoken);
-                dispatch(getTripsAsync({ token: token }));
-              }
+                dispatch(getAuthdUserAsync({token, subtoken, name, email, picture}));
+
+                if (user?.sub && status != "fulfilled" && attempts < 10) {
+                    attempts++;
+                    dispatch(getTripsPaginatedAsync({"token": token, "pageNum": activePage}));
+                }
             }
-            if(basicUUIDS) {
+            if (basicUUIDS) {
                 altTrips = [];
                 for (const trip of basicUUIDS) {
-                    altTrips.push(<AltTripCard uuid={trip} />)
+                    altTrips.push(<AltTripCard uuid={trip}/>)
                 }
                 setTripCards(altTrips);
             }
         })();
-    }, [basicUUIDS, userContext, status, dispatch, isAuthenticated]);
+    }, [basicUUIDS, userContext, status, dispatch, isAuthenticated, activePage]);
 
     return (
         <>
+            <Notifications limit={1}/>
             <Container mt={100}>
                 <Flex justify="flex-end" mb={10}>
                     <Link to={"/create-trip"}>
@@ -70,23 +71,18 @@ const PaginatedTrips = () => {
                 </Flex>
                 <Flex
                     gap="sm"
-                    justify="flex-start"
+                    justify={isPhoneScreen ? "center" : "flex-start"}
                     align="flex-start"
                     direction="row"
                     wrap="wrap"
                     maw={"100%"}
                     mb={"md"}
                 >
-                    <div>
-                        {tripCards.map(altTrip => altTrip)}
-
-                    </div>
-                    {/* <div style={{ maxWidth: "300px" }}>
-                        <AltTripCard />
-                    </div> */}
+                    {tripCards.map(altTrip => altTrip)}
                 </Flex>
                 <Center>
-                    <Pagination total={10} color="green" />
+                    <Pagination total={totalPages} value={activePage + 1} onChange={value => setPage(value - 1)}
+                                color="green"/>
                 </Center>
             </Container>
 

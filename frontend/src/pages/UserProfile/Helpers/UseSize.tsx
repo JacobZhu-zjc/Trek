@@ -14,6 +14,7 @@ export default function useSize() {
         function windowSizeHandler() {
             setWindowSize({h: window.innerHeight, w: window.innerWidth});
         }
+
         window.addEventListener("resize", windowSizeHandler);
 
         return () => {

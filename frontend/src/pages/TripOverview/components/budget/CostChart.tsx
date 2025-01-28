@@ -1,7 +1,7 @@
-import { Group, Text, List, rem, ThemeIcon, Title, Tooltip } from '@mantine/core';
-import { DonutChart } from '@mantine/charts';
-import { BudgetCategory } from '@trek-types/trip.ts';
-import { getColorForCategory, getIconForCategory } from '@utils/budget.ts';
+import {Group, List, rem, Text, ThemeIcon, Title, Tooltip} from '@mantine/core';
+import {DonutChart} from '@mantine/charts';
+import {BudgetCategory} from '@trek-types/trip.ts';
+import {getColorForCategory, getIconForCategory} from '@utils/budget.ts';
 
 export interface CostChartProps {
     chartName: string;
@@ -13,7 +13,7 @@ export interface CostChartProps {
     }[];
 }
 
-const CostChart = ({ chartName, legendTitle, data, currency }: CostChartProps) => {
+const CostChart = ({chartName, legendTitle, data, currency}: CostChartProps) => {
 
     const chartData = data && data.map((item) => {
         return {
@@ -38,10 +38,10 @@ const CostChart = ({ chartName, legendTitle, data, currency }: CostChartProps) =
                 key={name}
                 icon={<Tooltip label={name}>
                     <ThemeIcon color={getColorForCategory(item.name)} size={24} radius="xl">
-                        <CategoryIcon style={{ width: rem(16), height: rem(16) }} />
+                        <CategoryIcon style={{width: rem(16), height: rem(16)}}/>
                     </ThemeIcon>
                 </Tooltip>}>
-                <div style={{ display: "flex", justifyContent: "space-between" }}>
+                <div style={{display: "flex", justifyContent: "space-between"}}>
                     <Text>{item.value.toFixed(2) + " " + currency}</Text>
                 </div>
             </List.Item>
@@ -51,7 +51,8 @@ const CostChart = ({ chartName, legendTitle, data, currency }: CostChartProps) =
     return (
         <Group gap={50}>
             <div>
-                <DonutChart data={chartData} chartLabel={`${chartName}`} withTooltip={false} mx="auto" pieProps={{ isAnimationActive: true, dataKey: "value" }} />
+                <DonutChart data={chartData} chartLabel={`${chartName}`} withTooltip={false} mx="auto"
+                            pieProps={{isAnimationActive: true, dataKey: "value"}}/>
             </div>
 
             <div>

@@ -1,9 +1,22 @@
 import payload from "payload";
-import { Trip } from "../../../types/tripTypes";
-import { S3FileModel } from "../../mongodb/schemas/s3FileModel";
-import { isDeepStrictEqual } from "util";
-import { userModel } from "../../mongodb/schemas/userModel";
-import { Where } from "payload/types";
+import {S3FileModel} from "../../mongodb/schemas/s3FileModel";
+import {isDeepStrictEqual} from "util";
+import {userModel} from "../../mongodb/schemas/userModel";
+
+interface Address {
+    tourism?: string,
+    house_number?: string,
+    road?: string,
+    quarter?: string,
+    suburb?: string,
+    county?: string,
+    city?: string,
+    state?: string,
+    "ISO3116-2-lv14"?: string,
+    postcode?: string,
+    country?: string,
+    country_code?: string,
+}
 
 // Function to detect if any of the provided props in "newData" have a different value than those in "originalData"
 export const isEdited = (newData: any, originalData: any, fields: string[]): boolean => {
@@ -16,7 +29,7 @@ export const isEdited = (newData: any, originalData: any, fields: string[]): boo
 };
 
 // Helper function for object and array equality
-const isEqual = (newData: any, originalData: any): boolean => {
+export const isEqual = (newData: any, originalData: any): boolean => {
     try {
         if (Array.isArray(newData) && Array.isArray(originalData)) {
             for (let i = 0; i < Math.max(newData.length, originalData.length); i++) {
@@ -46,8 +59,8 @@ const isEqual = (newData: any, originalData: any): boolean => {
 
 // Helper function to convert MongoDB objects into normal JS objects, if the input is a MongoDB object
 const reduceMongoObject = (data: any): any => {
-    if ({ ...data }.hasOwnProperty("_doc")) {
-        return { ...data }.hasOwnProperty("_doc");
+    if ({...data}.hasOwnProperty("_doc")) {
+        return {...data}.hasOwnProperty("_doc");
     }
     return data;
 };
@@ -66,7 +79,9 @@ export const stringifyUUID = (data: any): any => {
 export const removeFields = (data: any, fields: string[]): any => {
     let toReturn = stringifyUUID(data);
     for (const prop of fields) {
-        delete toReturn[prop];
+        if (toReturn[prop]) {
+            delete toReturn[prop];
+        }
     }
     return toReturn;
 }
@@ -74,39 +89,87 @@ export const removeFields = (data: any, fields: string[]): any => {
 // Function to process trip data from MongoDB for use in frontend
 export const formatTrips = async (data: any): Promise<any> => {
     try {
-        // Replacing the "mainImage" field with the corresponding URL
-        const mainImage: any = await S3FileModel.findById(data["mainImage"]);
-        if (mainImage === null) {
-            console.error("mainImage for trip not found: ObjectID = " + data["mainImage"]);
+        // Adding a field called "mainImageURL", mapping the "mainImage" field to the corresponding URL
+        if (data.hasOwnProperty("mainImage")) {
+            const mainImage: any = await S3FileModel.findById(data["mainImage"]);
+            if (mainImage === null) {
+                console.error("mainImage for trip not found: ObjectID = " + data["mainImage"]);
+            } else {
+                data["mainImageURL"] = mainImage["url"];
+            }
         } else {
-            data["mainImage"] = mainImage["url"];
+            data["mainImageURL"] = "";
         }
 
-        // Replacing each ObjectID in the "photos" field with their corresponding S3Files' URLs
-        const photos = [];
-        for (const objectid of data["photos"]) {
-            const photo = await S3FileModel.findById(objectid);
-            if (photo === null) {
-                console.error("photo for trip not found: ObjectID = " + objectid);
-            } else {
-                photos.push(photo["url"]);
+        // Adding a field called "photoURLS", mapping each ObjectID in the "photos" field to their corresponding S3Files' URLs
+        if (data.hasOwnProperty("photos")) {
+            const photos = [];
+            for (const objectid of data["photos"]) {
+                const photo = await S3FileModel.findById(objectid);
+                if (photo === null) {
+                    console.error("photo for trip not found: ObjectID = " + objectid);
+                } else {
+                    photos.push(photo["url"]);
+                }
+            }
+            data["photoURLs"] = photos;
+        } else {
+            data["photoURLs"] = [];
+        }
+
+        if (data.hasOwnProperty("owner")) {
+            data["ownerUser"] = await formatUsers(stringifyUUID(await getUserData(data.owner)));
+        }
+
+        if (data.hasOwnProperty("members")) {
+            data["nonOwnerUsers"] = [];
+            for (const member of data.members) {
+                const userData = await getUserData(member);
+                if (userData) {
+                    data["nonOwnerUsers"].push(await formatUsers(stringifyUUID(userData)));
+                }
             }
         }
-        data["photos"] = photos;
 
-        // Returning early if the "areas" field doesn't exist
-        if (!data.hasOwnProperty("areas")) {
-            return data;
+        if (data.hasOwnProperty("areas")) {
+            // Adding a field called "areasNames", which maps each area's ObjectId to its corresponding destination's name
+            data["areaNames"] = await formatDestinations(data.areas);
         }
 
-        data.owner = await getUserData(data.owner);
 
-        data.members = await Promise.all(data.members.map(async (member: any) => {
-            return await getUserData(member);
-        }));
-        
-        // Replacing each ObjectID in the "areas" field with the corresponding Destination's name
-        data.areas = await formatDestinations(data.areas);
+        // Fetching destinations from their ideas to return
+        const destObjs = [];
+        const destIDs = data.dest;
+        for (const destID of destIDs) {
+            const query = {
+                '_id': {
+                    equals: destID
+                },
+            }
+            const destination = await payload.find<'destinations'>({
+                collection: 'destinations',
+                where: query,
+                depth: 4
+            });
+            if ((destination.docs as any).length > 0) {
+                destObjs.push(destination.docs[0]);
+            }
+        }
+        data["destObjs"] = destObjs;
+
+        // Fetching starting location as a destination
+        const startDestQuery = await payload.find<'destinations'>({
+            collection: 'destinations',
+            where: {
+                '_id': {
+                    equals: data.start
+                }
+            }
+        });
+        if (((startDestQuery.docs) as any).length > 0) {
+            data["startObj"] = startDestQuery.docs[0];
+        }
+
     } catch (error: any) {
         console.error("Error processing trip data for response: " + error);
     }
@@ -117,25 +180,32 @@ export const formatTrips = async (data: any): Promise<any> => {
 // Function to process user data from MongoDB for use in frontend
 export const formatUsers = async (data: any): Promise<any> => {
     try {
-        // Replacing the "uploadedProfilePicture" field with the corresponding URL
+        // Adding a "uploadedProfilePictureURL" field, mapping the value of "uploadedProfilePicture" to its corresponding URL
         if (data.hasOwnProperty("uploadedProfilePicture")) {
+            if (data["uploadedProfilePicture"] === null) {
+                // User wants to remove profile picture
+                data["uploadedProfilePictureURL"] = "";
+                return data;
+            }
             const uploadedProfilePicture: any = await S3FileModel.findById(data["uploadedProfilePicture"]);
             if (uploadedProfilePicture === null) {
-                console.error("uploadedProfilePicture for user not found: ObjectID = " + data["mainImage"]);
+                console.error("uploadedProfilePicture for user not found: ObjectID = " + data["uploadedProfilePicture"]);
             } else {
-                data["uploadedProfilePicture"] = uploadedProfilePicture["url"];
+                data["uploadedProfilePictureURL"] = uploadedProfilePicture["url"];
             }
+        } else {
+            data["uploadedProfilePictureURL"] = "";
         }
     } catch (error: any) {
         console.error("Error processing user data for response: " + error);
     }
+    return data;
 };
-
 
 // Helper function to pull relevant user data from database for use in trips
 const getUserData = async (data: any): Promise<any> => {
-    const user = await userModel.findOne({ sub: data })
-        .select('sub name username image');
+    const user = await userModel.findOne({sub: data})
+        .select('sub name username image uploadedProfilePicture');
 
     return user;
 }
@@ -149,14 +219,13 @@ const formatDestinations = async (data: any): Promise<any> => {
                 collection: "destinations",
                 id: objectid
             });
-            // console.log(destination);
             if (destination === null) {
                 console.error("area for trip not found: ObjectID = " + objectid);
             } else {
                 destinations.push((destination as any)["properties"]["name"]);
             }
         } catch (error: any) {
-            console.error("Error finding destination data for ObjectId: " + objectid + "\nError: " +error)
+            console.error("Error finding destination data for ObjectId: " + objectid + "\nError: " + error)
         }
     }
 
@@ -179,7 +248,7 @@ export async function storeAreaIfNotExists(osm_id: string, osm_type: string): Pr
                     equals: osm_id
                 },
                 'properties.osm_type': {
-                    equals: osm_type
+                    equals: osm_type.toLowerCase()
                 }
             }
         ]
@@ -191,25 +260,17 @@ export async function storeAreaIfNotExists(osm_id: string, osm_type: string): Pr
     });
 
     if ((destination.docs as any).length > 0) {
-        console.log("Area found in DB");
-        console.log(destination.docs[0]);
         return destination.docs[0].id;
     }
-
-    console.log("Area not found in DB, looking up in OSM");
 
     /** Look up Area Details in OSM (nominatim) if not found */
     const nominatimResult = await fetch(`https://nominatim.openstreetmap.org/lookup?osm_ids=${osm_type}${osm_id}&format=json&extratags=1`);
     const areas = await nominatimResult.json();
     const area = areas[0];
 
-    console.log("Area found in OSM");
-
     /** Look up Timezone */
     const timezoneResult = await fetch(`https://api.geotimezone.com/public/timezone?latitude=${area.lat}&longitude=${area.lon}`);
     const timezone = await timezoneResult.json();
-
-    console.log("Timezone found");
 
     /** Create Area in DB if not found */
     const newDestination = await payload.create<'destinations'>({
@@ -228,6 +289,7 @@ export async function storeAreaIfNotExists(osm_id: string, osm_type: string): Pr
                 destination_type: 'area',
                 name: area.name,
                 display_name: area.display_name,
+                countrycode: area.address?.country_code,
                 ...(timezone && {
                     timezone: timezone.iana_timezone
                 }),
@@ -238,12 +300,11 @@ export async function storeAreaIfNotExists(osm_id: string, osm_type: string): Pr
                         min_longitude: area.boundingbox[2],
                         max_longitude: area.boundingbox[3]
                     }
-                })
+                }),
+                address: getAddressAsString(area.address)
             }
         }
     });
-
-    console.log("Area created in DB");
 
     return newDestination.id;
 }
@@ -266,4 +327,19 @@ export function getOsmTypeString(osm_type: string): string {
         default:
             return 'unknown';
     }
+}
+
+/**
+ * Converts an OSM Address object to a single string for display purposes.
+ *
+ * @param address The address object returned from the OSM API.
+ */
+function getAddressAsString(address: Address) {
+    let stringifiedAddr = `
+        ${address.house_number ?? ""} ${address.road ?? ""}\n
+        ${address.city ? address.city + ", " : ""}${address.state ?? ""}\n
+        ${address.country ?? ""} ${address.postcode ?? ""}
+    `;
+
+    return stringifiedAddr;
 }

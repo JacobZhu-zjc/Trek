@@ -4,7 +4,7 @@ import Profile from "../../components/TemporaryProfile.tsx";
 import {useAuth0} from "@auth0/auth0-react"
 
 const TempPageApp = () => {
-    const { isLoading, error } = useAuth0();
+    const {isLoading, error} = useAuth0();
 
     return (
         <main className="column">
@@ -13,9 +13,9 @@ const TempPageApp = () => {
             {!error && isLoading && <p>Loading...</p>}
             {!error && !isLoading && (
                 <>
-                    <LoginButton />
-                    <LogoutButton />
-                    <Profile />
+                    <LoginButton/>
+                    <LogoutButton/>
+                    <Profile/>
                 </>
             )}
         </main>

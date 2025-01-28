@@ -1,0 +1,192 @@
+{
+  "/Users/matthewkang/school-projects/CPSC455/CurrencyLambdas": {
+    "versionSfCore": null,
+    "versionFramework": "4.1.19",
+    "isWithinCompose": false,
+    "isCompose": false,
+    "composeOrgName": null,
+    "composeResolverProviders": {
+      "aws": {
+        "instance": {
+          "credentials": "<REDACTED>",
+          "serviceConfigFile": {
+            "service": "currency-updater",
+            "provider": {
+              "name": "aws",
+              "runtime": "nodejs16.x",
+              "region": "us-east-1",
+              "environment": {
+                "ATLAS_URI": "mongodb+srv://matthewkanguni:mC93O0euFGmH9rbb@testtest.x9vugyt.mongodb.net/?retryWrites=true&w=majority&appName=testtest",
+                "FX_RATES_API_KEY": "<REDACTED>"
+              },
+              "stage": "dev",
+              "versionFunctions": true
+            },
+            "functions": {
+              "updateCurrencyData": {
+                "handler": "handler.handler",
+                "events": [
+                  {
+                    "schedule": "cron(0 0 * * ? *)"
+                  }
+                ],
+                "name": "currency-updater-dev-updateCurrencyData"
+              }
+            },
+            "package": {
+              "exclude": [
+                "node_modules/**",
+                ".gitignore",
+                ".git/**"
+              ],
+              "artifactsS3KeyDirname": "serverless/currency-updater/dev/code-artifacts"
+            }
+          },
+          "configFileDirPath": "/Users/matthewkang/school-projects/CPSC455/CurrencyLambdas",
+          "config": {
+            "type": "aws"
+          },
+          "options": {
+            "function": "updateCurrencyData"
+          },
+          "stage": "dev",
+          "dashboard": null,
+          "isDefaultConfig": true
+        },
+        "resolvers": {}
+      },
+      "env": {
+        "instance": {
+          "credentials": "<REDACTED>",
+          "serviceConfigFile": {
+            "service": "currency-updater",
+            "provider": {
+              "name": "aws",
+              "runtime": "nodejs16.x",
+              "region": "us-east-1",
+              "environment": {
+                "ATLAS_URI": "mongodb+srv://matthewkanguni:mC93O0euFGmH9rbb@testtest.x9vugyt.mongodb.net/?retryWrites=true&w=majority&appName=testtest",
+                "FX_RATES_API_KEY": "<REDACTED>"
+              },
+              "stage": "dev",
+              "versionFunctions": true
+            },
+            "functions": {
+              "updateCurrencyData": {
+                "handler": "handler.handler",
+                "events": [
+                  {
+                    "schedule": "cron(0 0 * * ? *)"
+                  }
+                ],
+                "name": "currency-updater-dev-updateCurrencyData"
+              }
+            },
+            "package": {
+              "exclude": [
+                "node_modules/**",
+                ".gitignore",
+                ".git/**"
+              ],
+              "artifactsS3KeyDirname": "serverless/currency-updater/dev/code-artifacts"
+            }
+          },
+          "configFileDirPath": "/Users/matthewkang/school-projects/CPSC455/CurrencyLambdas",
+          "config": {
+            "type": "env"
+          },
+          "options": {
+            "function": "updateCurrencyData"
+          },
+          "stage": "dev",
+          "dashboard": null
+        },
+        "resolvers": {}
+      }
+    },
+    "composeServiceName": null,
+    "servicePath": "/Users/matthewkang/school-projects/CPSC455/CurrencyLambdas",
+    "serviceConfigFileName": "serverless.yml",
+    "service": {
+      "service": "currency-updater",
+      "provider": {
+        "name": "aws",
+        "runtime": "nodejs16.x",
+        "region": "us-east-1",
+        "environment": {
+          "ATLAS_URI": "mongodb+srv://matthewkanguni:mC93O0euFGmH9rbb@testtest.x9vugyt.mongodb.net/?retryWrites=true&w=majority&appName=testtest",
+          "FX_RATES_API_KEY": "<REDACTED>"
+        },
+        "stage": "dev",
+        "versionFunctions": true
+      },
+      "functions": {
+        "updateCurrencyData": {
+          "handler": "handler.handler",
+          "events": [
+            {
+              "schedule": "cron(0 0 * * ? *)"
+            }
+          ],
+          "name": "currency-updater-dev-updateCurrencyData"
+        }
+      },
+      "package": {
+        "exclude": [
+          "node_modules/**",
+          ".gitignore",
+          ".git/**"
+        ],
+        "artifactsS3KeyDirname": "serverless/currency-updater/dev/code-artifacts"
+      }
+    },
+    "serviceRawFile": "service: currency-updater\n\nprovider:\n  name: aws\n  runtime: nodejs16.x\n  region: us-east-1\n  environment:\n    ATLAS_URI: ${env:ATLAS_URI}\n    FX_RATES_API_KEY: ${env:FX_RATES_API_KEY}\n\nfunctions:\n  updateCurrencyData:\n    handler: handler.handler\n    events:\n      - schedule: cron(0 0 * * ? *)\n\npackage:\n  exclude:\n    - node_modules/**\n    - .gitignore\n    - .git/**\n",
+    "command": [
+      "invoke"
+    ],
+    "options": {
+      "function": "updateCurrencyData"
+    },
+    "error": null,
+    "params": {},
+    "machineId": "477a7fa38c74ac0b02231760f1d060cc",
+    "accessKeyV2": "<REDACTED>",
+    "accessKeyV1": "<REDACTED>",
+    "orgId": "50fd0605-4b49-4582-b8fe-33dab20b97be",
+    "orgName": "trekkers",
+    "userId": "SvSpdKLdwkjNnTsZYK",
+    "dashboard": {
+      "isEnabledForService": false,
+      "requiredAuthentication": false,
+      "orgFeaturesInUse": null,
+      "orgObservabilityIntegrations": null,
+      "serviceAppId": null,
+      "serviceProvider": null,
+      "instanceParameters": null
+    },
+    "userName": "trekkers",
+    "subscription": null,
+    "userEmail": "matt0410@student.ubc.ca",
+    "serviceProviderAwsCredentials": "<REDACTED>",
+    "serviceProviderAwsAccountId": "471112703907",
+    "versionSf": "4.1.19",
+    "serviceProviderAwsCfStackName": "currency-updater-dev",
+    "serviceProviderAwsCfStackId": "arn:aws:cloudformation:us-east-1:471112703907:stack/currency-updater-dev/1e7b33e0-5304-11ef-981f-0e339dd1cb51",
+    "serviceProviderAwsCfStackCreated": "2024-08-05T08:24:22.867Z",
+    "serviceProviderAwsCfStackUpdated": "2024-08-05T08:32:20.904Z",
+    "serviceProviderAwsCfStackStatus": "UPDATE_COMPLETE",
+    "serviceProviderAwsCfStackOutputs": [
+      {
+        "OutputKey": "UpdateCurrencyDataLambdaFunctionQualifiedArn",
+        "OutputValue": "arn:aws:lambda:us-east-1:471112703907:function:currency-updater-dev-updateCurrencyData:2",
+        "Description": "Current Lambda function version",
+        "ExportName": "sls-currency-updater-dev-UpdateCurrencyDataLambdaFunctionQualifiedArn"
+      },
+      {
+        "OutputKey": "ServerlessDeploymentBucketName",
+        "OutputValue": "currency-updater-dev-serverlessdeploymentbucket-5vkcm3848kcq",
+        "ExportName": "sls-currency-updater-dev-ServerlessDeploymentBucketName"
+      }
+    ]
+  }
+}

@@ -1,33 +1,24 @@
 /**
  * Source https://ui.mantine.dev/component/user-button/
  */
-import { UnstyledButton, Group, Avatar, Text } from '@mantine/core';
+import {UnstyledButton, Group, Avatar, Text} from '@mantine/core';
 import classes from './UserButton.module.css';
 import {useSelector} from "react-redux";
-
-interface user {
-    name: string,
-    email: string,
-    image: string,
-}
+import {BasicUser} from '@trek-types/user';
 
 export function UserButton() {
-    // const dispatch = useDispatch<AppDispatch>();
-    // useEffect(() => {
-    //     dispatch(getAuthdUserAsync());
-    // }, []);
+    const profile = useSelector((state: { user: { self: BasicUser } }) => state.user.self);
+    const imageLink = (profile.uploadedProfilePictureURL && profile.uploadedProfilePictureURL !== "") ? profile.uploadedProfilePictureURL : profile.image;
 
-    const profile = useSelector((state: {user: {self: user}}) => state.user.self);
-    // console.log(profile);
     return (
         <UnstyledButton className={classes.user}>
             <Group>
                 <Avatar
-                    src={profile.image}
+                    src={imageLink}
                     radius="xl"
                 />
 
-                <div style={{ flex: 1 }}>
+                <div style={{flex: 1}}>
                     <Text size="sm" fw={500}>
                         {profile.name}
                     </Text>

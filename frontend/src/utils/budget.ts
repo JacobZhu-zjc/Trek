@@ -1,4 +1,4 @@
-import { categoryColorMap, categoryIconMap } from "../constants/budgetCategory";
+import {categoryColorMap, categoryIconMap} from "../constants/budgetCategory";
 
 
 export function getIconForCategory(categoryName: string) {

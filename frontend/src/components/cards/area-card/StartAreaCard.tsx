@@ -1,13 +1,14 @@
-import { Card, Flex, Text } from "@mantine/core";
+import {Card, Flex, Text} from "@mantine/core";
+import {Destination} from "@trek-types/destination";
 
 
-const StartAreaCard = () => {
+const StartAreaCard = ({dest}: { dest?: Destination }) => {
     return (
-        <Card shadow="sm" padding="lg" radius="md" p={0} h={50} withBorder>
+        <Card shadow="sm" padding="lg" radius="md" p={0} withBorder>
 
             <Flex align={"center"} p={10} px={20}>
                 <Text fw={500} lineClamp={2}>
-                    Vancouver, BC (Starting Point)
+                    {dest?.properties?.display_name} (Starting Point)
                 </Text>
 
             </Flex>

@@ -1,3 +1,16 @@
+@font-face {
+    font-family: "PoetsenOne";
+    src: local("PoetsenOne-Regular"),
+    url('./assets/fonts/PoetsenOne-Regular.ttf')
+}
+
+@font-face {
+    font-family: "Lexend";
+    src: local("Lexend-VariableFont_wght"),
+    url('./assets/fonts/Lexend-VariableFont_wght.ttf')
+}
+
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

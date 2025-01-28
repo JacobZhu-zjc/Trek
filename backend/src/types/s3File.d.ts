@@ -1,5 +1,4 @@
-import mongoose from 'mongoose';
-import { User } from './userTypes';
+import {User} from './userTypes';
 
 export interface S3File extends Document {
     key: string;

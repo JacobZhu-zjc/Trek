@@ -1,24 +1,17 @@
-import { Avatar, Text, Group, Card } from '@mantine/core';
-import { IconAt, IconUser } from '@tabler/icons-react';
+import {Avatar, Text, Group, Card} from '@mantine/core';
+import {IconAt, IconUser} from '@tabler/icons-react';
 import classes from './UserInfoIcons.module.css';
 import {useSelector} from "react-redux";
 import {User} from "@trek-types/user.ts";
 
 export function AccountProfileCard() {
-    // const dispatch = useDispatch<AppDispatch>();
-
-    // useEffect(() => {
-    //     dispatch(getAuthdUserAsync());
-    // }, []);
-
-    const profile = useSelector((state: {user: {self: User}}) => state.user.self);
-    // console.log(profile);
+    const profile = useSelector((state: { user: { self: User } }) => state.user.self);
     return (
         <div>
             <Card withBorder radius="md" p="xl" className={classes.card}>
                 <Group wrap="nowrap">
                     <Avatar
-                        src={profile.image}
+                        src={(profile.uploadedProfilePictureURL && profile.uploadedProfilePictureURL !== "") ? profile.uploadedProfilePictureURL : profile.image}
                         size={120}
                         radius={120}
                         mx="auto"
@@ -33,14 +26,14 @@ export function AccountProfileCard() {
                         </Text>
 
                         <Group wrap="nowrap" gap={10} mt={5}>
-                            <IconUser stroke={1.5} size="1rem" className={classes.icon} />
+                            <IconUser stroke={1.5} size="1rem" className={classes.icon}/>
                             <Text fz="xs" c="dimmed">
                                 {profile.username}
                             </Text>
                         </Group>
 
                         <Group wrap="nowrap" gap={10} mt={3}>
-                            <IconAt stroke={1.5} size="1rem" className={classes.icon} />
+                            <IconAt stroke={1.5} size="1rem" className={classes.icon}/>
                             <Text fz="xs" c="dimmed">
                                 {profile.email}
                             </Text>

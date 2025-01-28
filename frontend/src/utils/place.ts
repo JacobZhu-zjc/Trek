@@ -1,4 +1,4 @@
-import { placeCategoryColorMap, placeCategoryIconMap } from "@constants/placeCategory";
+import {placeCategoryColorMap, placeCategoryIconMap} from "@constants/placeCategory";
 
 export function getIconForCategory(categoryName: string) {
     const icon = placeCategoryIconMap[categoryName as keyof typeof placeCategoryIconMap];

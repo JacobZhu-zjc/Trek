@@ -1,13 +1,13 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { FeatureCollection, Geometry, GeoJsonProperties } from 'geojson';
+import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
+import {FeatureCollection, Geometry, GeoJsonProperties} from 'geojson';
 
 
 export const photonApi = createApi({
-  reducerPath: 'photonApi',
-  baseQuery: fetchBaseQuery({ baseUrl: 'https://photon.komoot.io/api/' }),
-  endpoints: (builder) => ({
-    getLocations: builder.query<FeatureCollection<Geometry, GeoJsonProperties>, string>({
-      query: (searchText) => `?q=${searchText}
+    reducerPath: 'photonApi',
+    baseQuery: fetchBaseQuery({baseUrl: 'https://photon.komoot.io/api/'}),
+    endpoints: (builder) => ({
+        getLocations: builder.query<FeatureCollection<Geometry, GeoJsonProperties>, string>({
+            query: (searchText) => `?q=${searchText}
               &osm_tag=place:country
               &osm_tag=place:state
               &osm_tag=place:region
@@ -21,11 +21,15 @@ export const photonApi = createApi({
               &osm_tag=place:town
               &osm_tag=place:village
               &osm_tag=place:hamlet`,
+        }),
+        getPlacesAndAreas: builder.query<FeatureCollection<Geometry, GeoJsonProperties>, {
+            searchText: string,
+            lat: number,
+            lon: number
+        }>({
+            query: ({searchText, lat, lon}) => `?q=${searchText}&lat=${lat}&lon=${lon}`,
+        }),
     }),
-    getPlacesAndAreas: builder.query<FeatureCollection<Geometry, GeoJsonProperties>, { searchText: string, lat: number, lon: number }>({
-      query: ({ searchText, lat, lon }) => `?q=${searchText}&lat=${lat}&lon=${lon}`,
-    }),
-  }),
 });
 
-export const { useLazyGetLocationsQuery, useLazyGetPlacesAndAreasQuery } = photonApi;
+export const {useLazyGetLocationsQuery, useLazyGetPlacesAndAreasQuery} = photonApi;

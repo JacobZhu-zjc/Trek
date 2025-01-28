@@ -1,13 +1,11 @@
+// export type ChatItem = Message | StreamingMessage;
+
+import {Destination} from "@trek-types/destination";
+
 export interface Message {
     id: number;
-    text: string;
-    sender: 'user' | 'bot';
+    text?: string | null;
+    sender: 'user' | 'assistant';
     timestamp: Date;
-}
-
-export interface StreamingMessage {
-    id: number;
-    stream: ReadableStream<Uint8Array>;
-    sender: 'bot';
-    timestamp: Date;
+    destinations?: Destination[];
 }

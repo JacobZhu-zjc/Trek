@@ -1,15 +1,15 @@
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
-import { useEffect, useRef, useState } from "react";
+import {useEffect, useRef, useState} from "react";
 import 'mapbox-gl/dist/mapbox-gl.css';
 import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css';
 import mapboxgl from 'mapbox-gl';
-import { Feature, FeatureCollection, Geometry, GeoJsonProperties } from 'geojson';
+import {Feature, FeatureCollection, Geometry, GeoJsonProperties} from 'geojson';
 import DestinationCard from '@components/cards/destination-card/DestinationCard';
-import { Draggable, Droppable } from '@hello-pangea/dnd';
+import {Draggable, Droppable} from '@hello-pangea/dnd';
 import classes from './DndList.module.css';
 import cx from 'clsx';
-import { Destination } from '@trek-types/destination';
-import { useLazyUpsertOsmDestinationQuery } from '../../redux/services/payloadApi';
+import {Destination} from '@trek-types/destination';
+import {useLazyUpsertOsmDestinationQuery} from '../../redux/services/payloadApi';
 
 const MapboxMap = () => {
     mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN;
@@ -23,15 +23,14 @@ const MapboxMap = () => {
     const [selectedFeature, setSelectedFeature] = useState<Feature<Geometry, GeoJsonProperties> | null>(null);
     const [selectedDestination, setSelectedDestination] = useState<Destination | null>(null);
 
-    const [trigger, { data }] = useLazyUpsertOsmDestinationQuery();
+    const [trigger, {data}] = useLazyUpsertOsmDestinationQuery();
 
     useEffect(() => {
         if (selectedFeature) {
-            console.log('selectedFeature', selectedFeature);
             const osm_id = selectedFeature.properties?.osm_id;
             const osm_type = selectedFeature.properties?.osm_type;
             if (osm_id && osm_type) {
-                trigger({ osm_id, osm_type });
+                trigger({osm_id, osm_type});
             }
         }
 
@@ -43,7 +42,6 @@ const MapboxMap = () => {
             setSelectedDestination(data);
         }
     }, [data]);
-
 
 
     function photonGeocoder(searchInput: string): Promise<FeatureCollection<Geometry, GeoJsonProperties>> {
@@ -60,10 +58,10 @@ const MapboxMap = () => {
                             return {
                                 id: String(feature.properties?.osm_id),
                                 type: 'Feature',
-                                place_name: `🌲 ${feature.properties?.name}`,
+                                place_name: `${feature.properties?.name}`,
                                 geometry: feature.geometry.coordinates,
                                 center: feature.geometry.coordinates,
-                                text: "hello world",
+                                text: "",
                                 properties: feature.properties
                             };
                         }
@@ -79,7 +77,6 @@ const MapboxMap = () => {
                 .catch(error => {
                     console.log("in error");
                     console.error('Error..:', error);
-                    // resolve(features);
                 });
         });
     }
@@ -115,9 +112,6 @@ const MapboxMap = () => {
         }));
 
         geocoder.on('result', (event) => {
-            // event.preventDefault();
-            console.log('result', event.result);
-            console.log("resultS", event.results);
             setSelectedFeature(event.result);
         });
 
@@ -143,9 +137,13 @@ const MapboxMap = () => {
         }
     });
 
+    useEffect(() => {
+        console.log('selectedDestination', JSON.stringify(selectedDestination));
+    }, [selectedDestination]);
+
     return (
-        <div className='h-full' style={{ position: 'relative' }}>
-            <div ref={mapContainer} className="h-full" />
+        <div className='h-full' style={{position: 'relative'}}>
+            <div ref={mapContainer} className="h-full"/>
             {selectedDestination &&
                 (<div style={{
                     position: 'absolute',
@@ -158,15 +156,16 @@ const MapboxMap = () => {
                         {(provided) => (
                             <div {...provided.droppableProps} ref={provided.innerRef}>
 
-                                <Draggable draggableId={"1231233"} index={0} key={1231233}>
+                                <Draggable draggableId={selectedDestination.id?.toString() || ''} index={0}
+                                           key={selectedDestination.id}>
                                     {(provided, snapshot) => (
                                         <div
-                                            className={cx(classes.item, { [classes.itemDragging]: snapshot.isDragging })}
+                                            className={cx(classes.item, {[classes.itemDragging]: snapshot.isDragging})}
                                             {...provided.draggableProps}
                                             {...provided.dragHandleProps}
                                             ref={provided.innerRef}
                                         >
-                                            <DestinationCard destination={selectedDestination} isWishlist={false} />
+                                            <DestinationCard destination={selectedDestination}/>
                                         </div>
                                     )}
                                 </Draggable>

@@ -1,5 +1,5 @@
-import React, { ErrorInfo } from 'react';
-import { Title, Text, Button, Container, Group } from '@mantine/core';
+import React, {ErrorInfo} from 'react';
+import {Button, Container, Group, Text, Title} from '@mantine/core';
 import classes from './ServerError.module.css';
 
 interface State {
@@ -14,11 +14,11 @@ interface Props {
 class ErrorBoundary extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
-        this.state = { hasError: false };
+        this.state = {hasError: false};
     }
 
     static getDerivedStateFromError(_: Error) {
-        return { hasError: true };
+        return {hasError: true};
     }
 
     componentDidCatch(error: Error, errorInfo: ErrorInfo) {
@@ -37,7 +37,7 @@ class ErrorBoundary extends React.Component<Props, State> {
                             already notified. Try refreshing the page.
                         </Text>
                         <Group justify="center">
-                            <Button variant="white" size="md">
+                            <Button variant="white" size="md" onClick={() => location.reload()}>
                                 Refresh the page
                             </Button>
                         </Group>

@@ -3,17 +3,20 @@ import {
     createTripAsync,
     deleteTripAsync,
     getMapAsync,
-    // getPhotoAsync,
+    getPhotosAsync,
     getTripAsync,
     getTripsAsync,
+    getTripsPaginatedAsync,
     populateTripUsersAsync,
+    putManagementAsync,
+    putPhotosAsync,
     putTripAsync
 } from "./thunks.ts";
 import {BasicTrip, Trip} from "@trek-types/trip.ts";
 import {BasicUser} from "@trek-types/user.ts";
 
 const emptyUser: BasicUser = {
-    email: "", _id: "", name: "", profilePicture: "", username: ""
+    email: "", _id: "", name: "", image: "", uploadedProfilePictureURL: "", username: "", sub: ""
 };
 
 const emptyTrip: Trip = {
@@ -23,29 +26,31 @@ const emptyTrip: Trip = {
         tripBudgetCategoriesGroupCost: [],
         tripTotalGroupCost: 0,
         tripTotalPayments: 0,
+        tripMemberSummary: [],
+        /** @deprecated Use tripMemberSummary */
         tripMemberPayments: []
     },
-    date: {end: new Date(0), start: new Date(0)},
     desc: "",
     dest: [],
+    destObjs: [],
     areas: [],
-    // destination: "",
-    // destinations: [],
+    areaNames: [],
     image: "",
     map: {locations: []},
     name: "",
-    // notes: "",
     owner: "",
     members: [],
     ownerUser: emptyUser,
     nonOwnerUsers: [],
-    // private: false,
     todo: [],
     url: "",
     photos: [],
     expenditures: [],
     mainImage: "",
     trip_items: [],
+    mainImageURL: "",
+    photoURLs: [],
+    private: true,
 };
 
 const INITIAL_STATE = {
@@ -53,7 +58,8 @@ const INITIAL_STATE = {
     basicTrips: [],
     current: emptyTrip,
     error: null,
-    status: "idle"
+    status: "idle",
+    totalPages: 0,
 };
 
 const tripsSlice = createSlice({
@@ -66,8 +72,8 @@ const tripsSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
+            // Getting all the trips, not used anymore
             .addCase(getTripsAsync.fulfilled, (state, action) => {
-                console.log("payload is " + JSON.stringify(action.payload))
                 state.status = "fulfilled";
                 state.basicTrips = action.payload;
                 state.basicUUIDS = action.payload.map((trip: BasicTrip) => trip._id);
@@ -78,20 +84,34 @@ const tripsSlice = createSlice({
             .addCase(getTripsAsync.pending, (state) => {
                 state.status = "pending";
             })
+            // Getting a subset of trips for pagination
+            .addCase(getTripsPaginatedAsync.fulfilled, (state, action) => {
+                state.status = "fulfilled";
+                if (action.payload["trips"]) {
+                    state.basicTrips = action.payload["trips"];
+                    state.basicUUIDS = action.payload["trips"].map((trip: BasicTrip) => trip._id);
+                }
+                state.totalPages = action.payload["pages"];
+            })
+            .addCase(getTripsPaginatedAsync.rejected, (state) => {
+                state.status = "rejected";
+            })
+            .addCase(getTripsPaginatedAsync.pending, (state) => {
+                state.status = "pending";
+            })
             .addCase(getTripAsync.fulfilled, (state, action) => {
-                state.current = {...state.current, ...action.payload, map:state.current['map']};
+                state.current = {...state.current, ...action.payload, map: state.current['map']};
             })
             .addCase(putTripAsync.fulfilled, (state, action) => {
-                state.current = {...state.current, ...action.payload, map:state.current['map']}; // not good for when we implement updating maps later
+                state.current = {...state.current, ...action.payload, map: state.current['map']}; // not good for when we implement updating maps later
             })
             .addCase(getMapAsync.fulfilled, (state, action) => {
-                state.current = {...state.current, map:action.payload};
+                state.current = {...state.current, map: action.payload};
             })
             .addCase(populateTripUsersAsync.fulfilled, (state, action) => {
                 if (isOwner(action.payload.user, state.current)) { // pass trip found using tripUUID later
                     state.current = {...state.current, ownerUser: action.payload.user};
                 } else {
-                    // console.log(action.payload.user);
                     if (!state.current.nonOwnerUsers) {
                         state.current.nonOwnerUsers = [action.payload.user];
                         return;
@@ -116,19 +136,15 @@ const tripsSlice = createSlice({
                 state.current = action.payload;
                 state.status = 'idle';
             })
-            // .addCase(getPhotoAsync.fulfilled, (state, action) => {
-            //     if (!state.current.photos) {
-            //         state.current.photos = [action.payload.photo];
-            //         return;
-            //     }
-            //     const existingPhotoIndex = state.current.photos.findIndex(photo => photo.key === action.payload.photo.key);
-            //
-            //     if (existingPhotoIndex !== -1) {
-            //         state.current.photos[existingPhotoIndex] = action.payload.photo;
-            //     } else {
-            //         state.current.photos.push(action.payload.photo);
-            //     }
-            // })
+            .addCase(putPhotosAsync.fulfilled, (state, action) => {
+                state.current = {...state.current, ...action.payload};
+            })
+            .addCase(getPhotosAsync.fulfilled, (state, action) => {
+                state.current = {...state.current, ...action.payload};
+            })
+            .addCase(putManagementAsync.fulfilled, (state, action) => {
+                state.current = {...state.current, ...action.payload};
+            })
     }
 });
 

@@ -1,4 +1,4 @@
-import { BasicUser } from "./user";
+import {BasicUser} from "./user";
 
 
 export interface UserUploadedImage {

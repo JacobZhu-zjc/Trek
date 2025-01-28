@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import {useEffect} from "react";
 
 const Error404App = () => {
     /** Set Page Title To "404 Not Found" */

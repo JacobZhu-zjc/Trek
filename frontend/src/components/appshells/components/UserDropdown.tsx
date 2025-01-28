@@ -17,8 +17,8 @@ import {
     IconUserCircle,
 } from '@tabler/icons-react';
 import classes from './UserDropdown.module.css';
-import { Link } from 'react-router-dom';
-import { useAuth0 } from "@auth0/auth0-react";
+import {Link} from 'react-router-dom';
+import {useAuth0} from "@auth0/auth0-react";
 import {useSelector} from "react-redux";
 import {User} from "@trek-types/user.ts";
 
@@ -26,20 +26,19 @@ interface UserDropdownProps {
     isNavbar?: boolean;
 }
 
-export function UserDropdown({ isNavbar = false }: UserDropdownProps) {
+export function UserDropdown({isNavbar = false}: UserDropdownProps) {
     const theme = useMantineTheme();
     const [userMenuOpened, setUserMenuOpened] = useState(false);
-    const { logout } = useAuth0();
-    const profile = useSelector((state: {user: {self: User}}) => state.user.self);
-
-
+    const {logout} = useAuth0();
+    const profile = useSelector((state: { user: { self: User } }) => state.user.self);
+    const imageLink = (profile.uploadedProfilePictureURL && profile.uploadedProfilePictureURL !== "") ? profile.uploadedProfilePictureURL : profile.image;
 
 
     return (<>
         <Menu
             width={260}
             position={isNavbar ? "right-end" : "bottom-end"}
-            transitionProps={{ transition: 'pop-top-right' }}
+            transitionProps={{transition: 'pop-top-right'}}
             trigger="click-hover"
             onClose={() => setUserMenuOpened(false)}
             onOpen={() => setUserMenuOpened(true)}
@@ -47,30 +46,30 @@ export function UserDropdown({ isNavbar = false }: UserDropdownProps) {
         >
             <Menu.Target>
                 {isNavbar ? (<UnstyledButton
-                    className={cx(classes.user)}>
-                    <Avatar src={profile.image} alt={profile.name} />
-                </UnstyledButton>) :
+                        className={cx(classes.user)}>
+                        <Avatar src={imageLink} alt={profile.name}/>
+                    </UnstyledButton>) :
 
                     (<UnstyledButton
-                        className={cx(classes.user, { [classes.userActive]: userMenuOpened })}>
+                        className={cx(classes.user, {[classes.userActive]: userMenuOpened})}>
                         <Group gap={7}>
-                            <Avatar src={profile.image} alt={profile.name} radius="xl" size={30} />
+                            <Avatar src={imageLink} alt={profile.name} radius="xl" size={30}/>
                             <Text fw={500} size="sm" lh={1} mr={3} className='hidden md:block'>
                                 {profile.name}
                             </Text>
-                            <IconChevronDown style={{ width: rem(12), height: rem(12) }} stroke={1.5} />
+                            <IconChevronDown style={{width: rem(12), height: rem(12)}} stroke={1.5}/>
                         </Group>
                     </UnstyledButton>)
                 }
 
 
             </Menu.Target>
-            <Menu.Dropdown>
+            <Menu.Dropdown style={{'border-radius': '20px'}}>
                 <Link to="/profile">
                     <Menu.Item
                         leftSection={
                             <IconUserCircle
-                                style={{ width: rem(16), height: rem(16) }}
+                                style={{width: rem(16), height: rem(16)}}
                                 color={theme.colors.green[6]}
                                 stroke={1.5}
                             />
@@ -86,7 +85,7 @@ export function UserDropdown({ isNavbar = false }: UserDropdownProps) {
                 <Link to="/settings/profile">
                     <Menu.Item
                         leftSection={
-                            <IconUser style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
+                            <IconUser style={{width: rem(16), height: rem(16)}} stroke={1.5}/>
                         }
                     >
                         Profile Settings
@@ -95,7 +94,7 @@ export function UserDropdown({ isNavbar = false }: UserDropdownProps) {
                 <Link to="/settings/account">
                     <Menu.Item
                         leftSection={
-                            <IconSettings style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
+                            <IconSettings style={{width: rem(16), height: rem(16)}} stroke={1.5}/>
                         }
                     >
 
@@ -103,13 +102,13 @@ export function UserDropdown({ isNavbar = false }: UserDropdownProps) {
                     </Menu.Item>
                 </Link>
 
-                <Menu.Divider />
+                <Menu.Divider/>
 
                 <Menu.Item
                     leftSection={
-                        <IconLogout style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
+                        <IconLogout style={{width: rem(16), height: rem(16)}} stroke={1.5}/>
                     }
-                    onClick={() => logout({ logoutParams: {returnTo: window.location.origin }})}
+                    onClick={() => logout({logoutParams: {returnTo: window.location.origin}})}
                 >
                     Logout
                 </Menu.Item>

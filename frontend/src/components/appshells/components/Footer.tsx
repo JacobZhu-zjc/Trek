@@ -1,23 +1,23 @@
-import { Text, Image, Container, Flex } from '@mantine/core';
+import {Text, Image, Container, Flex} from '@mantine/core';
 import classes from './FooterLinks.module.css';
-import TrekLogo from '../../../assets/Trek.svg';
-import { Link } from 'react-router-dom';
+import TrekLogo from '../../../assets/Trek-Dark.svg';
+import {Link} from 'react-router-dom';
 
 const data = [
     {
-        title: 'Project',
+        title: 'About',
         links: [
-            { label: 'Team', link: 'https://ubc-cpsc455-2024s.github.io/project-04_trekkers/team' },
-            { label: 'GitHub', link: 'https://github.com/ubc-cpsc455-2024S/project-04_trekkers' },
-            { label: 'Releases', link: 'https://ubc-cpsc455-2024s.github.io/project-04_trekkers/docs/category/release-notes' },
-            { label: 'Dev Blog', link: 'https://ubc-cpsc455-2024s.github.io/project-04_trekkers/blog' },
+            {label: 'Team', link: 'https://ubc-cpsc455-2024s.github.io/trekkers-docs-public/team'},
+            {label: 'Terms of Use', link: '/legal/terms'},
+            {label: 'Privacy Policy', link: '/legal/privacy'},
+            {label: 'Copyright Policy', link: '/legal/copyright'},
         ],
     },
     {
         title: 'Community',
         links: [
-            { label: 'UBC Department of Computer Science', link: 'https://cs.ubc.ca/' },
-            { label: 'CPSC 455', link: 'https://www.students.cs.ubc.ca/~cs-455/2024_S/' },
+            {label: 'UBC Department of Computer Science', link: 'https://cs.ubc.ca/'},
+            {label: 'CPSC 455', link: 'https://www.students.cs.ubc.ca/~cs-455/2024_S/'},
         ],
     },
 ];
@@ -38,7 +38,7 @@ function Footer() {
         return (
             <Flex className={classes.wrapper} key={group.title}>
                 <Container>
-                    <Text className={classes.title}>{group.title}</Text>
+                    <Text fw={800}>{group.title}</Text>
                     {links}
                 </Container>
             </Flex>
@@ -50,7 +50,7 @@ function Footer() {
             <Container className={classes.inner}>
                 <div className={classes.logo}>
                     <Link to="/">
-                        <Image src={TrekLogo} h="30%" fit="contain" />
+                        <Image src={TrekLogo} h="30%" fit="contain"/>
                     </Link>
                 </div>
                 <div className={classes.groups}>{groups}</div>

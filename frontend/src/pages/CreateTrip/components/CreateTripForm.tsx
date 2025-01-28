@@ -1,21 +1,32 @@
-import { useEffect, useState, useContext } from 'react';
-import { Stepper, Button, Group, TextInput, Code, Checkbox, Text, UnstyledButton, NativeSelect, rem, TagsInput, Loader } from '@mantine/core';
-import { useForm } from '@mantine/form';
+import {useContext, useEffect, useState} from 'react';
+import {
+    Button,
+    Checkbox,
+    Group,
+    Loader,
+    NativeSelect,
+    rem,
+    Stepper,
+    Text,
+    TextInput,
+    UnstyledButton
+} from '@mantine/core';
+import {useForm} from '@mantine/form';
 import classes from './CreateTripForm.module.css';
-import { AreaSearchBox } from '@components/destination-search-boxes/AreaSearchBox';
-import { Feature } from 'geojson';
+import {AreaSearchBox} from '@components/destination-search-boxes/AreaSearchBox';
+import {Feature} from 'geojson';
 import useLazyDestinationQuery from '../../../hooks/DestinationSearch';
-import { useDispatch, useSelector } from 'react-redux';
-import { useAuth0 } from '@auth0/auth0-react';
-import { UserContext } from '../../../App';
-import { createTripAsync } from '../../../redux/trips/thunks';
-import { AppDispatch } from '../../../redux/store';
-import { State } from '@trek-types/redux';
-import { useNavigate } from 'react-router-dom';
+import {useDispatch, useSelector} from 'react-redux';
+import {useAuth0} from '@auth0/auth0-react';
+import {UserContext} from '../../../App';
+import {createTripAsync} from '../../../redux/trips/thunks';
+import {AppDispatch} from '../../../redux/store';
+import {State} from '@trek-types/redux';
+import {useNavigate} from 'react-router-dom';
 
 function CreateTripForm() {
     const dispatch = useDispatch<AppDispatch>();
-    const { isAuthenticated } = useAuth0();
+    const {isAuthenticated} = useAuth0();
     const userContext = useContext(UserContext);
 
     const form = useForm({
@@ -43,9 +54,7 @@ function CreateTripForm() {
             }
 
             if (active === 1) {
-                console.log(values.isMaxBudget);
                 if (values.isMaxBudget) {
-                    console.log(values.maxBudget);
                     return {
                         maxBudget: values.maxBudget.length < 1 ? 'To disable maximum budget, uncheck the checkbox.' : null,
                     };
@@ -68,7 +77,6 @@ function CreateTripForm() {
     const [active, setActive] = useState(0);
 
     const nextStep = () => {
-        console.log(JSON.stringify(form.validate().errors));
         setActive((current) => {
             if (form.validate().hasErrors) {
                 if (form.validate().errors.startLocationOsmId) {
@@ -90,9 +98,6 @@ function CreateTripForm() {
     };
 
     const prevStep = () => setActive((current) => (current > 0 ? current - 1 : current));
-
-
-
 
 
     /** Start Location Setting */
@@ -122,7 +127,6 @@ function CreateTripForm() {
     }, [selectedFeatureDestination]);
 
 
-
     /** Budget Input Handling */
     const [checked, setChecked] = useState(form.getValues().isMaxBudget);
 
@@ -134,11 +138,11 @@ function CreateTripForm() {
     }, [checked, form]);
 
     const currency = [
-        { value: 'cad', label: '🇨🇦 CAD' },
-        { value: 'eur', label: '🇪🇺 EUR' },
-        { value: 'usd', label: '🇺🇸 USD' },
-        { value: 'gbp', label: '🇬🇧 GBP' },
-        { value: 'aud', label: '🇦🇺 AUD' },
+        {value: 'cad', label: '🇨🇦 CAD'},
+        {value: 'eur', label: '🇪🇺 EUR'},
+        {value: 'usd', label: '🇺🇸 USD'},
+        {value: 'gbp', label: '🇬🇧 GBP'},
+        {value: 'aud', label: '🇦🇺 AUD'},
     ];
     const currencySelect = (
         <NativeSelect
@@ -156,20 +160,15 @@ function CreateTripForm() {
         />
     );
 
-    const { data, isLoading, error, trigger } = useLazyDestinationQuery();
+    const {trigger} = useLazyDestinationQuery();
 
     useEffect(() => {
         trigger();
     }, [checked, trigger]);
 
 
-    useEffect(() => {
-        console.log(data);
-    }, [data, isLoading, error]);
-
     async function handleSubmit() {
         const payload = form.getValues();
-        console.log(payload);
         if (isAuthenticated) {
             dispatch(createTripAsync({token: userContext.token, data: payload}));
         }
@@ -180,20 +179,25 @@ function CreateTripForm() {
     const [pending, setPending] = useState(false);
     const status = useSelector((state: State) => state.trip.status);
     useEffect(() => {
-        console.log(status);
         if (status === 'pending') setPending(true);
         if (status === 'idle' && pending === true) { // check that it WAS pending so it doesnt redirect immediately after loading
             setPending(false);
-            navigate(`/trip/${uuid}/details`);
+            navigate(`/trip/${uuid}/overview`);
         }
     }, [status])
 
     return (
         <>
-            <Stepper active={active} color={"lime"} styles={{ content: { paddingTop: 50, width: "80%", margin: "auto" } }}>
+            <Stepper active={active} color={"lime"} styles={{content: {paddingTop: 50, width: "80%", margin: "auto"}}}>
                 <Stepper.Step label="Trip Locations" description="Where are you going?">
-                    <AreaSearchBox label="Start Location" placeholder="" description="Where are you starting your trip?" selectedFeature={selectedFeature} setSelectedFeature={setSelectedFeature} errorMsg={startLocationError} />
-                    <AreaSearchBox label="Destination" placeholder="" description="If you have multiple destinations you can add them later" selectedFeature={selectedFeatureDestination} setSelectedFeature={setSelectedFeatureDestination} errorMsg={destinationLocationError} />
+                    <AreaSearchBox label="Start Location" placeholder="" description="Where are you starting your trip?"
+                                   selectedFeature={selectedFeature} setSelectedFeature={setSelectedFeature}
+                                   errorMsg={startLocationError}/>
+                    <AreaSearchBox label="Destination" placeholder=""
+                                   description="If you have multiple destinations you can add them later"
+                                   selectedFeature={selectedFeatureDestination}
+                                   setSelectedFeature={setSelectedFeatureDestination}
+                                   errorMsg={destinationLocationError}/>
                 </Stepper.Step>
 
                 <Stepper.Step label="Budgeting" description="How much will you be spending?">
@@ -205,10 +209,10 @@ function CreateTripForm() {
                             tabIndex={-1}
                             size="md"
                             mr="xl"
-                            styles={{ input: { cursor: 'pointer' } }}
+                            styles={{input: {cursor: 'pointer'}}}
                             aria-hidden
                             key={form.key('isMaxBudget')}
-                            {...form.getInputProps('isMaxBudget', { type: 'checkbox' })}
+                            {...form.getInputProps('isMaxBudget', {type: 'checkbox'})}
                         />
 
                         <div>
@@ -233,7 +237,7 @@ function CreateTripForm() {
 
                 </Stepper.Step>
 
-                <Stepper.Step label="Co-trippers" description="Who will you be travelling with?">
+                <Stepper.Step label="Trip Name" description="What should the trip be named?">
                     <TextInput
                         label="Trip Name"
                         placeholder="My Awesome Trip"
@@ -242,21 +246,7 @@ function CreateTripForm() {
                         {...form.getInputProps('tripName')}
                     />
 
-                    <TagsInput
-                        label="Trip Companions"
-                        placeholder="Enter email addresses of people you want to share this trip with"
-                        //acceptValueOnBlur={false} // why is this red?
-                        mt="md"
-                        key={form.key('tripShareToEmails')}
-                        {...form.getInputProps('tripShareToEmails')}
-                    />
                 </Stepper.Step>
-                <Stepper.Completed>
-                    Completed! Form values:
-                    <Code block mt="xl">
-                        {JSON.stringify(form.getValues(), null, 2)}
-                    </Code>
-                </Stepper.Completed>
             </Stepper>
 
             <Group justify="flex-end" mt="xl">
@@ -265,11 +255,12 @@ function CreateTripForm() {
                         Back
                     </Button>
                 )}
-                {active !== 3 && <Button variant="filled" color="green" radius="xl" onClick={nextStep}>
-                                    {pending ? <Loader color='white'></Loader> : <></>}
-                                    {active === 2 ? "Create Trip" : "Next"}
-                                </Button>}
-                {active === 3 && <Button variant="filled" color="green" radius="xl" onClick={handleSubmit}>Create Trip</Button>}
+                {active !== 2 && <Button variant="filled" color="green" radius="xl" onClick={nextStep}>
+                    {pending ? <Loader size='xs' color='white' mr={5}></Loader> : <></>}
+                    {active === 2 ? "Create Trip" : "Next"}
+                </Button>}
+                {active === 2 &&
+                    <Button variant="filled" color="green" radius="xl" onClick={handleSubmit}>Create Trip</Button>}
             </Group>
         </>
     );

@@ -3,41 +3,40 @@
     padding-bottom: rem(120px);
     background-color: var(--mantine-color-green-filled);
     height: 100vh;
-    width: 100vw; 
+    width: 100vw;
     align-content: center;
-  }
-  
-  .label {
+}
+
+.label {
     text-align: center;
     font-weight: 900;
     font-size: rem(220px);
     line-height: 1;
     margin-bottom: calc(var(--mantine-spacing-xl) * 1.5);
     color: var(--mantine-color-green-3);
-  
-    @media (max-width: $mantine-breakpoint-sm) {
-      font-size: rem(120px);
+
+    @media (max-width: $ mantine-breakpoint-sm) {
+        font-size: rem(120px);
     }
-  }
-  
-  .title {
-    font-family:
-      Greycliff CF,
-      var(--mantine-font-family);
+}
+
+.title {
+    font-family: Greycliff CF,
+    var(--mantine-font-family);
     text-align: center;
     font-weight: 900;
     font-size: rem(38px);
     color: var(--mantine-color-white);
-  
-    @media (max-width: $mantine-breakpoint-sm) {
-      font-size: rem(32px);
+
+    @media (max-width: $ mantine-breakpoint-sm) {
+        font-size: rem(32px);
     }
-  }
-  
-  .description {
+}
+
+.description {
     max-width: rem(540px);
     margin: auto;
     margin-top: var(--mantine-spacing-xl);
     margin-bottom: calc(var(--mantine-spacing-xl) * 1.5);
     color: var(--mantine-color-green-1);
-  }
+}

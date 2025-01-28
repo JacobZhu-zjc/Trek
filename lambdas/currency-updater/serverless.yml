@@ -1,0 +1,21 @@
+service: currency-updater
+
+provider:
+  name: aws
+  runtime: nodejs16.x
+  region: us-east-1
+  environment:
+    ATLAS_URI: ${env:ATLAS_URI}
+    FX_RATES_API_KEY: ${env:FX_RATES_API_KEY}
+
+functions:
+  updateCurrencyData:
+    handler: handler.handler
+    events:
+      - schedule: cron(0 0 * * ? *)
+
+package:
+  exclude:
+    - node_modules/**
+    - .gitignore
+    - .git/**

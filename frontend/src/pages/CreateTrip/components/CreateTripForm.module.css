@@ -6,8 +6,8 @@
     padding: var(--mantine-spacing-lg);
     /* light-dark(var(--mantine-color-white), var(--mantine-color-dark-8)); */
     background-color: white;
-  
+
     @mixin hover {
-      background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-9));
+        background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-9));
     }
-  }
+}

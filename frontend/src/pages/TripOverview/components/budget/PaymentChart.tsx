@@ -1,6 +1,6 @@
-import { Group, Text, List, rem, ThemeIcon, Title, Tooltip } from '@mantine/core';
-import { DonutChart } from '@mantine/charts';
-import { IconCheck, IconReceipt2 } from '@tabler/icons-react';
+import {Group, List, rem, Text, ThemeIcon, Title, Tooltip} from '@mantine/core';
+import {DonutChart} from '@mantine/charts';
+import {IconCheck, IconReceipt2} from '@tabler/icons-react';
 
 export interface PaymentChartProps {
     currency: string;
@@ -10,9 +10,9 @@ export interface PaymentChartProps {
     }[];
 }
 
-const PaymentChart = ({ data, currency }: PaymentChartProps) => {
-    const filteredPaid = (data.filter(item => item.name === "Paid") || [{ name: "Paid", value: 0 }])[0];
-    const filteredUnpaidData = (data.filter(item => item.name === "Unpaid") || [{ name: "Unpaid", value: 0 }])[0];
+const PaymentChart = ({data, currency}: PaymentChartProps) => {
+    const filteredPaid = (data.filter(item => item.name === "Paid") || [{name: "Paid", value: 0}])[0];
+    const filteredUnpaidData = (data.filter(item => item.name === "Unpaid") || [{name: "Unpaid", value: 0}])[0];
 
     const paidData = filteredPaid.value ? filteredPaid : {name: "", value: 0};
     const unpaidData = filteredUnpaidData.value ? filteredUnpaidData : {name: "", value: 0};
@@ -20,10 +20,9 @@ const PaymentChart = ({ data, currency }: PaymentChartProps) => {
     const chartData = data
         .map((item) => {
             if (item.name === "Paid") {
-                return { ...item, color: '#0CAF49' };
-            }
-            else {
-                return { ...item, color: 'gray.6' };
+                return {...item, color: '#0CAF49'};
+            } else {
+                return {...item, color: 'gray.6'};
             }
         });
 
@@ -35,7 +34,8 @@ const PaymentChart = ({ data, currency }: PaymentChartProps) => {
     return (
         <Group gap={50}>
             <div>
-                <DonutChart data={chartData} chartLabel={`Paid Costs`} withTooltip={false} mx="auto" pieProps={{ isAnimationActive: true, dataKey: "value" }} />
+                <DonutChart data={chartData} chartLabel={`Paid Costs`} withTooltip={false} mx="auto"
+                            pieProps={{isAnimationActive: true, dataKey: "value"}}/>
             </div>
 
             <div>
@@ -45,10 +45,10 @@ const PaymentChart = ({ data, currency }: PaymentChartProps) => {
                         key={"Paid"}
                         icon={<Tooltip label={'Paid'}>
                             <ThemeIcon color={'#0CAF49'} size={24} radius="xl">
-                                <IconCheck style={{ width: rem(16), height: rem(16) }} />
+                                <IconCheck style={{width: rem(16), height: rem(16)}}/>
                             </ThemeIcon>
                         </Tooltip>}>
-                        <div style={{ display: "flex", justifyContent: "space-between" }}>
+                        <div style={{display: "flex", justifyContent: "space-between"}}>
                             <Text>{(paidData.value).toFixed(2) + " " + currency}</Text>
                         </div>
                     </List.Item>
@@ -56,10 +56,10 @@ const PaymentChart = ({ data, currency }: PaymentChartProps) => {
                         key={"Unpaid"}
                         icon={<Tooltip label={'Unpaid'}>
                             <ThemeIcon color={'gray.6'} size={24} radius="xl">
-                                <IconReceipt2 style={{ width: rem(16), height: rem(16) }} />
+                                <IconReceipt2 style={{width: rem(16), height: rem(16)}}/>
                             </ThemeIcon>
                         </Tooltip>}>
-                        <div style={{ display: "flex", justifyContent: "space-between" }}>
+                        <div style={{display: "flex", justifyContent: "space-between"}}>
                             <Text>{unpaidData.value.toFixed(2) + " " + currency}</Text>
                         </div>
                     </List.Item>

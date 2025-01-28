@@ -1,9 +1,9 @@
-import { Combobox, Loader, TextInput, useCombobox } from "@mantine/core";
-import { Feature } from 'geojson'
-import { getCountryFlagEmoji } from "@utils/place";
+import {Combobox, Loader, TextInput, useCombobox} from "@mantine/core";
+import {Feature} from 'geojson'
+import {getCountryFlagEmoji} from "@utils/place";
 import debounce from "lodash.debounce";
-import { useState, useMemo, useEffect } from "react";
-import { useLazyGetLocationsQuery } from "../../redux/services/photonApi";
+import {useState, useMemo, useEffect} from "react";
+import {useLazyGetLocationsQuery} from "../../redux/services/photonApi";
 
 export interface AreaSearchBoxProps {
     /* state setter */
@@ -15,16 +15,22 @@ export interface AreaSearchBoxProps {
     errorMsg: string | null;
 }
 
-export const DestinationSearchBox = ({ selectedFeature, setSelectedFeature, label, placeholder, description, errorMsg }: AreaSearchBoxProps) => {
+export const DestinationSearchBox = ({
+                                         selectedFeature,
+                                         setSelectedFeature,
+                                         label,
+                                         placeholder,
+                                         description,
+                                         errorMsg
+                                     }: AreaSearchBoxProps) => {
     const combobox = useCombobox({
         onDropdownClose: () => combobox.resetSelectedOption(),
     });
 
-    //const [error, setError] = useState<string | null>(errorMsg);
 
     const [searchQuery, setSearchQuery] = useState('');
     const [value, setValue] = useState(selectedFeature?.properties?.name || '');
-    const [trigger, { data, isLoading }] = useLazyGetLocationsQuery();
+    const [trigger, {data, isLoading}] = useLazyGetLocationsQuery();
     const empty = !isLoading && !data?.features?.length;
 
     const debouncedTrigger = useMemo(() => debounce(
@@ -91,7 +97,7 @@ export const DestinationSearchBox = ({ selectedFeature, setSelectedFeature, labe
                         }
                     }}
                     onBlur={() => combobox.closeDropdown()}
-                    rightSection={isLoading && <Loader size={18} />}
+                    rightSection={isLoading && <Loader size={18}/>}
                     error={errorMsg ? errorMsg : undefined}
                 />
             </Combobox.Target>

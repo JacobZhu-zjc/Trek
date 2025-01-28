@@ -1,10 +1,12 @@
 import {createSlice} from "@reduxjs/toolkit";
 import {
     getAuthdUserAsync,
-    getUserAsync, getUserByIDAsync,
+    getUserAsync, getUserBySubAsync,
     getUserByUsernameAsync,
+    getUserPictureAsync,
     getUserSettingsAsync,
     putUserAsync, putUserExperienceAsync,
+    putUserPictureAsync,
     putUserSettingsAsync
 } from "./thunks.ts";
 import {User} from "@trek-types/user.ts";
@@ -27,24 +29,21 @@ const usersSlice = createSlice({
     extraReducers: (builder) => {
         builder
             .addCase(getAuthdUserAsync.fulfilled, (state, action) => {
-
                 state.self = action.payload;
             })
             .addCase(getAuthdUserAsync.rejected, () => {
             })
             .addCase(getUserSettingsAsync.fulfilled, (state, action) => {
-                state.settings = action.payload;
+                state.self = {...state.self, settings: action.payload};
             })
             .addCase(putUserSettingsAsync.fulfilled, (state, action) => {
-                if (action.payload.accountLimitedDeals !== undefined && action.payload.accountNewsletterNotifications !== undefined)
-                    state.settings = action.payload;
+                state.self = {...state.self, settings: action.payload};
             })
             .addCase(putUserAsync.fulfilled, (state, action) => {
                 state.self = action.payload;
             })
             .addCase(getUserAsync.fulfilled, (state, action) => {
-                const user = action.payload as unknown as User; // FIXME: do this with proper type checking instead
-                state.requestedUsers.push(user);
+                state.self = {...state.self, ...action.payload};
             })
             .addCase(getUserByUsernameAsync.fulfilled, (state, action) => {
                 const existingUserIndex = state.requestedUsers.findIndex(user => user._id === action.payload._id);
@@ -55,7 +54,7 @@ const usersSlice = createSlice({
                     state.requestedUsers.push(action.payload);
                 }
             })
-            .addCase(getUserByIDAsync.fulfilled, (state, action) => {
+            .addCase(getUserBySubAsync.fulfilled, (state, action) => {
                 const existingUserIndex = state.requestedUsers.findIndex(user => user._id === action.payload._id);
 
                 if (existingUserIndex !== -1) {
@@ -65,14 +64,18 @@ const usersSlice = createSlice({
                 }
             })
             .addCase(putUserExperienceAsync.fulfilled, (state, action) => {
-                // state.self.experience = action.payload;
                 // self.experience causes build error, temp do below
-                console.log(action.payload);
+                void action;
                 void state;
-                // (state.self as User).experience = action.payload;
+            })
+            .addCase(getUserPictureAsync.fulfilled, (state, action) => {
+                state.self = {...state.self, ...action.payload};
+            })
+            .addCase(putUserPictureAsync.fulfilled, (state, action) => {
+                state.self = {...state.self, ...action.payload};
             })
     }
 });
 
-export const { clearRequested } = usersSlice.actions;
+export const {clearRequested} = usersSlice.actions;
 export default usersSlice.reducer;

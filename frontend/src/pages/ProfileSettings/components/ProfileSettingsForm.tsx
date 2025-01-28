@@ -6,11 +6,14 @@ import {getAuthdUserAsync, putUserAsync} from "../../../redux/users/thunks.ts";
 import {User} from "@trek-types/user.ts";
 import {AppDispatch} from '../../../redux/store.ts';
 import {useAuth0} from "@auth0/auth0-react";
+import Success from '@components/alerts/Success.tsx';
+import Failure from '@components/alerts/Failure.tsx';
 
 const ProfileSettingsForm = () => {
     const dispatch = useDispatch<AppDispatch>();
     const {user, getAccessTokenSilently, isAuthenticated} = useAuth0()
     const [subtoken, setSubToken] = useState("");
+    const [success, setSuccess] = useState<boolean | null>(null);
     if (user && user.sub && subtoken !== user.sub) {
         setSubToken(user?.sub);
     }
@@ -22,7 +25,7 @@ const ProfileSettingsForm = () => {
                     if (isAuthenticated) {
                         const token = await getAccessTokenSilently();
                         const name = user?.name ?? "";
-                        const email= user?.email ?? "";
+                        const email = user?.email ?? "";
                         const picture = user?.picture ?? "";
                         dispatch(getAuthdUserAsync({token, subtoken, name: name, email: email, picture: picture}));
                     }
@@ -36,7 +39,7 @@ const ProfileSettingsForm = () => {
         }
     }, [dispatch, getAccessTokenSilently, subtoken]);
 
-    const profile = useSelector((state: {user: {self: User}}) => state.user.self);
+    const profile = useSelector((state: { user: { self: User } }) => state.user.self);
     const [interests, setInterests] = useState(profile.interests);
 
     const form = useForm({
@@ -60,7 +63,7 @@ const ProfileSettingsForm = () => {
                 home: profile.home ?? '',
                 currentlyAt: profile.currentlyAt ?? '',
                 facebook: getSocialLink(profile, 'facebook') || '',
-                instagram: getSocialLink(profile, 'insta') || '',
+                instagram: getSocialLink(profile, 'instagram') || '',
                 twitter: getSocialLink(profile, 'twitter') || '',
                 youtube: getSocialLink(profile, 'youtube') || '',
             });
@@ -75,19 +78,40 @@ const ProfileSettingsForm = () => {
         return link ? link.url : undefined;
     }
 
-    async function handleSubmit(values: {name: string, home: string, currentlyAt: string, bio: string, facebook: string, twitter: string, youtube: string, instagram: string}) {
+    async function handleSubmit(values: {
+        name: string,
+        home: string,
+        currentlyAt: string,
+        bio: string,
+        facebook: string,
+        twitter: string,
+        youtube: string,
+        instagram: string
+    }) {
         const sub = user?.sub ?? "";
         const links = [];
-        if (values.facebook.trim() !== '') links.push({ type: 'facebewk', url: values.facebook});
-        if (values.instagram.trim() !== '') links.push({ type: 'insta', url: values.instagram});
-        if (values.twitter.trim() !== '') links.push({ type: 'twitter', url: values.twitter});
-        if (values.youtube.trim() !== '') links.push({ type: 'youtube', url: values.youtube});
-        dispatch(putUserAsync({...profile, sub: sub, name:values.name, home:values.home, currentlyAt:values.currentlyAt, description:values.bio, links:links, interests:interests}));
+        if (values.facebook.trim() !== '') links.push({type: 'facebook', url: values.facebook});
+        if (values.instagram.trim() !== '') links.push({type: 'instagram', url: values.instagram});
+        if (values.twitter.trim() !== '') links.push({type: 'twitter', url: values.twitter});
+        if (values.youtube.trim() !== '') links.push({type: 'youtube', url: values.youtube});
+        setSuccess(null);
+        dispatch(putUserAsync({
+            ...profile,
+            sub: sub,
+            name: values.name,
+            home: values.home,
+            currentlyAt: values.currentlyAt,
+            description: values.bio,
+            links: links,
+            interests: interests
+        })).unwrap()
+            .then(() => setSuccess(true))
+            .catch(() => setSuccess(false));
     }
 
     return (
         <>
-            <form onSubmit={form.onSubmit(handleSubmit)} >
+            <form onSubmit={form.onSubmit(handleSubmit)}>
 
                 <Container px={0} mb={'50px'} mr={'50px'}>
                     <Title order={4} mb={'15px'}>Basic Information</Title>
@@ -118,6 +142,7 @@ const ProfileSettingsForm = () => {
                         key={form.key('bio')}
                         {...form.getInputProps('bio')}
                         placeholder="Tell us a little about yourself"
+                        radius='lg'
                     />
 
                     <TagsInput
@@ -133,40 +158,38 @@ const ProfileSettingsForm = () => {
                 <Container px={0} mb={'50px'}>
                     <Title order={4} mb={'15px'}>Link Social Accounts</Title>
                     <TextInput
-                        label="Facebook"
-                        placeholder="facebook.com/username"
+                        label="Facebook Handle"
+                        placeholder="Your Facebook Username"
                         key={form.key('facebook')}
                         {...form.getInputProps('facebook')}
                     />
                     <TextInput
-                        label="Instagram"
-                        placeholder="instagram.com/username"
+                        label="Instagram Handle"
+                        placeholder="Your Instagram Username"
                         key={form.key('instagram')}
                         {...form.getInputProps('instagram')}
                     />
                     <TextInput
-                        label="Twitter"
-                        placeholder="twitter.com/username"
+                        label="Twitter Handle"
+                        placeholder="Your Twitter Profile Name"
                         key={form.key('twitter')}
                         {...form.getInputProps('twitter')}
                     />
                     <TextInput
-                        label="YouTube"
-                        placeholder="youtube.com/username"
+                        label="YouTube Handle"
+                        placeholder="Your YouTube Channel Name"
                         key={form.key('youtube')}
                         {...form.getInputProps('youtube')}
                     />
 
                 </Container>
 
-
-
-                <Group justify="flex-end" mt="md">
+                <Group justify="flex-end" mt="md" className="flex justify-center items-center align-center">
+                    {success && <Success/>}
+                    {success === false && <Failure/>}
                     <Button type="submit">Submit</Button>
                 </Group>
             </form>
-
-
 
         </>
     )

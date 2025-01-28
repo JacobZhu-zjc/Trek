@@ -1,63 +1,60 @@
-import { useEffect } from 'react';
-import { Text, Divider, Flex, Stack, Title } from '@mantine/core';
+import {useEffect} from 'react';
+import {Text, Divider, Flex, Stack, Title} from '@mantine/core';
 import EmailNotificationToggles from './components/EmailNotificationToggles';
-import { AccountProfileCard } from './components/AccountProfileCard';
+import {AccountProfileCard} from './components/AccountProfileCard';
 import DeleteAccountCard from './components/DeleteAccountCard';
 
 
 const AccountSettings = () => {
-  /** Set Page Title To "Account Settings" */
-  useEffect(() => {
-    document.title = "Account Settings";
-  }, []);
+    /** Set Page Title To "Account Settings" */
+    useEffect(() => {
+        document.title = "Account Settings";
+    }, []);
 
-  return (
-    <>
-      <Stack
-        align="flex-start"
-        justify="flex-start"
-        gap="md"
-        p={'20px'}
-      >
-        <Title order={2}>Account Settings</Title>
-
-
+    return (
+        <>
+            <Stack
+                align="flex-start"
+                justify="flex-start"
+                gap="md"
+                p={'20px'}
+            >
+                <Title order={2}>Account Settings</Title>
 
 
-        <Flex
-          justify="flex-start"
-          gap={'xl'}
-          align="flex-start"
-          direction="row"
-          wrap="wrap"
-          mt={'50px'}>
+                <Flex
+                    justify="flex-start"
+                    gap={'xl'}
+                    align="flex-start"
+                    direction="row"
+                    wrap="wrap"
+                    mt={'50px'}>
 
 
+                    <AccountProfileCard/>
 
-          <AccountProfileCard />
+                    <EmailNotificationToggles/>
 
-          <EmailNotificationToggles />
+                </Flex>
 
-        </Flex>
+                <Divider
+                    my="xs"
+                    color='red'
+                    label={
+                        <Text c="red">DANGER ZONE</Text>
+                    }
+                    labelPosition="center"
+                    style={{width: "100%"}}
+                    mt={"15%"}/>
 
-        <Divider
-          my="xs"
-          color='red'
-          label={
-            <Text c="red">DANGER ZONE</Text>
-          }
-          labelPosition="center"
-          style={{ width: "100%" }}
-          mt={"15%"} />
-
-        <DeleteAccountCard />
-
-
-      </Stack>
+                <DeleteAccountCard/>
 
 
-    </>
-  )
+            </Stack>
+
+
+        </>
+    )
 }
 
 export default AccountSettings;

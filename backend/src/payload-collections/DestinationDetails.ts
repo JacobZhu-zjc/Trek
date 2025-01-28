@@ -1,4 +1,4 @@
-import type { CollectionConfig, FieldHook } from 'payload/types'
+import type {CollectionConfig, FieldHook} from 'payload/types'
 
 const format = (val: string): string =>
     val
@@ -8,7 +8,7 @@ const format = (val: string): string =>
 
 const formatSlug =
     (fallback: string): FieldHook =>
-        ({ operation, value, originalDoc, data }) => {
+        ({operation, value, originalDoc, data}) => {
             if (typeof value === 'string') {
                 return format(value)
             }
@@ -25,17 +25,16 @@ const formatSlug =
         }
 
 
-
 export const DestinationDetails: CollectionConfig = {
     slug: 'explore',
     admin: {
         useAsTitle: "destination",
         livePreview: {
             url: ({
-                data,
-                documentInfo,
-                locale
-            }) => `http://localhost:5173/explore/${data.slug}/preview`,
+                      data,
+                      documentInfo,
+                      locale
+                  }) => `http://localhost:5173/explore/${data.slug}/preview`,
         }
     },
     access: {

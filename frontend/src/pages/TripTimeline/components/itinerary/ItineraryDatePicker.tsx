@@ -1,7 +1,7 @@
-import { useState } from 'react';
-import { DatePickerInput } from '@mantine/dates';
-import { IconCalendar } from '@tabler/icons-react';
-import { Indicator, rem } from '@mantine/core';
+import {useState} from 'react';
+import {DatePickerInput} from '@mantine/dates';
+import {IconCalendar} from '@tabler/icons-react';
+import {Indicator, rem} from '@mantine/core';
 
 export function TimelineDatePicker() {
     /** User Selected Date */
@@ -14,7 +14,7 @@ export function TimelineDatePicker() {
     const renderTripDates = (date: Date) => {
         const isTripDate = tripDates.some(
             (tripDate) => tripDate.toDateString() === date.toDateString()
-          );
+        );
 
         return (
             /** indicator on if day is not in tripDates */
@@ -25,7 +25,7 @@ export function TimelineDatePicker() {
     }
 
     /** Icon for DatePickerInput */
-    const icon = <IconCalendar style={{ width: rem(18), height: rem(18) }} stroke={1.5} />;
+    const icon = <IconCalendar style={{width: rem(18), height: rem(18)}} stroke={1.5}/>;
 
     /** Props or API request would populate value (default), now its set to populate just once */
     if (value === null) {

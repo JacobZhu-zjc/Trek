@@ -1,14 +1,11 @@
 import Travy from '@assets/travy-profile.svg';
-import { Avatar, Card, Center, /*Container, Flex,*/ Grid, Group, rem, Stack, Text, useMantineTheme } from '@mantine/core';
-import { IconClock24, IconHeartHandshake, IconWorldLongitude } from '@tabler/icons-react';
+import {Avatar, Card, Center, Grid, Group, rem, Stack, Text, useMantineTheme} from '@mantine/core';
+import {IconClock24, IconHeartHandshake, IconWorldLongitude} from '@tabler/icons-react';
 import classes from './WelcomeDisplay.module.css';
 
 
 const WelcomeDisplay = () => {
-
     const theme = useMantineTheme();
-
-
     const featuresData = [
         {
             title: '24/7 Availability',
@@ -32,9 +29,9 @@ const WelcomeDisplay = () => {
 
     const features = featuresData.map((feature) => (
         <Grid.Col span={4}>
-            <Card key={feature.title} h={"100%"} shadow="md" radius="md" padding="sm">
+            <Card h={"100%"} shadow="md" radius="md" padding="sm">
                 <feature.icon
-                    style={{ width: rem(48), height: rem(48) }}
+                    style={{width: rem(48), height: rem(48)}}
                     stroke={1.25}
                     color={theme.colors.green[6]}
                 />
@@ -48,22 +45,15 @@ const WelcomeDisplay = () => {
         </Grid.Col>
     ));
 
-
-    return (<>
-
+    return (
         <Stack h={"100%"} justify='center'>
-
-
             <Center>
                 <Group>
-                    <Avatar
-                        src={Travy}
-                        size={'xl'}
-                    />
+                    <Avatar src={Travy} size={'xl'}/>
 
-                    <div style={{ flex: 1 }}>
+                    <div style={{flex: 1}}>
                         <Text size="lg">
-                            Meet <span style={{ fontWeight: 700 }}>Travy</span>
+                            Meet <span style={{fontWeight: 700}}>Travy</span>
                         </Text>
 
                         <Text c="dimmed" size="md" fw={400}>
@@ -76,11 +66,8 @@ const WelcomeDisplay = () => {
             <Grid align='stretch'>
                 {features}
             </Grid>
-
-
         </Stack>
-    </>);
-
+    );
 }
 
 export default WelcomeDisplay;

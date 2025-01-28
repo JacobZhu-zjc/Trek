@@ -1,4 +1,11 @@
-import { IconBuildingCarousel, IconHome, IconToolsKitchen3, IconTower, IconShoppingCart, IconMapPin } from "@tabler/icons-react";
+import {
+    IconBuildingCarousel,
+    IconHome,
+    IconToolsKitchen3,
+    IconTower,
+    IconShoppingCart,
+    IconMapPin
+} from "@tabler/icons-react";
 
 export const placeCategoryIconMap = {
     "Activity": IconBuildingCarousel,

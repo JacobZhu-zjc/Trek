@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Group, Code } from '@mantine/core';
+import {useState} from 'react';
+import {Group, Code} from '@mantine/core';
 import {
     IconBellRinging,
     IconFingerprint,
@@ -14,13 +14,13 @@ import {
 import classes from './NavbarSimple.module.css';
 
 const data = [
-    { link: '', label: 'Notifications', icon: IconBellRinging },
-    { link: '', label: 'Billing', icon: IconReceipt2 },
-    { link: '', label: 'Security', icon: IconFingerprint },
-    { link: '', label: 'SSH Keys', icon: IconKey },
-    { link: '', label: 'Databases', icon: IconDatabaseImport },
-    { link: '', label: 'Authentication', icon: Icon2fa },
-    { link: '', label: 'Other Settings', icon: IconSettings },
+    {link: '', label: 'Notifications', icon: IconBellRinging},
+    {link: '', label: 'Billing', icon: IconReceipt2},
+    {link: '', label: 'Security', icon: IconFingerprint},
+    {link: '', label: 'SSH Keys', icon: IconKey},
+    {link: '', label: 'Databases', icon: IconDatabaseImport},
+    {link: '', label: 'Authentication', icon: Icon2fa},
+    {link: '', label: 'Other Settings', icon: IconSettings},
 ];
 
 function SettingsSideBar() {
@@ -37,7 +37,7 @@ function SettingsSideBar() {
                 setActive(item.label);
             }}
         >
-            <item.icon className={classes.linkIcon} stroke={1.5} />
+            <item.icon className={classes.linkIcon} stroke={1.5}/>
             <span>{item.label}</span>
         </a>
     ));
@@ -54,12 +54,12 @@ function SettingsSideBar() {
 
             <div className={classes.footer}>
                 <a href="#" className={classes.link} onClick={(event) => event.preventDefault()}>
-                    <IconSwitchHorizontal className={classes.linkIcon} stroke={1.5} />
+                    <IconSwitchHorizontal className={classes.linkIcon} stroke={1.5}/>
                     <span>Change account</span>
                 </a>
 
                 <a href="#" className={classes.link} onClick={(event) => event.preventDefault()}>
-                    <IconLogout className={classes.linkIcon} stroke={1.5} />
+                    <IconLogout className={classes.linkIcon} stroke={1.5}/>
                     <span>Logout</span>
                 </a>
             </div>

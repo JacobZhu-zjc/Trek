@@ -1,4 +1,4 @@
-import { CollectionConfig } from "payload/types";
+import {CollectionConfig} from "payload/types";
 
 const Media: CollectionConfig = {
     slug: 'media',
@@ -40,8 +40,8 @@ const Media: CollectionConfig = {
             type: 'select',
             name: 'image_origin',
             options: [
-                { label: 'Trek', value: 'trek' },
-                { label: 'External', value: 'external' },
+                {label: 'Trek', value: 'trek'},
+                {label: 'External', value: 'external'},
             ],
             required: true
         },

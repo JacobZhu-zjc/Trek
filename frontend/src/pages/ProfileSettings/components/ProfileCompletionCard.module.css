@@ -3,17 +3,15 @@
 }
 
 .label {
-    font-family:
-        Greycliff CF,
-        var(--mantine-font-family);
+    font-family: Greycliff CF,
+    var(--mantine-font-family);
     font-weight: 700;
     line-height: 1;
 }
 
 .lead {
-    font-family:
-        Greycliff CF,
-        var(--mantine-font-family);
+    font-family: Greycliff CF,
+    var(--mantine-font-family);
     font-weight: 700;
     font-size: rem(22px);
     line-height: 1;
@@ -22,7 +20,7 @@
 .inner {
     display: flex;
 
-    @media (max-width: $mantine-breakpoint-xs) {
+    @media (max-width: $ mantine-breakpoint-xs) {
         flex-direction: column;
     }
 }
@@ -32,8 +30,35 @@
     display: flex;
     justify-content: flex-end;
 
-    @media (max-width: $mantine-breakpoint-xs) {
+    @media (max-width: $ mantine-breakpoint-xs) {
         justify-content: center;
         margin-top: var(--mantine-spacing-md);
     }
+}
+
+.dropZone {
+    margin-top: 0.2rem;
+    height: 22.8em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.uploadIcon {
+    width: 5rem;
+    height: 5rem;
+    color: var(--mantine-color-blue-6);
+}
+
+.rejectIcon {
+    width: 5rem;
+    height: 5rem;
+    color: var(--mantine-color-red-6);
+}
+
+.photoIcon {
+    width: 5rem;
+    height: 5rem;
+    color: var(--mantine-color-dimmed);
 }

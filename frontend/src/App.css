@@ -3,9 +3,9 @@
 @tailwind utilities;
 
 html {
-  scroll-behavior: smooth;
+    scroll-behavior: smooth;
 }
 
 section {
-  height: 100vh;
+    height: 100vh;
 }

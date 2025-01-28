@@ -1,9 +1,9 @@
-import { Combobox, Loader, TextInput, useCombobox } from "@mantine/core";
-import { Feature } from 'geojson'
-import { getCountryFlagEmoji } from "@utils/place";
+import {Combobox, Loader, TextInput, useCombobox} from "@mantine/core";
+import {Feature} from 'geojson'
+import {getCountryFlagEmoji} from "@utils/place";
 import debounce from "lodash.debounce";
-import { useState, useMemo, useEffect } from "react";
-import { useLazyGetLocationsQuery } from "../../redux/services/photonApi";
+import {useState, useMemo, useEffect} from "react";
+import {useLazyGetLocationsQuery} from "../../redux/services/photonApi";
 
 export interface AreaSearchBoxProps {
     /* state setter */
@@ -15,16 +15,22 @@ export interface AreaSearchBoxProps {
     errorMsg: string | null;
 }
 
-export const AreaSearchBox = ({ selectedFeature, setSelectedFeature, label, placeholder, description, errorMsg }: AreaSearchBoxProps) => {
+export const AreaSearchBox = ({
+                                  selectedFeature,
+                                  setSelectedFeature,
+                                  label,
+                                  placeholder,
+                                  description,
+                                  errorMsg
+                              }: AreaSearchBoxProps) => {
     const combobox = useCombobox({
         onDropdownClose: () => combobox.resetSelectedOption(),
     });
 
-    //const [error, setError] = useState<string | null>(errorMsg);
 
     const [searchQuery, setSearchQuery] = useState('');
     const [value, setValue] = useState(selectedFeature?.properties?.name || '');
-    const [trigger, { data, isLoading }] = useLazyGetLocationsQuery();
+    const [trigger, {data, isLoading}] = useLazyGetLocationsQuery();
     const empty = !isLoading && !data?.features?.length;
 
     const debouncedTrigger = useMemo(() => debounce(
@@ -41,15 +47,14 @@ export const AreaSearchBox = ({ selectedFeature, setSelectedFeature, label, plac
 
     const options = (data?.features || []).map((feature, index) => {
 
-
-        const flag = getCountryFlagEmoji(feature.properties?.countrycode);
+        const flag = getCountryFlagEmoji(feature.properties?.countrycode ?? "");
         const flagEmoji = flag ? (flag + " ") : "";
         const name = feature.properties?.name || "";
         const province = feature.properties?.province || "";
         const state = feature.properties?.state || "";
 
         return (
-            <Combobox.Option value={String(feature.id)} key={index}>
+            <Combobox.Option value={String(feature.properties?.osm_id)} key={index}>
                 {flagEmoji}{name}{(province || state) ? (`, ${(province || state)}`) : ""}
             </Combobox.Option>)
     });
@@ -57,8 +62,8 @@ export const AreaSearchBox = ({ selectedFeature, setSelectedFeature, label, plac
     return (<>
         <Combobox
             onOptionSubmit={(optionValue) => {
-                setSelectedFeature(data?.features.find((feature) => String(feature.id) === optionValue) || null);
-                setValue(data?.features.find((feature) => String(feature.id) === optionValue)?.properties?.name || '');
+                setSelectedFeature(data?.features.find((feature) => String(feature.properties?.osm_id) === optionValue) || null);
+                setValue(data?.features.find((feature) => String(feature.properties?.osm_id) === optionValue)?.properties?.name || '');
                 combobox.closeDropdown();
             }}
             withinPortal={false}
@@ -91,7 +96,7 @@ export const AreaSearchBox = ({ selectedFeature, setSelectedFeature, label, plac
                         }
                     }}
                     onBlur={() => combobox.closeDropdown()}
-                    rightSection={isLoading && <Loader size={18} />}
+                    rightSection={isLoading && <Loader size={18}/>}
                     error={errorMsg ? errorMsg : undefined}
                 />
             </Combobox.Target>

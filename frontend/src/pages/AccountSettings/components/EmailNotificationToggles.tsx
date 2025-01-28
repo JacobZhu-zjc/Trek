@@ -1,20 +1,22 @@
-import { Card, Group, Switch, Text } from '@mantine/core';
+import {Card, Group, Switch, Text} from '@mantine/core';
 import classes from './SwitchesCard.module.css';
 import {useDispatch, useSelector} from "react-redux";
-import {useEffect} from "react";
+import {useContext, useEffect} from "react";
 import {getUserSettingsAsync, putUserSettingsAsync} from "../../../redux/users/thunks.ts";
-import {Settings, User} from '@trek-types/user.ts';
+import {Settings} from '@trek-types/user.ts';
 import {AppDispatch} from '../../../redux/store.ts';
+import {UserContext} from "../../../App.tsx";
+import {State} from "@trek-types/redux.ts";
 
 const EmailNotificationToggles = () => {
-    const dispatch = useDispatch<AppDispatch>();
+    const dispatch = useDispatch<AppDispatch>()
+    const userContext = useContext(UserContext);
+    const settings = useSelector((state: State) => state.user.self.settings);
 
     useEffect(() => {
-        dispatch(getUserSettingsAsync());
-    }, []);
+        dispatch(getUserSettingsAsync(userContext.token));
+    }, [dispatch, userContext.token]);
 
-    const account = useSelector((state: {user: {settings: Settings}}) => state.user.settings);
-    const username = useSelector((state: {user: {self: User}}) => state.user.self.username);
     const data = [
         {
             title: 'Limited Time Travel Deals',
@@ -30,13 +32,14 @@ const EmailNotificationToggles = () => {
 
     function handleSwitchChange(stateKey: string) {
         const newSettings: Settings = {
-            privateAccount: false,
-            accountLimitedDeals: account.accountLimitedDeals,
-            accountNewsletterNotifications: account.accountNewsletterNotifications
-        }
-        newSettings[stateKey] = !newSettings[stateKey];
+            ...settings,
+            [stateKey]: !settings[stateKey]
+        };
+        dispatch(putUserSettingsAsync({token: userContext.token, settings: newSettings}));
+    }
 
-        dispatch(putUserSettingsAsync({username: username, settings: newSettings}));
+    if (!settings) {
+        return <Text>Loading settings...</Text>;
     }
 
     const items = data.map((item) => {
@@ -48,7 +51,8 @@ const EmailNotificationToggles = () => {
                         {item.description}
                     </Text>
                 </div>
-                <Switch checked={account[item.stateKey as string]} onLabel="ON" offLabel="OFF" className={classes.switch}
+                <Switch checked={settings[item.stateKey as string]} onLabel="ON" offLabel="OFF"
+                        className={classes.switch}
                         onChange={() => handleSwitchChange(item.stateKey)} size="lg"/>
             </Group>
         );

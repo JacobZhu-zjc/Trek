@@ -1,5 +1,5 @@
-import { Feature, Point } from 'geojson';
-import { Media } from './payload-types';
+import {Feature, Point} from 'geojson';
+import {Media} from './payload-types';
 
 
 interface TrekGeoJSONProperties {
@@ -13,6 +13,7 @@ interface TrekGeoJSONProperties {
     main_photo?: Media;
     slug?: string;
     poi_category?: PlaceCategory;
+    timezone?: string;
 }
 
 
@@ -23,6 +24,12 @@ export interface Destination extends Feature<Point> {
     properties: TrekGeoJSONProperties;
 }
 
+export interface SimpleDestination {
+    id: string;
+    type: 'Feature';
+    geometry: [number, number] | null;
+    properties: TrekGeoJSONProperties;
+}
 
 export interface Place extends Destination {
     properties: TrekGeoJSONProperties & {

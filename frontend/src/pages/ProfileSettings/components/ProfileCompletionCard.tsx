@@ -1,4 +1,4 @@
-import { Text, Progress, Card } from '@mantine/core';
+import {Text, Progress, Card} from '@mantine/core';
 
 function ProfileCompletionCard() {
     return (
@@ -10,7 +10,7 @@ function ProfileCompletionCard() {
             <Text fz="xs" fw={700} c="dimmed">
                 Set up your profile to get the most out of Trek
             </Text>
-            <Progress value={54.31} mt="md" size="lg" radius="xl" />
+            <Progress value={54.31} mt="md" size="lg" radius="xl"/>
         </Card>
     );
 }

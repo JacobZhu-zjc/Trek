@@ -3,7 +3,7 @@
  * @author Matthew Kang
  */
 
-import { Feature, FeatureCollection, Point } from 'geojson';
+import {Feature, Point} from 'geojson';
 
 interface TrekGeoJSONProperties {
     mapbox_id?: string;

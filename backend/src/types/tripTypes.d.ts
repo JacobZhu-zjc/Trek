@@ -5,6 +5,8 @@
 export interface TripItem extends Document {
     item_type: "destination" | "transportation",
     item_id: mongoose.Types.ObjectId,
+    /** unique UUID key for each item */
+    key: string,
     index: number,
     date: DateInterface,
     duration: number,
@@ -18,15 +20,18 @@ export interface Budget extends Document {
     totalEstimatedCost: number,
     totalCost: number,
     totalPaidCost: number,
-    membersBudget: Array<MemberBudgetInterface>
+    membersBudget: Array<MemberBudget>
 }
 
 export interface MemberBudget extends Document {
-    member_id: string,
+    // NOTE! Changed to just member to reflect sub - Matthew
+    member: string,
     estimated_cost: number,
     cost: number,
     paid_cost: number,
     payment_date: Date,
+    estimated_cost_base_currency_amount: number;
+    cost_base_currency_amount: number;
     payment_base_currency_amount: number,
 }
 
@@ -37,10 +42,21 @@ export interface TripBudgetCategory extends Document {
 
 export interface TripBudget extends Document {
     baseCurrency: string,
-    tripBudgetCategoriesGroupCost: Array<TripBudgetCategoryInterface>,
+    tripBudgetCategoriesGroupCost: Array<CategoryBudgetSummary>,
     tripTotalGroupCost: number,
     tripTotalPayments: number,
-    tripMemberPayments: Array<{ memberId: string, memberName: string, value: number }>
+    tripMemberSummary: Array<MemberBudgetSummary>,
+}
+
+export interface CategoryBudgetSummary extends Document {
+    category: string,
+    value: number
+}
+
+export interface MemberBudgetSummary extends Document {
+    member: string,
+    totalCost: number,
+    totalPayment: number,
 }
 
 export interface Trip extends Document {
@@ -61,8 +77,8 @@ export interface Trip extends Document {
     private: boolean,
     trip_items: Array<TripItemInterface>,
     map: MapInterface,
-    // TODO decide with team what to do, current s3 file keys
-    photos: Array<string>
+    photos: Array<string>,
+    startLocation: string
 }
 
 export interface Location extends Document {
@@ -70,6 +86,11 @@ export interface Location extends Document {
     address: string,
     date: DateInterface,
     transportation: Transportation,
+}
+
+export interface Notes extends Document {
+    trip_item_key: string,
+    notes: Buffer
 }
 
 export interface Map extends Document {

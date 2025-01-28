@@ -4,8 +4,8 @@
  * - Mapbox Forward Geocoding V6 API is used to search for addresses
  * @author Matthew Kang
  */
-import { useState, useCallback } from 'react';
-import { FeatureCollection, Feature } from 'geojson';
+import {useCallback, useState} from 'react';
+import {Feature, FeatureCollection} from 'geojson';
 
 type PhotonResponse = FeatureCollection; // Replace with the actual type of the response from API 1
 type MapboxResponse = FeatureCollection; // Replace with the actual type of the response from API 2
@@ -51,7 +51,7 @@ const useLazyDestinationQuery = (): UseLazyCombinedDataResult => {
         }
     }, []);
 
-    return { data, isLoading, error, trigger: fetchData };
+    return {data, isLoading, error, trigger: fetchData};
 };
 
 export default useLazyDestinationQuery;

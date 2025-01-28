@@ -29,7 +29,7 @@ COPY /backend /api
 WORKDIR /api
 RUN touch .env
 RUN npm install
-RUN npm run build
+RUN npm run build:prod
 
 EXPOSE 80/tcp
 EXPOSE 80/udp

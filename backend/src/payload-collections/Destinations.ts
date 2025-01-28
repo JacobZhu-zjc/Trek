@@ -1,6 +1,6 @@
 import payload from "payload";
-import { CollectionConfig } from "payload/types";
-import { upsertDestination } from "../utils/destinations";
+import {CollectionConfig} from "payload/types";
+import {upsertDestinationFromOsmID} from "../utils/destinations";
 
 const Destinations: CollectionConfig = {
     slug: 'destinations',
@@ -20,7 +20,7 @@ const Destinations: CollectionConfig = {
             name: 'type',
             type: 'select',
             options: [
-                { label: 'Feature', value: 'Feature' },
+                {label: 'Feature', value: 'Feature'},
             ],
             required: true,
         },
@@ -65,9 +65,9 @@ const Destinations: CollectionConfig = {
                     name: 'destination_type',
                     type: 'select',
                     options: [
-                        { label: 'POI', value: 'poi' },
-                        { label: 'Address', value: 'address' },
-                        { label: 'Area', value: 'area' },
+                        {label: 'POI', value: 'poi'},
+                        {label: 'Address', value: 'address'},
+                        {label: 'Area', value: 'area'},
                     ],
                     required: true,
                 },
@@ -90,6 +90,11 @@ const Destinations: CollectionConfig = {
                     admin: {
                         condition: (data, siblingData) => siblingData.destination_type !== 'area',
                     },
+                },
+                {
+                    name: 'countrycode',
+                    type: 'text',
+                    required: false
                 },
                 {
                     name: 'main_photo',
@@ -136,21 +141,19 @@ const Destinations: CollectionConfig = {
         {
             path: "/upsert/osm",
             method: "post",
-            handler: async (req, res, next) => {
+            handler: async (req, res, _next) => {
                 // get the osm_id and osm_type from the request body
-                const { osm_id, osm_type } = req.body;
+                const {osm_id, osm_type} = req.body;
                 if (!osm_id || !osm_type) {
                     return res.status(400).send("osm_id and osm_type required");
                 }
                 try {
-                    const destinationId = await upsertDestination(osm_id, osm_type);
-                    console.log("destinationId: ", destinationId);
+                    const destinationId = await upsertDestinationFromOsmID(osm_id, osm_type);
                     const destination = await payload.findByID({
                         collection: 'destinations',
                         id: destinationId,
                         depth: 4,
                     });
-                    console.log("destination: ", destination);
                     res.status(200).send(destination);
                 } catch {
                     res.status(500).send("Error upserting destination");

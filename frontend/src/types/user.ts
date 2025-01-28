@@ -1,16 +1,16 @@
-import { BasicTrip } from "./trip";
+import {BasicTrip} from "./trip";
 
 export interface PublicUser {
     name: string;
-    /** UUID */
-    _id: string;
+    _id: string; // UUID
     username: string;
-    profilePicture: string;
+    image: string;
+    uploadedProfilePictureURL?: string,
 }
 
 export interface BasicUser extends PublicUser {
-    /** UUID */
     email: string;
+    sub: string,
 }
 
 export interface UserLink {
@@ -25,6 +25,7 @@ export interface SimpleBudget {
 
 export interface Settings {
     [key: string]: boolean;
+
     accountLimitedDeals: boolean,
     accountNewsletterNotifications: boolean,
     privateAccount: boolean
@@ -72,13 +73,5 @@ export interface User extends BasicUser {
     currentlyAt: string;
     settings: Settings;
     experience: UserExperience;
-    image: string;
-
-    /* old */
-    // image: {
-    //     photo: string,
-    //     _id: string
-    // },
+    uploadedProfilePicture: string,
 }
-
-

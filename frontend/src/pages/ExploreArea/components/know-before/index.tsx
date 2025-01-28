@@ -1,8 +1,8 @@
-import { Accordion, Grid, Text, Container, Title, Image, Group } from '@mantine/core';
+import {Accordion, Container, Grid, Group, Image, Text, Title} from '@mantine/core';
 import classes from './index.module.css';
-import { IconCoins, IconTrain, IconHeart, Icon } from '@tabler/icons-react';
+import {Icon, IconCoins, IconHeart, IconTrain} from '@tabler/icons-react';
 import SidePhoto from '@assets/know-before-you-go.svg';
-import { Explore } from '@trek-types/payload-types';
+import {Explore} from '@trek-types/payload-types';
 
 
 export interface KnowBeforeYouGoProps {
@@ -10,7 +10,7 @@ export interface KnowBeforeYouGoProps {
     know_before: Explore['know_before'];
 }
 
-export function KnowBeforeYouGo({ name, know_before }: KnowBeforeYouGoProps) {
+export function KnowBeforeYouGo({name, know_before}: KnowBeforeYouGoProps) {
 
 
     const dropdownList = [
@@ -46,10 +46,10 @@ export function KnowBeforeYouGo({ name, know_before }: KnowBeforeYouGoProps) {
         description: string;
     }
 
-    function AccordionLabel({ label, LabelIcon, description }: AccordionLabelProps) {
+    function AccordionLabel({label, LabelIcon, description}: AccordionLabelProps) {
         return (
             <Group wrap="nowrap">
-                <LabelIcon size={24} color='green' />
+                <LabelIcon size={24} color='green'/>
                 <div>
                     <Text fw={500}>{label}</Text>
                     <Text size="sm" c="dimmed" fw={400}>
@@ -74,10 +74,10 @@ export function KnowBeforeYouGo({ name, know_before }: KnowBeforeYouGoProps) {
     return (
         <Container size="lg" w={"100%"}>
             <Grid id="faq-grid" gutter={50} grow>
-                <Grid.Col span={{ base: 12, md: 5 }}>
-                    <Image src={SidePhoto} w={"100%"} />
+                <Grid.Col span={{base: 12, md: 5}}>
+                    <Image src={SidePhoto} w={"100%"}/>
                 </Grid.Col>
-                <Grid.Col span={{ base: 12, md: 7 }}>
+                <Grid.Col span={{base: 12, md: 7}}>
                     <Title order={2} ta="left" className={classes.title}>
                         Know Before You Go
                     </Title>

@@ -1,15 +1,14 @@
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { Destination, Explore } from "@trek-types/payload-types";
-// import { Destination } from "@trek-types/destination";
+import {useEffect, useState} from "react";
+import {useParams} from "react-router-dom";
+import {Destination, Explore} from "@trek-types/payload-types";
 import qs from 'qs'
-import { useGetExploreQuery } from "../../redux/services/payloadApi";
+import {useGetExploreQuery} from "../../redux/services/payloadApi";
 import TripCard from "@components/trip-card";
-import { Carousel } from "@mantine/carousel";
-import { Stack, Box, Grid, Title, Button, Image, LoadingOverlay, Text } from "@mantine/core";
-import { ArticleCardCarousel } from "./components/article-card-carousel";
-import { Hero } from "./components/hero";
-import { KnowBeforeYouGo } from "./components/know-before";
+import {Carousel} from "@mantine/carousel";
+import {Box, Button, Grid, Image, LoadingOverlay, Stack, Text, Title} from "@mantine/core";
+import {ArticleCardCarousel} from "./components/article-card-carousel";
+import {Hero} from "./components/hero";
+import {KnowBeforeYouGo} from "./components/know-before";
 
 
 /**
@@ -21,7 +20,6 @@ export interface ExploreWithDestination extends Omit<Explore, 'destination'> {
 }
 
 
-
 const ExploreAreaApp = () => {
 
 
@@ -30,10 +28,7 @@ const ExploreAreaApp = () => {
         document.title = `Explore ${exploreData?.destination.properties.name} | Trek`;
     }, []);
 
-    // const mapboxClient = mbxStatic({ accessToken: "pk.eyJ1IjoidHJla2tlcnMtcHJvamVjdCIsImEiOiJjbHloaXUxcTkwNDAwMnFxMG91OGpyMjdpIn0.liCJENmSeSYcYzyuvbFEvA" });
-
-
-    const { slug } = useParams<{ slug: string }>();
+    const {slug} = useParams<{ slug: string }>();
     const [exploreData, setExploreData] = useState<ExploreWithDestination | null>(null);
 
     const query = {
@@ -42,16 +37,15 @@ const ExploreAreaApp = () => {
         },
         depth: 4,
     }
-    const stringifiedQuery = qs.stringify({ where: query }, { addQueryPrefix: true });
+    const stringifiedQuery = qs.stringify({where: query}, {addQueryPrefix: true});
 
-    const { data: dataFromQuery, error, isLoading } = useGetExploreQuery(stringifiedQuery);
+    const {data: dataFromQuery, error, isLoading} = useGetExploreQuery(stringifiedQuery);
 
     if (error) {
         console.error(error);
     }
 
     useEffect(() => {
-        console.log(dataFromQuery);
         if (!dataFromQuery || dataFromQuery.docs.length === 0) {
             // whatever
         } else {
@@ -65,15 +59,16 @@ const ExploreAreaApp = () => {
     return (
         <>
             <Box pos={"relative"}>
-                <LoadingOverlay visible={isLoading} zIndex={1000} overlayProps={{ radius: "sm", blur: 2 }} />
+                <LoadingOverlay visible={isLoading} zIndex={1000} overlayProps={{radius: "sm", blur: 2}}/>
                 {exploreData && (<Stack align="center">
 
-                    <Hero name={exploreData.destination.properties.name} main_photo={exploreData.destination.properties.main_photo} />
+                    <Hero name={exploreData.destination.properties.name}
+                          main_photo={exploreData.destination.properties.main_photo}/>
 
                     <Box maw={1000}>
                         <Box my={100}>
                             <Grid gutter={80}>
-                                <Grid.Col span={{ base: 12, md: 5 }}>
+                                <Grid.Col span={{base: 12, md: 5}}>
                                     <Title order={2} mb={5}>
                                         {exploreData.destination.properties.description}
                                     </Title>
@@ -83,7 +78,7 @@ const ExploreAreaApp = () => {
 
                                     <Button
                                         variant="gradient"
-                                        gradient={{ deg: 133, from: 'green', to: 'lime' }}
+                                        gradient={{deg: 133, from: 'green', to: 'lime'}}
                                         size="lg"
                                         radius="md"
                                         mt="xl"
@@ -91,9 +86,9 @@ const ExploreAreaApp = () => {
                                         Start Planning Trip
                                     </Button>
                                 </Grid.Col>
-                                <Grid.Col span={{ base: 12, md: 7 }}>
+                                <Grid.Col span={{base: 12, md: 7}}>
                                     {/* <Skeleton height={"100%"} /> */}
-                                    <Image radius={"md"} src={imgUrl} />
+                                    <Image radius={"md"} src={imgUrl}/>
                                 </Grid.Col>
                             </Grid>
                         </Box>
@@ -101,12 +96,13 @@ const ExploreAreaApp = () => {
 
                         <Box my={100}>
                             <Title order={2} mb={20}>{exploreData.destination.properties.name} Travel Guides</Title>
-                            <ArticleCardCarousel />
+                            <ArticleCardCarousel/>
                         </Box>
 
 
                         <Box mt={50} mih={500}>
-                            <KnowBeforeYouGo name={exploreData.destination.properties.name} know_before={exploreData.know_before} />
+                            <KnowBeforeYouGo name={exploreData.destination.properties.name}
+                                             know_before={exploreData.know_before}/>
                         </Box>
 
 
@@ -114,18 +110,18 @@ const ExploreAreaApp = () => {
                             <Title order={2} mb={20}>Explore Trips From The Trek Community</Title>
                             <Carousel
                                 withIndicators
-                                slideSize={{ base: '100%', sm: '50%', md: `${100 / 4}%` }}
-                                slideGap={{ base: 0, sm: 'md' }}
+                                slideSize={{base: '100%', sm: '50%', md: `${100 / 4}%`}}
+                                slideGap={{base: 0, sm: 'md'}}
                                 loop
                                 align="start"
                             >
-                                <Carousel.Slide> <TripCard /> </Carousel.Slide>
-                                <Carousel.Slide> <TripCard /> </Carousel.Slide>
-                                <Carousel.Slide> <TripCard /> </Carousel.Slide>
-                                <Carousel.Slide> <TripCard /> </Carousel.Slide>
-                                <Carousel.Slide> <TripCard /> </Carousel.Slide>
-                                <Carousel.Slide> <TripCard /> </Carousel.Slide>
-                                <Carousel.Slide> <TripCard /> </Carousel.Slide>
+                                <Carousel.Slide> <TripCard/> </Carousel.Slide>
+                                <Carousel.Slide> <TripCard/> </Carousel.Slide>
+                                <Carousel.Slide> <TripCard/> </Carousel.Slide>
+                                <Carousel.Slide> <TripCard/> </Carousel.Slide>
+                                <Carousel.Slide> <TripCard/> </Carousel.Slide>
+                                <Carousel.Slide> <TripCard/> </Carousel.Slide>
+                                <Carousel.Slide> <TripCard/> </Carousel.Slide>
                                 {/* ...other slides */}
                             </Carousel>
 

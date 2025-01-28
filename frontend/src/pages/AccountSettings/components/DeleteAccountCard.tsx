@@ -1,6 +1,6 @@
-import { Text, Card, Button } from '@mantine/core';
+import {Text, Card, Button} from '@mantine/core';
 import classes from './UserInfoIcons.module.css';
-import { modals } from '@mantine/modals';
+import {modals} from '@mantine/modals';
 
 function DeleteAccountCard() {
 
@@ -12,10 +12,14 @@ function DeleteAccountCard() {
             children: (
                 <Text size="sm">
                     Are you sure you want to delete your profile? Once you delete it, all your data will be lost.
+                    <br/>
+                    <br/>
+                    <b>Note: This feature is coming soon. Please email support@trek.wyfx.ca if you wish to delete your
+                        account at this time.</b>
                 </Text>
             ),
-            labels: { confirm: 'Delete account', cancel: "No don't delete it" },
-            confirmProps: { color: 'red' },
+            labels: {confirm: 'Delete account', cancel: "No don't delete it"},
+            confirmProps: {color: 'red'},
             onCancel: () => console.log('Cancel'),
             onConfirm: () => console.log('Confirmed'),
         });

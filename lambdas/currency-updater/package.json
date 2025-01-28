@@ -1,0 +1,24 @@
+{
+  "name": "currency-updater",
+  "version": "1.0.0",
+  "description": "Currency updater Lambda function",
+  "main": "handler.js",
+  "scripts": {
+    "deploy": "serverless deploy",
+    "dev": "tsc && serverless deploy"
+  },
+  "author": "Matthew Kang",
+  "license": "ISC",
+  "dependencies": {
+    "@types/axios": "^0.14.0",
+    "@types/mongoose": "^5.11.97",
+    "aws-lambda": "^1.0.7",
+    "axios": "^1.7.3",
+    "mongoose": "^8.5.2",
+    "typescript": "^5.5.4"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.142",
+    "@types/node": "^22.1.0"
+  }
+}

@@ -3,7 +3,7 @@
  * @author Matthew Kang
  */
 
-import { ObjectId } from 'mongoose';
+import {ObjectId} from 'mongoose';
 
 export interface User extends Document {
     trips: ObjectId[];

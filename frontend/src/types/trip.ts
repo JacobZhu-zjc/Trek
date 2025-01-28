@@ -1,7 +1,6 @@
-import { Area, Destination } from "./destination";
-import { BasicUser } from "./user";
-import { UserUploadedImage } from "./userUploadedImage";
-
+import {Area, Destination, SimpleDestination} from "./destination";
+import {BasicUser} from "./user";
+import {UserUploadedImage} from "./userUploadedImage";
 
 
 export interface BasicTrip {
@@ -10,26 +9,41 @@ export interface BasicTrip {
     desc: string;
     photos: string[],
     mainImage: string,
+    // Additional fields for convenience in frontend, added by formatTrips()
+    photoURLs: string[],
+    mainImageURL: string,
+    ownerUser: BasicUser,
+    nonOwnerUsers: BasicUser[],
 }
 
 export interface Trip extends BasicTrip {
     dest: string[],
+    destObjs: SimpleDestination[];
     budget: TripBudget,
+    /** @deprecated expenditures are to be deprecated, use TripBudget */
     expenditures: Expenditure[],
-    date: {start: Date, end: Date},
+    date?: { start: Date, end: Date },
     todo: string[],
     image: string,
     url: string,
     /** Owner subtoken */
-    owner: string | {sub: string},
+    owner: string | { sub: string },
     /** Members' subtoken */
     members: string[],
+    /** Owner member of the trip */
     ownerUser: BasicUser,
+    /** all members of the trip including owner */
     nonOwnerUsers: BasicUser[],
-    trip_items: TripItem[],
+    /** Trip Items holding transporation or destination */
+    trip_items?: TripItem[],
+    /** @deprecated map is deprecated, use TripItems */
     map: Map,
     /** General Areas for Overview */
     areas: Area[],
+    /** @deprecated areaNames is deprecated, use areas */
+    areaNames: string[],
+    private: boolean,
+    startObj?: SimpleDestination,
 }
 
 export interface TripBudget {
@@ -41,16 +55,20 @@ export interface TripBudget {
     tripTotalGroupCost: number;
     tripTotalPayments: number;
     tripMemberPayments: {
-        memberId: string,
-        memberName: string,
+        member: string,
         value: number
+    }[];
+    tripMemberSummary: {
+        member: string,
+        totalCost: number,
+        totalPayment: number,
     }[];
 }
 
 
 export interface TripItem {
     item_id: string;
-    item_type: 'destination' | 'transportation';
+    item_type: 'destination' | 'transportations';
     /** 0-based trip-item index (0th activity, 1st activity, etc) */
     index: number;
     /** 0-based day (day 0, day 1, ...) */
@@ -60,18 +78,24 @@ export interface TripItem {
     end_time?: Date;
     /** Duration in seconds */
     duration?: number;
-    budget: Budget;
+    budget?: Budget;
     destination: Destination;
     /** Photos */
-    photos: UserUploadedImage[];
+    photos?: UserUploadedImage[];
 }
 
-export type BudgetCategory = "Activities" | "Accommodation" | "Food and Restaurants" | "Transportation" | "Gifts and Souvenirs" | "Other";
+export type BudgetCategory =
+    "Activities"
+    | "Accommodation"
+    | "Food and Restaurants"
+    | "Transportation"
+    | "Gifts and Souvenirs"
+    | "Other";
 
 export interface Budget {
     /** Currency Code defined by ISO 4217 */
     currency: string;
-    category: BudgetCategory;
+    category?: BudgetCategory;
     totalEstimatedCost: number;
     totalCost: number;
     totalPaidCost: number;
@@ -101,7 +125,7 @@ interface Map {
 interface Location {
     title: string,
     address: string,
-    date: {start: Date, end: Date},
+    date: { start: Date, end: Date },
     transportation: Transportation
 }
 

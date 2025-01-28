@@ -4,19 +4,19 @@
     padding-bottom: rem(130px);
     background-size: cover;
     background-position: center;
-  
-    @media (max-width: $mantine-breakpoint-xs) {
-      padding-top: rem(80px);
-      padding-bottom: rem(50px);
+
+    @media (max-width: $ mantine-breakpoint-xs) {
+        padding-top: rem(80px);
+        padding-bottom: rem(50px);
     }
-  }
-  
-  .inner {
+}
+
+.inner {
     position: relative;
     z-index: 1;
-  }
-  
-  .title {
+}
+
+.title {
     font-weight: 800;
     font-size: rem(40px);
     letter-spacing: rem(-1px);
@@ -25,68 +25,67 @@
     color: var(--mantine-color-white);
     margin-bottom: var(--mantine-spacing-xs);
     text-align: center;
-    font-family:
-      Greycliff CF,
-      var(--mantine-font-family);
-  
-    @media (max-width: $mantine-breakpoint-xs) {
-      font-size: rem(28px);
-      text-align: left;
+    font-family: Greycliff CF,
+    var(--mantine-font-family);
+
+    @media (max-width: $ mantine-breakpoint-xs) {
+        font-size: rem(28px);
+        text-align: left;
     }
-  }
-  
-  .highlight {
+}
+
+.highlight {
     color: var(--mantine-color-primary-4);
-  }
-  
-  .description {
+}
+
+.description {
     color: var(--mantine-color-gray-0);
     text-align: center;
-  
-    @media (max-width: $mantine-breakpoint-xs) {
-      font-size: var(--mantine-font-size-md);
-      text-align: left;
+
+    @media (max-width: $ mantine-breakpoint-xs) {
+        font-size: var(--mantine-font-size-md);
+        text-align: left;
     }
-  }
-  
-  .controls {
+}
+
+.controls {
     margin-top: calc(var(--mantine-spacing-xl) * 1.5);
     display: flex;
     justify-content: center;
     padding-left: var(--mantine-spacing-md);
     padding-right: var(--mantine-spacing-md);
-  
-    @media (max-width: $mantine-breakpoint-xs) {
-      flex-direction: column;
+
+    @media (max-width: $ mantine-breakpoint-xs) {
+        flex-direction: column;
     }
-  }
-  
-  .control {
+}
+
+.control {
     height: rem(42px);
     font-size: var(--mantine-font-size-md);
-  
+
     &:not(:first-of-type) {
-      margin-left: var(--mantine-spacing-md);
+        margin-left: var(--mantine-spacing-md);
     }
-  
-    @media (max-width: $mantine-breakpoint-xs) {
-      &:not(:first-of-type) {
-        margin-top: var(--mantine-spacing-md);
-        margin-left: 0;
-      }
+
+    @media (max-width: $ mantine-breakpoint-xs) {
+        &:not(:first-of-type) {
+            margin-top: var(--mantine-spacing-md);
+            margin-left: 0;
+        }
     }
-  }
-  
-  .secondaryControl {
+}
+
+.secondaryControl {
     color: var(--mantine-color-white);
     background-color: rgba(255, 255, 255, 0.4);
-  
-    @mixin hover {
-      background-color: rgba(255, 255, 255, 0.45);
-    }
-  }
 
-  .attribution {
+    @mixin hover {
+        background-color: rgba(255, 255, 255, 0.45);
+    }
+}
+
+.attribution {
     position: 'absolute';
     bottom: 0;
     right: 0;

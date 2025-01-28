@@ -1,6 +1,6 @@
-import { Carousel } from '@mantine/carousel';
-import { useMediaQuery } from '@mantine/hooks';
-import { Paper, Text, Title, Button, useMantineTheme, rem } from '@mantine/core';
+import {Carousel} from '@mantine/carousel';
+import {useMediaQuery} from '@mantine/hooks';
+import {Button, Paper, rem, Text, Title, useMantineTheme} from '@mantine/core';
 import classes from './index.module.css';
 
 interface CardProps {
@@ -9,14 +9,14 @@ interface CardProps {
     category: string;
 }
 
-function Card({ image, title, category }: CardProps) {
+function Card({image, title, category}: CardProps) {
     return (
         <Paper
             shadow="md"
             h={"100%"}
             p="xl"
             radius="md"
-            style={{ backgroundImage: `url(${image})` }}
+            style={{backgroundImage: `url(${image})`}}
             className={classes.card}
         >
             <div>
@@ -84,8 +84,8 @@ export function ArticleCardCarousel() {
 
     return (
         <Carousel
-            slideSize={{ base: '100%', sm: '50%' }}
-            slideGap={{ base: rem(2), sm: 'xl' }}
+            slideSize={{base: '100%', sm: '50%'}}
+            slideGap={{base: rem(2), sm: 'xl'}}
             align="start"
             slidesToScroll={mobile ? 1 : 2}
         >
